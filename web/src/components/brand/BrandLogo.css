@@ -1,0 +1,35 @@
+.brand-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  text-decoration: none;
+}
+
+.brand-logo-image {
+  display: block;
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-logo.compact .brand-logo-image {
+  height: 40px;
+}
+
+.brand-logo-tagline {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.brand-logo:hover .brand-logo-image {
+  opacity: 0.92;
+}
+
+@media (max-width: 640px) {
+  .brand-logo-image {
+    height: 40px;
+  }
+}

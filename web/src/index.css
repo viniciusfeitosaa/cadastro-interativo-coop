@@ -1,0 +1,93 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Cores oficiais — extraídas do kit Elementor do coopvitta.org */
+  --primary: #0d9488;
+  --primary-dark: #115e59;
+  --primary-deep: #134e4a;
+  --primary-light: #14b8a6;
+  --brand-green: #85bc39;
+  --brand-green-hover: #6e9b31;
+  --brand-blue: #0c4483;
+  --accent: #0ea5e9;
+  --accent-dark: #0c8cc5;
+
+  --bg: #eff8f7;
+  --bg-pattern: #e3f4f2;
+  --surface: #ffffff;
+  --surface-muted: #f7fcfb;
+
+  --text-primary: #1e293b;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+
+  --border: rgba(13, 148, 136, 0.14);
+  --border-strong: rgba(12, 68, 131, 0.2);
+
+  --primary-soft: rgba(13, 148, 136, 0.1);
+  --primary-glow: rgba(13, 148, 136, 0.28);
+  --green-soft: rgba(133, 188, 57, 0.14);
+  --accent-soft: rgba(14, 165, 233, 0.1);
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 30px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 48px rgba(15, 23, 42, 0.1);
+
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --radius: 12px;
+  --radius-btn: 6px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text-primary);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 8% 0%, var(--green-soft) 0%, transparent 40%),
+    radial-gradient(circle at 92% 100%, var(--accent-soft) 0%, transparent 38%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-pattern) 100%);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  color: var(--brand-blue);
+}
