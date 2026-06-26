@@ -4,7 +4,7 @@ Formulário multi-etapas de pré-cadastro + painel admin para visualizar inscri�
 
 ## Infraestrutura VPS COOPVITTA
 
-Guia completo para montar o servidor dedicado (app fork do [gymapp](https://github.com/viniciusfeitosaa/gymapp), DocuSeal, NPM, Maddy, este cadastro e DNS):
+Guia completo para montar o servidor dedicado (fork do [AppVS](https://github.com/viniciusfeitosaa/AppVS), DocuSeal, NPM, Maddy, este cadastro e DNS):
 
 **[docs/SETUP-VPS-COOPVITTA.md](./docs/SETUP-VPS-COOPVITTA.md)**
 

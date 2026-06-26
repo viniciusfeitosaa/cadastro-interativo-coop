@@ -7,7 +7,7 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 | **IP da VPS COOPVITTA** | **`187.127.35.253`** |
 | **IP da VPS Viva Saúde** | `187.77.247.33` (AppVS — não misturar stacks) |
 | **Repositório deste guia** | [cadastro-interativo-coop](https://github.com/viniciusfeitosaa/cadastro-interativo-coop) |
-| **App principal (fork)** | [gymapp](https://github.com/viniciusfeitosaa/gymapp) → renomear/adaptar como `coopvitta-app` |
+| **App principal (fork)** | [AppVS](https://github.com/viniciusfeitosaa/AppVS) → renomear/adaptar como `coopvitta-app` |
 | **Formulário de pré-cadastro** | Este repositório (`cadastro-interativo-coop`) |
 | **Assinaturas digitais** | [DocuSeal](https://www.docuseal.com/) (self-hosted) |
 | **VPS Viva Saúde** | Permanece só com AppVS + infra atual — **não** duplicar stacks na mesma máquina |
@@ -22,8 +22,8 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 4. [Estrutura de diretórios](#4-estrutura-de-diretórios)
 5. [Rede Docker compartilhada](#5-rede-docker-compartilhada)
 6. [Infra base: Nginx Proxy Manager + Maddy](#6-infra-base-nginx-proxy-manager--maddy)
-7. [Fork do gymapp → coopvitta-app](#7-fork-do-gymapp--coopvitta-app)
-8. [Adaptar o gymapp para NPM (sem Caddy na porta 80)](#8-adaptar-o-gymapp-para-npm-sem-caddy-na-porta-80)
+7. [Fork do AppVS → coopvitta-app](#7-fork-do-appvs--coopvitta-app)
+8. [Deploy do AppVS com NPM](#8-deploy-do-appvs-com-npm)
 9. [Cadastro interativo (este projeto)](#9-cadastro-interativo-este-projeto)
 10. [DocuSeal](#10-docuseal)
 11. [DNS e domínios](#11-dns-e-domínios)
@@ -81,8 +81,8 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 |---------|-----------|---------------|------------------|
 | NPM (proxy + SSL) | `nginx-proxy-manager` | 80, 443, 81 | — |
 | Maddy (SMTP) | `maddy` | 25, 587, 465 | `mail.coopvitta.com.br` |
-| App COOPVITTA — frontend | `coopvitta-frontend` | `8082` | `app.coopvitta.com.br` |
-| App COOPVITTA — backend | `coopvitta-backend` | `3001` | `api.coopvitta.com.br` ou `/api` |
+| App COOPVITTA — frontend | `coopvitta-frontend` | `8082` | `coopvitta.com.br` (landing + `/app/`) |
+| App COOPVITTA — backend | `coopvitta-backend` | `3001` | via `/app/api` ou `api.coopvitta.com.br` |
 | App COOPVITTA — Postgres | `coopvitta-postgres` | **não publicar** | — |
 | Cadastro interativo | `cadastro-interativo-coop` | `3080` | `cadastro.coopvitta.com.br` |
 | DocuSeal | `docuseal-app` | interno (via NPM) | `assinaturas.coopvitta.com.br` |
@@ -91,16 +91,15 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 
 > **Importante:** Postgres **nunca** deve ter porta publicada na internet. Apenas containers na rede interna acessam o banco.
 
-### Por que fork do gymapp?
+### Por que fork do AppVS?
 
-O repositório [gymapp](https://github.com/viniciusfeitosaa/gymapp) já traz:
+O repositório [AppVS](https://github.com/viniciusfeitosaa/AppVS) é a plataforma médica completa (escalas, plantões, contratos, relatórios, corpo clínico, landing + SPA). Na VPS COOPVITTA você fará um **fork**, adaptará branding/domínios e manterá a **mesma stack Docker** já validada na Viva Saúde:
 
-- `docker-compose.prod.yml` com Postgres, backend Node/Prisma, frontend React/Vite
-- Scripts `make setup`, `make backup`, `make update`
-- Integração SMTP via Maddy
-- Health checks e volumes persistentes
-
-Na VPS COOPVITTA você fará um **fork**, renomeará para `coopvitta-app` e adaptará branding, domínios e regras de negócio. A **referência funcional** para módulos médicos (escalas, plantões, contratos, relatórios) continua sendo o AppVS na VPS Viva Saúde — porte módulo a módulo conforme a COOPVITTA precisar.
+- `docker-compose.yml` — backend + frontend (já na `proxy-network`)
+- `docker-compose.postgres.yml` — Postgres interno (porta 5432 não publicada)
+- `scripts/deploy-vps.sh` e `scripts/backup-postgres.sh`
+- Landing estática em `/` + app React em `/app/`
+- Integração opcional com DocuSeal via `DOCUSEAL_*` no `.env`
 
 ---
 
@@ -223,12 +222,15 @@ Layout final sugerido:
 │   └── nginx-proxy-manager/
 │       ├── data/
 │       └── letsencrypt/
-├── coopvitta-app/                  # fork do gymapp
+├── coopvitta-app/                  # fork do AppVS
 │   ├── .env
-│   ├── docker-compose.prod.yml     # adaptado (sem Caddy na :80)
+│   ├── docker-compose.yml
+│   ├── docker-compose.postgres.yml
+│   ├── docker-compose.vps.yml      # opcional: renomear containers
 │   ├── backend/
 │   ├── frontend/
-│   └── backups/
+│   ├── landing/
+│   └── scripts/
 ├── cadastro-interativo-coop/       # este repositório
 │   ├── .env
 │   └── docker-compose.yml
@@ -349,20 +351,21 @@ Padrão usado na VPS Viva Saúde: script `sync-maddy-certs.sh` que lê de `nginx
 
 ---
 
-## 7. Fork do gymapp → coopvitta-app
+## 7. Fork do AppVS → coopvitta-app
 
 ### 7.1 Criar o fork no GitHub
 
-1. Acesse https://github.com/viniciusfeitosaa/gymapp
-2. **Fork** → nome sugerido: `coopvitta-app` (organização ou conta COOPVITTA)
-3. Ou clone e crie repositório novo:
+1. Acesse https://github.com/viniciusfeitosaa/AppVS
+2. **Fork** → nome sugerido: `AppCoopVitta` ou `coopvitta-app`
+3. Ou clone e aponte para repositório novo:
 
 ```bash
 cd /opt/coopvitta
-git clone https://github.com/viniciusfeitosaa/gymapp.git coopvitta-app
+git clone https://github.com/viniciusfeitosaa/AppVS.git coopvitta-app
 cd coopvitta-app
 git remote rename origin upstream
-git remote add origin https://github.com/SUA_ORG/coopvitta-app.git
+git remote add origin https://github.com/SUA_ORG/AppCoopVitta.git
+git push -u origin main
 ```
 
 ### 7.2 Primeiro setup na VPS
@@ -370,117 +373,123 @@ git remote add origin https://github.com/SUA_ORG/coopvitta-app.git
 ```bash
 cd /opt/coopvitta/coopvitta-app
 cp .env.example .env
+chmod 600 .env
 ```
 
 Gere segredos:
 
 ```bash
-openssl rand -hex 64    # JWT_SECRET
-openssl rand -base64 32 # POSTGRES_PASSWORD
-openssl rand -base64 16 # MADDY_SMTP_PASS / SMTP_PASS
+openssl rand -base64 32   # JWT_SECRET
+openssl rand -base64 32   # JWT_REFRESH_SECRET
+openssl rand -base64 32   # POSTGRES_PASSWORD
+openssl rand -base64 24   # MASTER_INITIAL_PASSWORD (seed do admin)
 ```
 
-Edite `.env` (ver [seção 13](#13-variáveis-de-ambiente-referência)).
+Edite `.env` (ver [seção 13](#13-variáveis-de-ambiente-referência)). Pontos críticos:
 
-### 7.3 Build e migrations
+- `POSTGRES_*` e `DATABASE_URL` com usuário/banco `coopvitta` (não reutilizar `appmedico`)
+- `TENANT_DEFAULT_SLUG=coopvitta`
+- `MASTER_INITIAL_EMAIL` com e-mail da COOPVITTA
+- `DOCUSEAL_URL` apontando para `https://assinaturas.coopvitta.com.br` (após subir DocuSeal)
+
+### 7.3 Override opcional de containers
+
+Para evitar nomes genéricos (`app-medico-*`), copie o exemplo deste repositório:
 
 ```bash
-# Primeira subida (após adaptar compose — seção 8)
-docker compose -f docker-compose.prod.yml up -d --build
-
-# Migrations Prisma (dentro do container backend)
-docker compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
-
-# Seed inicial se existir
-docker compose -f docker-compose.prod.yml exec backend npx prisma db seed
+cp /opt/coopvitta/cadastro-interativo-coop/docker-compose.vps.example.yml \
+   /opt/coopvitta/coopvitta-app/docker-compose.vps.yml
 ```
 
-### 7.4 Customizações COOPVITTA no código
+### 7.4 Build, migrations e seed
 
-| Área | O que alterar |
-|------|---------------|
-| Branding | Logo, cores, textos no `frontend/` |
-| Domínios | `.env`, `FRONTEND_URL`, `VITE_*` |
-| Modelos Prisma | Adaptar de Personal/Student para perfis COOPVITTA |
-| E-mail | Remetente `noreply@coopvitta.com.br` |
-| Módulos médicos | Portar do AppVS conforme necessidade (escalas, contratos, etc.) |
+```bash
+cd /opt/coopvitta/coopvitta-app
+
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
+
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec backend npx prisma migrate deploy
+
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml run --rm backend npx prisma db seed
+```
+
+O seed cria o usuário master (login com `MASTER_INITIAL_EMAIL` + `MASTER_INITIAL_PASSWORD`).
+
+### 7.5 Customizações COOPVITTA no código
+
+| Área | Caminho / o que alterar |
+|------|-------------------------|
+| Landing pública | `landing/` (HTML, CSS, textos COOPVITTA) |
+| Branding SPA | `frontend/src/`, assets, `index.html` |
+| Domínios | `.env`: `FRONTEND_URL`, `ALLOWED_ORIGINS`, `VITE_API_URL` |
+| Tenant | `TENANT_DEFAULT_SLUG=coopvitta` no `.env` + seed |
+| E-mail transacional | SMTP via Maddy (`noreply@coopvitta.com.br`) |
+| DocuSeal | `DOCUSEAL_URL`, `DOCUSEAL_API_KEY`, `DOCUSEAL_REQUIRED_TEMPLATES` |
+| Corpo clínico | `backend/scripts/import-corpo-clinico-once.mjs` (adaptar lista) |
 
 ---
 
-## 8. Adaptar o gymapp para NPM (sem Caddy na porta 80)
+## 8. Deploy do AppVS com NPM
 
-O `docker-compose.prod.yml` original do gymapp sobe **Caddy na porta 80**, o que conflita com o NPM. Na VPS COOPVITTA:
+Diferente de outros projetos, o **AppVS já nasce pronto para NPM**: backend e frontend estão na `proxy-network` e **não há Caddy na porta 80**. O NPM fica na infra (`:80`/`:443`); o app expõe `:8082` (frontend) e `:3001` (backend) só no host local.
 
-1. **Remova** (ou coloque em `profiles: [local]`) os serviços `caddy` e `cloudflared`
-2. **Publique** frontend e backend em portas internas do host
-3. **Conecte** ambos à `proxy-network`
-
-Exemplo de override: crie `docker-compose.vps.yml`:
-
-```yaml
-# Uso: docker compose -f docker-compose.prod.yml -f docker-compose.vps.yml up -d --build
-
-services:
-  caddy:
-    profiles: ["disabled"]
-
-  cloudflared:
-    profiles: ["disabled"]
-
-  postgres:
-    container_name: coopvitta-postgres
-    networks:
-      - coopvitta-internal
-
-  backend:
-    container_name: coopvitta-backend
-    ports:
-      - "3001:3001"
-    networks:
-      - coopvitta-internal
-      - proxy-network
-
-  frontend:
-    container_name: coopvitta-frontend
-    ports:
-      - "8082:80"
-    networks:
-      - coopvitta-internal
-      - proxy-network
-
-networks:
-  coopvitta-internal:
-    name: coopvitta-internal
-  proxy-network:
-    external: true
-```
-
-Comando de produção:
+### Comando de produção
 
 ```bash
-docker compose -f docker-compose.prod.yml -f docker-compose.vps.yml up -d --build
+cd /opt/coopvitta/coopvitta-app
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
 ```
 
-### Roteamento no NPM
+> **Não use** o profile `nginx` do `docker-compose.yml` (container `app-medico-nginx`) quando o NPM já faz SSL e proxy.
 
-**Opção A — subdomínios (recomendado):**
+### Roteamento no NPM (recomendado — igual Viva Saúde)
+
+O frontend Nginx **já faz proxy** de `/app/api/` → backend. Um único domínio basta:
+
+| Host | Forward | Observação |
+|------|---------|------------|
+| `coopvitta.com.br` (+ `www`) | `http://127.0.0.1:8082` | Landing em `/`, app em `/app/` |
+| `app.coopvitta.com.br` | `http://127.0.0.1:8082` | Alternativa se preferir subdomínio |
+
+No `.env` (exemplo com apex):
+
+```env
+FRONTEND_URL=https://coopvitta.com.br
+ALLOWED_ORIGINS=https://coopvitta.com.br,https://www.coopvitta.com.br
+VITE_API_URL=https://coopvitta.com.br/app/api
+```
+
+URLs finais:
+
+- Site / landing: `https://coopvitta.com.br/`
+- Login do app: `https://coopvitta.com.br/app/login`
+- API (via proxy do frontend): `https://coopvitta.com.br/app/api/...`
+
+### Opção alternativa — subdomínio `api.`
+
+Só use se quiser expor o backend diretamente (sem passar pelo Nginx do frontend):
 
 | Host | Forward |
 |------|---------|
-| `app.coopvitta.com.br` | `http://coopvitta-frontend:80` ou `http://127.0.0.1:8082` |
-| `api.coopvitta.com.br` | `http://coopvitta-backend:3001` ou `http://127.0.0.1:3001` |
-
-No `.env` do app:
+| `api.coopvitta.com.br` | `http://127.0.0.1:3001` |
 
 ```env
-FRONTEND_URL=https://app.coopvitta.com.br
-VITE_API_URL=https://api.coopvitta.com.br
-ALLOWED_ORIGINS=https://app.coopvitta.com.br
+VITE_API_URL=https://api.coopvitta.com.br/api
 ```
 
-**Opção B — mesmo domínio com `/api`:**
+Rebuild obrigatório após mudar `VITE_API_URL`:
 
-Configure custom locations no NPM ou um nginx intermediário. A opção A é mais simples de manter.
+```bash
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build frontend
+```
+
+### Health checks
+
+```bash
+curl -s http://127.0.0.1:3001/health
+curl -s http://127.0.0.1:8082/health
+curl -s https://coopvitta.com.br/app/api/health   # após NPM + SSL
+```
 
 ---
 
@@ -718,8 +727,8 @@ No registrador (Registro.br, Cloudflare, etc.), aponte todos os registros para *
 |------|------|-------|
 | A | `@` ou `coopvitta.com.br` | `187.127.35.253` |
 | A | `www` | `187.127.35.253` |
-| A | `app` | `187.127.35.253` |
-| A | `api` | `187.127.35.253` |
+| A | `app` | `187.127.35.253` | Opcional (subdomínio alternativo ao apex) |
+| A | `api` | `187.127.35.253` | Opcional (só se não usar `/app/api`) |
 | A | `cadastro` | `187.127.35.253` |
 | A | `assinaturas` | `187.127.35.253` |
 | A | `mail` | `187.127.35.253` |
@@ -745,44 +754,59 @@ Para **cada** domínio:
 
 Repita para:
 
-- `app.coopvitta.com.br` → 8082
-- `api.coopvitta.com.br` → 3001
+- `coopvitta.com.br` + `www.coopvitta.com.br` → 8082 (AppVS: landing + `/app/`)
 - `cadastro.coopvitta.com.br` → 3080
 - `assinaturas.coopvitta.com.br` → 3000 (DocuSeal)
 - `mail.coopvitta.com.br` → (conforme config Maddy)
+
+Opcional (se não usar `/app/api` no mesmo domínio):
+
+- `api.coopvitta.com.br` → 3001
 
 ---
 
 ## 13. Variáveis de ambiente (referência)
 
-### coopvitta-app (`/opt/coopvitta/coopvitta-app/.env`)
+### coopvitta-app — fork do AppVS (`/opt/coopvitta/coopvitta-app/.env`)
 
 ```env
-# Domínio
-FRONTEND_URL=https://app.coopvitta.com.br
-VITE_API_URL=https://api.coopvitta.com.br
-VITE_APP_URL=https://app.coopvitta.com.br
+NODE_ENV=production
+PORT=3001
 
-# Postgres
+# Postgres (container interno)
 POSTGRES_USER=coopvitta
 POSTGRES_PASSWORD=<forte>
 POSTGRES_DB=coopvitta
+DATABASE_URL=postgresql://coopvitta:<forte>@postgres:5432/coopvitta?schema=public
 
-# Backend
-NODE_ENV=production
-JWT_SECRET=<forte>
-APP_TIMEZONE=America/Sao_Paulo
+# JWT
+JWT_SECRET=<openssl rand -base64 32>
+JWT_REFRESH_SECRET=<openssl rand -base64 32>
+JWT_EXPIRES_IN=24h
+JWT_REFRESH_EXPIRES_IN=7d
+BCRYPT_ROUNDS=12
 
-# SMTP (Maddy na infra)
-SMTP_HOST=maddy
-SMTP_PORT=587
-SMTP_USER=noreply@coopvitta.com.br
-SMTP_PASS=<forte>
-SMTP_FROM=noreply@coopvitta.com.br
-MADDY_SMTP_PASS=<forte>
+# Domínio (padrão AppVS: landing + /app/)
+FRONTEND_URL=https://coopvitta.com.br
+ALLOWED_ORIGINS=https://coopvitta.com.br,https://www.coopvitta.com.br
+VITE_API_URL=https://coopvitta.com.br/app/api
 
-# Desabilitar tunnel Cloudflare na VPS com IP público
-USE_CLOUDFLARE_TUNNEL=0
+# Seed — primeiro login admin
+MASTER_INITIAL_PASSWORD=<forte>
+MASTER_INITIAL_EMAIL=contato@coopvitta.com.br
+TENANT_DEFAULT_SLUG=coopvitta
+
+# Portas no host (padrão AppVS)
+BACKEND_PORT=3001
+FRONTEND_PORT=8082
+
+# DocuSeal (instância na mesma VPS)
+DOCUSEAL_URL=https://assinaturas.coopvitta.com.br
+DOCUSEAL_API_KEY=<token gerado no painel DocuSeal>
+# DOCUSEAL_REQUIRED_TEMPLATES=[{"id":1,"name":"Contrato","role":"Primeira Parte"}]
+
+# E-mail (se backend enviar SMTP direto ao Maddy — além do DocuSeal)
+# Configure conforme módulos ativos no AppVS
 ```
 
 ### cadastro-interativo-coop
@@ -808,10 +832,11 @@ cd /opt/coopvitta/infra && docker compose up -d
 
 # 3. Configurar DNS (seção 11) — pode fazer em paralelo
 
-# 4. App principal
+# 4. App principal (fork AppVS)
 cd /opt/coopvitta/coopvitta-app
-docker compose -f docker-compose.prod.yml -f docker-compose.vps.yml up -d --build
-docker compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec backend npx prisma migrate deploy
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml run --rm backend npx prisma db seed
 
 # 5. Cadastro
 cd /opt/coopvitta/cadastro-interativo-coop
@@ -832,20 +857,20 @@ docker compose up -d
 
 ## 15. Backups e manutenção
 
-### 15.1 Postgres do app (`coopvitta-app`)
+### 15.1 Postgres do app (fork AppVS)
 
-Use o script do gymapp:
+Use o script incluído no AppVS:
 
 ```bash
 cd /opt/coopvitta/coopvitta-app
-make backup
-# ou: ./scripts/backup-db.sh
+CONTAINER=coopvitta-postgres POSTGRES_USER=coopvitta POSTGRES_DB=coopvitta \
+  ./scripts/backup-postgres.sh
 ```
 
 Agende cron diário:
 
 ```cron
-0 3 * * * cd /opt/coopvitta/coopvitta-app && ./scripts/backup-db.sh >> /var/log/coopvitta-backup.log 2>&1
+0 3 * * * cd /opt/coopvitta/coopvitta-app && CONTAINER=coopvitta-postgres POSTGRES_USER=coopvitta POSTGRES_DB=coopvitta ./scripts/backup-postgres.sh >> /var/log/coopvitta-backup.log 2>&1
 ```
 
 ### 15.2 Postgres do DocuSeal
@@ -885,14 +910,23 @@ docker system prune -f   # cuidado: não use -a sem revisar
 
 ## 16. Deploy contínuo (atualizações)
 
-### App principal
+### App principal (AppVS fork)
+
+Ajuste `scripts/deploy-vps.sh` para incluir os compose files do Postgres:
+
+```bash
+# Em deploy-vps.sh, substitua a linha docker compose por:
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec backend npx prisma migrate deploy
+```
+
+Ou manualmente:
 
 ```bash
 cd /opt/coopvitta/coopvitta-app
-git fetch origin main
-git reset --hard origin/main
-docker compose -f docker-compose.prod.yml -f docker-compose.vps.yml up -d --build
-docker compose -f docker-compose.prod.yml exec backend npx prisma migrate deploy
+git fetch origin main && git reset --hard origin/main
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
+docker compose -f docker-compose.yml -f docker-compose.postgres.yml exec backend npx prisma migrate deploy
 ```
 
 ### Cadastro interativo
@@ -942,11 +976,14 @@ Após validar tudo na VPS COOP:
 - [ ] Todos os domínios abrem em HTTPS sem aviso
 - [ ] HTTP redireciona para HTTPS
 
-### coopvitta-app
+### coopvitta-app (AppVS)
 
-- [ ] `curl -s https://api.coopvitta.com.br/health` → 200
-- [ ] Login / fluxo principal funciona
-- [ ] E-mail de teste (reset senha) chega
+- [ ] `curl -s http://127.0.0.1:3001/health` → 200
+- [ ] `curl -s http://127.0.0.1:8082/health` → 200
+- [ ] `https://coopvitta.com.br/` — landing carrega
+- [ ] `https://coopvitta.com.br/app/login` — SPA carrega
+- [ ] Login master (seed) funciona
+- [ ] `https://coopvitta.com.br/app/api/health` → 200
 
 ### cadastro-interativo-coop
 
@@ -1026,8 +1063,9 @@ Em picos (build, PDF, filas Sidekiq): planeje **8 GB RAM + 2 GB swap** como mín
 
 ## Referências
 
-- [gymapp — HOMELAB_SETUP.md](https://github.com/viniciusfeitosaa/gymapp/blob/main/HOMELAB_SETUP.md)
-- [gymapp — docker-compose.prod.yml](https://github.com/viniciusfeitosaa/gymapp/blob/main/docker-compose.prod.yml)
+- [AppVS — repositório base do fork](https://github.com/viniciusfeitosaa/AppVS)
+- [AppVS — DOCKER.md](https://github.com/viniciusfeitosaa/AppVS/blob/main/DOCKER.md)
+- [AppVS — docker-compose.yml](https://github.com/viniciusfeitosaa/AppVS/blob/main/docker-compose.yml)
 - [cadastro-interativo-coop — README](../README.md)
 - [DocuSeal — Docker](https://www.docuseal.com/docs/install/docker)
 - [Nginx Proxy Manager](https://nginxproxymanager.com/)
