@@ -4,6 +4,8 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 
 | Item | Valor |
 |------|-------|
+| **IP da VPS COOPVITTA** | **`187.127.35.253`** |
+| **IP da VPS Viva Saúde** | `187.77.247.33` (AppVS — não misturar stacks) |
 | **Repositório deste guia** | [cadastro-interativo-coop](https://github.com/viniciusfeitosaa/cadastro-interativo-coop) |
 | **App principal (fork)** | [gymapp](https://github.com/viniciusfeitosaa/gymapp) → renomear/adaptar como `coopvitta-app` |
 | **Formulário de pré-cadastro** | Este repositório (`cadastro-interativo-coop`) |
@@ -73,6 +75,8 @@ Guia técnico passo a passo para montar **toda a infraestrutura** da COOPVITTA e
 
 ### Serviços e portas internas (host)
 
+**Servidor:** `187.127.35.253` — painel NPM: `http://187.127.35.253:81`
+
 | Serviço | Container | Porta no host | Domínio sugerido |
 |---------|-----------|---------------|------------------|
 | NPM (proxy + SSL) | `nginx-proxy-manager` | 80, 443, 81 | — |
@@ -123,7 +127,7 @@ Na VPS atual (8 GB, 2 vCPUs, sem swap) já rodam AppVS + DocuSeal + NPM + Maddy 
 Conecte via SSH como root ou usuário com sudo:
 
 ```bash
-ssh usuario@IP_DA_VPS_COOP
+ssh usuario@187.127.35.253
 ```
 
 ### 3.1 Atualizar sistema e utilitários
@@ -332,7 +336,7 @@ cd /opt/coopvitta/infra
 docker compose up -d
 ```
 
-Painel NPM: `http://IP_DA_VPS:81`
+Painel NPM: `http://187.127.35.253:81`
 
 - Login inicial padrão: `admin@example.com` / `changeme`
 - **Altere a senha imediatamente**
@@ -708,17 +712,17 @@ No painel DocuSeal, configure a URL pública igual a `DOCUSEAL_HOST`.
 
 ## 11. DNS e domínios
 
-No registrador (Registro.br, Cloudflare, etc.), aponte para o **IP da VPS COOP**:
+No registrador (Registro.br, Cloudflare, etc.), aponte todos os registros para **`187.127.35.253`**:
 
 | Tipo | Nome | Valor |
 |------|------|-------|
-| A | `@` ou `coopvitta.com.br` | `IP_VPS_COOP` |
-| A | `www` | `IP_VPS_COOP` |
-| A | `app` | `IP_VPS_COOP` |
-| A | `api` | `IP_VPS_COOP` |
-| A | `cadastro` | `IP_VPS_COOP` |
-| A | `assinaturas` | `IP_VPS_COOP` |
-| A | `mail` | `IP_VPS_COOP` |
+| A | `@` ou `coopvitta.com.br` | `187.127.35.253` |
+| A | `www` | `187.127.35.253` |
+| A | `app` | `187.127.35.253` |
+| A | `api` | `187.127.35.253` |
+| A | `cadastro` | `187.127.35.253` |
+| A | `assinaturas` | `187.127.35.253` |
+| A | `mail` | `187.127.35.253` |
 
 Aguarde propagação (minutos a algumas horas) antes de emitir SSL no NPM.
 
@@ -916,11 +920,11 @@ Após validar tudo na VPS COOP:
 | Item | Ação na VPS Viva Saúde |
 |------|------------------------|
 | `cadastro-interativo-coop` | `docker compose down` e remover do NPM |
-| DNS `cadastro.*` apontando para IP Viva Saúde | Atualizar para IP COOP |
+| DNS `cadastro.*` apontando para `187.77.247.33` | Atualizar para `187.127.35.253` |
 | DocuSeal COOP (se existir cópia) | Manter só o da Viva Saúde se for exclusivo Viva Saúde |
 | Dados de cadastro | Exportar antes de desligar (`cadastros.json` + R2) |
 
-**Manter na VPS Viva Saúde:** AppVS, DocuSeal Viva Saúde (se aplicável), NPM, Maddy, domínios `sejavivasaude.com.br` / `vivasaude.cloud`.
+**Manter na VPS Viva Saúde (`187.77.247.33`):** AppVS, DocuSeal Viva Saúde (se aplicável), NPM, Maddy, domínios `sejavivasaude.com.br` / `vivasaude.cloud`.
 
 ---
 
@@ -1001,7 +1005,7 @@ Se `storageConfigured: false`, revise credenciais R2.
 
 - DNS propagado? `dig +short cadastro.coopvitta.com.br`
 - Porta 80 acessível da internet?
-- Domínio aponta para o IP **desta** VPS (não o da Viva Saúde)
+- Domínio aponta para `187.127.35.253` (não para `187.77.247.33`, VPS Viva Saúde)
 
 ---
 
