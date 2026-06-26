@@ -1,0 +1,39 @@
+# Override para coopvitta-app (fork do gymapp) na VPS com NPM.
+# Uso na pasta coopvitta-app:
+#   docker compose -f docker-compose.prod.yml -f docker-compose.vps.example.yml up -d --build
+#
+# Renomeie para docker-compose.vps.yml ou copie o conteúdo para lá.
+
+services:
+  caddy:
+    profiles: ["disabled"]
+
+  cloudflared:
+    profiles: ["disabled"]
+
+  postgres:
+    container_name: coopvitta-postgres
+    networks:
+      - coopvitta-internal
+
+  backend:
+    container_name: coopvitta-backend
+    ports:
+      - "3001:3001"
+    networks:
+      - coopvitta-internal
+      - proxy-network
+
+  frontend:
+    container_name: coopvitta-frontend
+    ports:
+      - "8082:80"
+    networks:
+      - coopvitta-internal
+      - proxy-network
+
+networks:
+  coopvitta-internal:
+    name: coopvitta-internal
+  proxy-network:
+    external: true
