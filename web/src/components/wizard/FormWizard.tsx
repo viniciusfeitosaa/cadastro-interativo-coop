@@ -86,8 +86,8 @@ export function FormWizard() {
         </div>
         <h2>Pré-cadastro enviado!</h2>
         <p>
-          Recebemos suas informações. Nossa equipe analisará seu perfil e entrará em
-          contato em breve.
+          Recebemos suas informações. Sua conta está em análise na COOPVITTA; você será
+          notificado quando for aprovada para acessar a plataforma.
         </p>
         <button type="button" onClick={() => window.location.reload()}>
           Novo cadastro

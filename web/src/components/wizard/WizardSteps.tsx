@@ -315,6 +315,30 @@ export function StepConsentimento() {
   return (
     <div className="consent-step">
       <div className="consent-card">
+        <h3>Acesso à plataforma</h3>
+        <p>
+          Após aprovação do seu cadastro, você acessará a plataforma COOPVITTA com o
+          e-mail informado e a senha definida abaixo.
+        </p>
+        <div className="step-grid" style={{ marginTop: '1.25rem' }}>
+          <TextField
+            name="password"
+            label="Senha de acesso"
+            type="password"
+            placeholder="Mínimo 8 caracteres"
+            autoComplete="new-password"
+          />
+          <TextField
+            name="confirmPassword"
+            label="Confirmar senha"
+            type="password"
+            placeholder="Repita a senha"
+            autoComplete="new-password"
+          />
+        </div>
+      </div>
+
+      <div className="consent-card">
         <h3>Termo de Consentimento</h3>
         <p>
           Para iniciar o processo de pré-cadastro para se tornar sócio-cooperado da{' '}

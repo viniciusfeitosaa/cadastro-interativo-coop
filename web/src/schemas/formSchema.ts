@@ -108,11 +108,25 @@ export const step6Schema = z.object({
   aph: fileField,
 })
 
-export const step7Schema = z.object({
-  termoConsentimento: z
-    .boolean()
-    .refine((v) => v === true, 'Você precisa aceitar o termo de consentimento'),
-})
+export const step7Schema = z
+  .object({
+    password: z
+      .string()
+      .min(8, 'Senha deve ter no mínimo 8 caracteres'),
+    confirmPassword: z.string().min(1, 'Confirme a senha'),
+    termoConsentimento: z
+      .boolean()
+      .refine((v) => v === true, 'Você precisa aceitar o termo de consentimento'),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        message: 'As senhas não coincidem',
+        path: ['confirmPassword'],
+      })
+    }
+  })
 
 export const stepSchemas = [
   step1Schema,
@@ -195,6 +209,8 @@ export const defaultFormValues: FormData = {
   cartaoVacina: undefined,
   certificadoCurso: undefined,
   aph: undefined,
+  password: '',
+  confirmPassword: '',
   termoConsentimento: false,
 }
 

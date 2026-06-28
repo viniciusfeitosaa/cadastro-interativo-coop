@@ -24,9 +24,22 @@ function saveAll(cadastros) {
   renameSync(tmp, dbPath)
 }
 
-export function insertCadastro({ nomeCompleto, email, cpf, dados, arquivos, createdAt }) {
+export function insertCadastro({
+  nomeCompleto,
+  email,
+  cpf,
+  dados,
+  arquivos,
+  createdAt,
+  appvsMedicoId = null,
+  appvsSyncStatus = null,
+}) {
   const cadastros = loadAll()
   const id = cadastros.length > 0 ? Math.max(...cadastros.map((c) => c.id)) + 1 : 1
+
+  const dadosSeguros = { ...dados }
+  delete dadosSeguros.password
+  delete dadosSeguros.confirmPassword
 
   const entry = {
     id,
@@ -34,8 +47,10 @@ export function insertCadastro({ nomeCompleto, email, cpf, dados, arquivos, crea
     nome_completo: nomeCompleto,
     email,
     cpf,
-    dados,
+    dados: dadosSeguros,
     arquivos,
+    appvs_medico_id: appvsMedicoId,
+    appvs_sync_status: appvsSyncStatus,
   }
 
   cadastros.unshift(entry)

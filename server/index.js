@@ -7,6 +7,7 @@ import { existsSync, mkdirSync } from 'fs'
 import { dirname, extname, join } from 'path'
 import { fileURLToPath } from 'url'
 import { countCadastros, getCadastroById, insertCadastro, listCadastros } from './db.js'
+import { isAppvsSyncEnabled, syncCadastroToAppvs } from './syncAppvs.js'
 
 dotenv.config()
 
@@ -42,9 +43,11 @@ const storage = multer.diskStorage({
   },
 })
 
+const MAX_UPLOAD_BYTES = Number(process.env.MAX_UPLOAD_BYTES) || 25 * 1024 * 1024
+
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: MAX_UPLOAD_BYTES },
 })
 
 const app = express()
@@ -127,7 +130,7 @@ app.get('/api/cadastros/:id/arquivos/:campo', authMiddleware, (req, res) => {
 app.post(
   '/api/cadastros',
   upload.fields(FILE_FIELDS.map((name) => ({ name, maxCount: 1 }))),
-  (req, res) => {
+  async (req, res) => {
     try {
       const rawDados = req.body.dados
       if (!rawDados) {
@@ -149,21 +152,69 @@ app.post(
         }
       }
 
+      let appvsMedicoId = null
+      let appvsSyncStatus = isAppvsSyncEnabled() ? 'pending' : 'disabled'
+      let appvsMessage = 'Cadastro recebido com sucesso'
+
+      if (isAppvsSyncEnabled()) {
+        const sync = await syncCadastroToAppvs(dados, req.files)
+        appvsMedicoId = sync.medicoId
+        appvsSyncStatus = sync.medicoId ? 'synced' : 'synced_no_id'
+        appvsMessage =
+          sync.message ||
+          'Cadastro recebido com sucesso. Sua conta está em análise; você será notificado quando for aprovada.'
+      }
+
       const id = insertCadastro({
         nomeCompleto: dados.nomeCompleto,
         email: dados.email,
         cpf: dados.cpf,
         dados,
         arquivos,
+        appvsMedicoId,
+        appvsSyncStatus,
       })
 
-      res.status(201).json({ id, message: 'Cadastro recebido com sucesso' })
+      res.status(201).json({
+        id,
+        appvsMedicoId,
+        appvsSyncEnabled: isAppvsSyncEnabled(),
+        message: appvsMessage,
+      })
     } catch (error) {
       console.error('Erro ao salvar cadastro:', error)
-      res.status(500).json({ error: 'Erro ao processar cadastro' })
+      const status = error?.statusCode && Number.isInteger(error.statusCode) ? error.statusCode : 500
+      const message =
+        status >= 400 && status < 500 && error?.message
+          ? error.message
+          : 'Erro ao processar cadastro'
+      res.status(status).json({ error: message })
     }
   },
 )
+
+const webDist = join(__dirname, '../web/dist')
+const storageConfigured = Boolean(
+  process.env.R2_ACCOUNT_ID &&
+    process.env.R2_ACCESS_KEY_ID &&
+    process.env.R2_SECRET_ACCESS_KEY &&
+    process.env.R2_BUCKET_NAME,
+)
+
+app.get('/health', (_req, res) => {
+  res.json({
+    ok: true,
+    storageConfigured,
+    appvsSyncEnabled: isAppvsSyncEnabled(),
+  })
+})
+
+if (existsSync(webDist)) {
+  app.use(express.static(webDist))
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
+    res.sendFile(join(webDist, 'index.html'))
+  })
+}
 
 app.listen(PORT, () => {
   console.log(`API COOPVITTA rodando em http://localhost:${PORT}`)

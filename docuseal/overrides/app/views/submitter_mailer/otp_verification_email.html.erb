@@ -1,0 +1,30 @@
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:520px;margin:0 auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#1e293b;">
+  <tr>
+    <td style="padding:28px 24px 8px;text-align:center;border-bottom:1px solid #e2e8f0;">
+      <p style="margin:0;font-size:20px;font-weight:700;letter-spacing:0.04em;color:#166534;">COOPVITTA</p>
+      <p style="margin:6px 0 0;font-size:13px;color:#64748b;">Assinatura eletrônica segura</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:24px;">
+      <p style="margin:0 0 12px;font-size:15px;line-height:1.6;">Olá,</p>
+      <p style="margin:0 0 16px;font-size:15px;line-height:1.6;">
+        Você iniciou o acesso ao documento
+        <strong><%= @submitter.submission.name || @submitter.submission.template.name %></strong>
+        em <strong>assinaturas.coopvitta.cloud</strong>.
+        Use o código abaixo para confirmar sua identidade:
+      </p>
+      <p style="margin:0 0 20px;padding:16px 20px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;text-align:center;font-size:28px;font-weight:700;letter-spacing:0.25em;color:#0f172a;">
+        <%= @otp_code %>
+      </p>
+      <p style="margin:0 0 12px;font-size:14px;line-height:1.6;color:#475569;">
+        Este código expira em breve e só funciona para o endereço
+        <strong><%= @submitter.email %></strong>.
+      </p>
+      <p style="margin:0;font-size:14px;line-height:1.6;color:#475569;">
+        Se você não solicitou este código, ignore esta mensagem ou responda para
+        <a href="mailto:contato@coopvitta.org" style="color:#166534;">contato@coopvitta.org</a>.
+      </p>
+    </td>
+  </tr>
+</table>

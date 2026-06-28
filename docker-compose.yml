@@ -1,0 +1,28 @@
+services:
+  cadastro-interativo-coop:
+    build: .
+    container_name: cadastro-interativo-coop
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - APPVS_API_URL=${APPVS_API_URL:-}
+    ports:
+      - "127.0.0.1:3080:3080"
+    volumes:
+      - cadastro_data:/app/server/data
+      - cadastro_uploads:/app/server/uploads
+    networks:
+      - proxy-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+networks:
+  proxy-network:
+    external: true
+
+volumes:
+  cadastro_data:
+  cadastro_uploads:
