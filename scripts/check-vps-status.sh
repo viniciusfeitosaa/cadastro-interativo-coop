@@ -28,10 +28,15 @@ test -d /opt/coopvitta && ok "/opt/coopvitta existe" || warn "/opt/coopvitta nã
 echo ""
 
 echo "Segurança:"
-if command -v ufw >/dev/null && ufw status 2>/dev/null | grep -q "Status: active"; then
+if command -v ufw >/dev/null && sudo ufw status 2>/dev/null | grep -q "Status: active"; then
   ok "UFW ativo"
 else
   warn "UFW inativo ou sem permissão"
+fi
+if ss -tln 2>/dev/null | grep -qE '0\.0\.0\.0:(3001|8082|5432) '; then
+  warn "Portas internas expostas em 0.0.0.0 (3001/8082/5432) — rode scripts/apply-server-rules.sh"
+else
+  ok "Portas 3001/8082/5432 não publicadas em 0.0.0.0"
 fi
 systemctl is-active fail2ban &>/dev/null && ok "fail2ban ativo" || warn "fail2ban inativo"
 grep -q "PermitRootLogin no" /etc/ssh/sshd_config.d/*.conf 2>/dev/null && ok "Root SSH desabilitado" || warn "PermitRootLogin ainda permite root"
