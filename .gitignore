@@ -8,6 +8,7 @@ venv/
 # Ambiente
 .env
 .env.*
+!.env.example
 
 # Build / cache
 dist/

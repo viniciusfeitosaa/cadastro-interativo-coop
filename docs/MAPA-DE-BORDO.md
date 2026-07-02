@@ -16,15 +16,22 @@ Itens concluídos (mais recentes no topo):
 - [x] **2026-06-28** — **DocuSeal download 500**: `SECRET_KEY_BASE` sincronizado; downloads OK.
 - [x] **2026-06-28** — **mail.coopvitta.cloud HTTP**: proxy NPM desativado (SMTP permanece no Maddy).
 
-- [x] **2026-06-29** — **Regras de segurança no servidor**: UFW deny 3001/8082/5432/3080; app sem portas no host (só rede Docker + NPM); script `apply-server-rules.sh`.
+- [x] **2026-06-29** — **Camadas de segurança backend**: Redis + rate limit 100/min (auth), timeouts HTTP/DB, sanitização body, fila BullMQ e-mails, JWT default 15m.
+- [x] **2026-06-29** — **502 API pós-deploy**: nginx frontend com `resolver 127.0.0.11` + `proxy_pass` dinâmico — evita IP em cache após restart do backend.
+- [x] **2026-06-29** — **Governança e resiliência**: Helmet+CSP+HSTS, log scrubbing, circuit breaker (APIs externas), shutdown gracioso, BCrypt≥12, util AES-256-GCM opcional, auditoria sanitizada.
+- [x] **2026-06-29** — **SPA na raiz**: sem landing; login em `https://app.coopvitta.cloud/`; API em `/api`; redirects legado `/app/*`.
+- [x] **2026-06-30** — **OpenObserve**: stack em `/opt/coopvitta/infra/openobserve` — logs Docker, métricas host/containers, rotas NPM.
 
 ## 🗺️ Mapa de Bordo (Backlog Técnico e Próximos Passos)
 
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
-- [ ] 🟥 **Alta Prioridade**: Rebrand completo da landing (`landing/*.html`) — ainda exibe "Viva Saúde" e `sejavivasaude.com.br`
+- [ ] 🟥 **Alta Prioridade**: Rebrand completo da landing (`landing/*.html`) — **obsoleto** (landing removida; app na raiz)
 - [ ] 🟥 **Alta Prioridade**: Push dos commits locais do `coopvitta-app` (rebrand + auditoria) para repositório remoto correto
-- [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/app/cadastro` (formulário externo obsoleto)
+- [ ] 🟨 **Média Prioridade**: DNS opcional `obs.coopvitta.cloud` — monitor já em `https://app.coopvitta.cloud/obs/`
+- [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/cadastro`
+- [ ] 🟨 **Média Prioridade**: JWT em produção ainda `JWT_EXPIRES_IN=24h` no `.env` — validar refresh token no frontend antes de reduzir para 15m
+- [ ] 🟨 **Média Prioridade**: Ativar `FIELD_ENCRYPTION_KEY` no `.env` se campos sensíveis forem criptografados em repouso (CPF hoje em texto para índice único)
 - [ ] 🟨 **Média Prioridade**: Atualizar `iOS Info.plist` e strings nativas restantes para COOPVITTA
 - [ ] 🟨 **Média Prioridade**: Restringir painel NPM (porta 81) ao IP do administrador — `NPM_ADMIN_IP=seu.ip sudo bash scripts/apply-server-rules.sh`
 - [ ] 🟩 **Baixa Prioridade**: Otimizar imagens estáticas da landing (hero, ícones PWA)

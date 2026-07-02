@@ -1,0 +1,60 @@
+# OpenObserve + OpenTelemetry Collector — observabilidade VPS COOPVITTA
+# UI apenas na rede proxy-network (NPM → obs.coopvitta.cloud). Sem portas no host.
+#
+# Uso:
+#   cd /opt/coopvitta/infra/openobserve
+#   cp .env.example .env && nano .env
+#   bash scripts/render-otel-config.sh
+#   docker compose up -d
+
+services:
+  openobserve:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    container_name: openobserve
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      ZO_DATA_DIR: /data
+      ZO_TELEMETRY: "false"
+      ZO_GRPC_PORT: "5081"
+      ZO_BASE_URI: /obs
+      ZO_WEB_URL: https://app.coopvitta.cloud/obs
+    volumes:
+      - openobserve_data:/data
+    networks:
+      - observability
+      - proxy-network
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: openobserve-otel-collector
+    restart: unless-stopped
+    user: "0:0"
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ../nginx-proxy-manager/data/logs:/npm-logs:ro
+    depends_on:
+      - openobserve
+    networks:
+      - observability
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+
+networks:
+  observability:
+    driver: bridge
+  proxy-network:
+    external: true
+
+volumes:
+  openobserve_data:

@@ -1,0 +1,123 @@
+# Renderizado por scripts/render-otel-config.sh (não editar o .yaml gerado manualmente).
+
+receivers:
+  hostmetrics:
+    collection_interval: 60s
+    scrapers:
+      cpu:
+      memory:
+      disk:
+      load:
+      network:
+      filesystem:
+
+  docker_stats:
+    endpoint: unix:///var/run/docker.sock
+    collection_interval: 30s
+    timeout: 20s
+
+  filelog/docker:
+    include:
+      - /var/lib/docker/containers/*/*-json.log
+    include_file_name: false
+    include_file_path: true
+    operators:
+      - type: json_parser
+        id: docker-json
+        parse_from: body
+        timestamp:
+          parse_from: attributes.time
+          layout: '%Y-%m-%dT%H:%M:%S.%LZ'
+      - type: move
+        from: attributes.log
+        to: body
+      - type: regex_parser
+        id: container-id
+        parse_from: attributes["log.file.path"]
+        regex: '^/var/lib/docker/containers/(?P<container_id>[a-f0-9]{64})/.*$'
+      - type: add
+        field: attributes.log_source
+        value: docker
+
+  filelog/npm:
+    include:
+      - /npm-logs/*_access.log
+    include_file_name: true
+    operators:
+      - type: regex_parser
+        regex: '^\[(?P<time>[^\]]+)\] - (?P<status>\d+) \d+ - (?P<method>[A-Z]+) (?P<scheme>\S+) (?P<host>\S+) "(?P<path>[^"]*)" \[Client (?P<client_ip>[^\]]+)\].*"(?P<user_agent>[^"]*)"'
+      - type: add
+        field: attributes.log_source
+        value: nginx-proxy
+
+processors:
+  batch:
+    timeout: 10s
+    send_batch_size: 512
+  resource/docker:
+    attributes:
+      - key: service.name
+        value: docker-logs
+        action: insert
+  resource/host:
+    attributes:
+      - key: service.name
+        value: vps-host
+        action: insert
+  resource/npm:
+    attributes:
+      - key: service.name
+        value: nginx-proxy-manager
+        action: insert
+
+exporters:
+  otlphttp/logs_docker:
+    endpoint: http://openobserve:5080/obs/api/${OPENOBSERVE_ORG}
+    headers:
+      Authorization: Basic ${OPENOBSERVE_AUTH_BASIC}
+      stream-name: docker-logs
+    tls:
+      insecure: true
+
+  otlphttp/logs_npm:
+    endpoint: http://openobserve:5080/obs/api/${OPENOBSERVE_ORG}
+    headers:
+      Authorization: Basic ${OPENOBSERVE_AUTH_BASIC}
+      stream-name: nginx-routes
+    tls:
+      insecure: true
+
+  otlphttp/metrics_host:
+    endpoint: http://openobserve:5080/obs/api/${OPENOBSERVE_ORG}
+    headers:
+      Authorization: Basic ${OPENOBSERVE_AUTH_BASIC}
+      stream-name: host-metrics
+    tls:
+      insecure: true
+
+  otlphttp/metrics_docker:
+    endpoint: http://openobserve:5080/obs/api/${OPENOBSERVE_ORG}
+    headers:
+      Authorization: Basic ${OPENOBSERVE_AUTH_BASIC}
+      stream-name: docker-metrics
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    logs/docker:
+      receivers: [filelog/docker]
+      processors: [resource/docker, batch]
+      exporters: [otlphttp/logs_docker]
+    logs/npm:
+      receivers: [filelog/npm]
+      processors: [resource/npm, batch]
+      exporters: [otlphttp/logs_npm]
+    metrics/host:
+      receivers: [hostmetrics]
+      processors: [resource/host, batch]
+      exporters: [otlphttp/metrics_host]
+    metrics/docker:
+      receivers: [docker_stats]
+      processors: [batch]
+      exporters: [otlphttp/metrics_docker]
