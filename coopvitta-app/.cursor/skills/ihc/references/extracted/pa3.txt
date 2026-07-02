@@ -1,0 +1,1185 @@
+P348i   Paz, Mônica.
+
+               Interação humano – computador [recurso eletrônico] : técnicas de avaliação de produtos
+interativos / Mônica Paz. -- Fortaleza : Universidade de Fortaleza, [2021].
+
+           28 p. -- ( Percurso de Aprendizagem ; 3)
+
+
+
+           1. Interação humano – computador. I. Título. II. Série.
+
+
+
+                                                                              CDU 681.3:004.5
+
+
+
+
+                           Este trabalho está licenciado com uma Licença Creative Commons
+                              Atribuição-NãoComercial-SemDerivações 4.0 Internacional.
+ TÉCNICAS DE AVALIAÇÃO DE
+  PRODUTOS INTERATIVOS
+
+
+
+
+                Sumário
+
+1.   O processo de avaliação de interfaces
+
+
+
+
+2.   Avaliação por inspeção
+
+
+
+
+3.   Avaliação heurística
+
+
+
+
+4.   Avaliação de design visual e avaliação com usuários
+
+
+
+
+                     Sumário clicável
+                                                                                               Voltar ao sumário
+      Os processos de análise, especificação,
+      concepção e de implementação de sistemas
+      interativos são completados com o processo
+      de avaliação. A atividade de avaliação é
+      fundamental para o ciclo de vida do produto
+      interativo porque ele confere qualidade ao
+      processo que deve ser de melhoria contínua.
+      A avaliação aparece neste ciclo com diversos
+      objetivos, em diversos momentos e com o
+      emprego de diversos métodos. Tamanha
+      a sua importância, a avaliação pode ser
+      realizada por uma equipe especializada,
+      mas também pode ser planejada para ser
+      realizada pela própria equipe de projeto e de                   Olá
+      desenvolvimento do produto.
+      Neste Percurso de Aprendizagem 3,
+      você estudará as etapas do processo de
+      avaliação da interface, diferentes formas
+      de classificação dos métodos de avaliação,
+      bem como seus diferentes objetivos diante
+      dos chamados problemas de usabilidade,
+      experiência do usuário e ergonomia.
+
+
+
+
+    1.        O processo de avaliação de interfaces
+
+
+       A utilização de produtos interativos tem ocupado uma posição central no cotidiano
+da sociedade, pois muitas atividades humanas estão permeadas por interfaces digitais
+presentes em computadores, dispositivos móveis, dentre outros. São aplicativos
+multimídia para celulares, ambientes de aprendizagem virtuais, jogos para console ou
+mobile, ferramentas de produção textual e imagética, sistemas de gerenciamento de
+tarefas, internet banking e muitos outros. Mas como saber se estes produtos interativos
+estão atendendo os seus objetivos e, principalmente, se estão sendo bem aceitos pelos
+usuários? A resposta reside no processo de desenvolvimento contínuo e cíclico, que está
+sempre aberto a repensar e remodelar interfaces e, até mesmo, funcionalidades, tendo
+como parâmetros os requisitos do sistema e a opinião dos usuários.
+
+
+                                                                                           4
+                                                                                                Voltar ao sumário
+      1.1 O processo de criação de produtos interativos
+
+       Uma das formas de descrevermos o processo de criação e de desenvolvimento
+de produtos interativos (ou design de interação) é através do Ciclo de Vida em Estrela,
+criado por Hix e Hartson em 1993. Este é um ciclo iterativo composto por 5 etapas de:
+
+      1. Análise de tarefas, usuários e funções;
+
+      2. Especificações de requisitos;
+
+      3. Projeto conceitual;
+
+      4. Prototipação;
+
+      5. Implementação;
+
+      6. Avaliação (BARBOSA, SILVA, 2010).
+
+       Como você já viu anteriormente, este ciclo visa tornar o processo de design da
+interação humano-computador - IHC mais eficiente e eficaz, colocando a avaliação
+como um estágio central que está mutuamente ligado aos demais estágios do processo
+(Figura 1).
+
+                     Figura 1: Esquema do ciclo de vida em estrela.
+
+
+
+
+                               Fonte: Barbosa e Silva (2010, p. 103).
+
+
+
+        Outro ponto interessante desse modelo é que, sendo uma estrela, não há um ponto
+inicial fixo, sendo assim, o designer pode escolher por onde começar a depender da
+situação-problema que lhe seja apresentada, contanto que finalize com a avaliação. Devido
+à importância desse processo de avaliação, estudaremos esta etapa com mais detalhe.
+
+
+                                                                                            5
+                                                                                                  Voltar ao sumário
+      1.2 Objetivos da avaliação em IHC
+
+      De forma resumida, a avaliação em IHC deve ter como objetivo verificar:
+
+      •   Se o produto criado e a sua interface digital apresentam-se de acordo com os
+          requisitos do sistema;
+
+      •   Se as necessidades dos usuários estão satisfeitas;
+
+      •   Se há problemas em relação à qualidade da interface (BARBOSA, SILVA, 2010).
+
+        Para se determinar o que deve ser avaliado, deve-se levar em conta os objetivos e a
+justificativa da avaliação, o que requer entender quem são os interessados (stakeholders)
+e quais as suas motivações. Sendo assim, pode-se avaliar a “apropriação de tecnologia
+pelos usuários, incluindo o sistema computacional a ser avaliado mas não se limitando a
+ele; ideias e alternativas de design; conformidade com um padrão; problemas na interação
+e na interface” (BARBOSA, SILVA, 2010, p. 290).
+
+      A apropriação tecnológica pode ser avaliada ao longo do projeto e, ainda, com
+o produto já em produção junto aos usuários, através de protótipos e de versões já
+implementadas. Com isso, pode-se:
+
+      •   Estudar a situação atual para entender o contexto de uso e necessidades dos
+          usuários;
+
+      •   Validar requisitos entre usuário, projetistas e demais interessados
+          (stakeholders);
+
+      •   Verificar a repercussão do lançamento de um novo produto ou de uma nova
+          versão no mercado;
+
+      •   Avaliar os impactos da solução proposta em comparação com a situação atual;
+
+      •   Avaliar as competências dos usuários no uso do sistema, sua eficiência, eficácia
+          e capacidade de agradá-los.
+
+       As soluções e alternativas de design podem ser avaliadas durante o processo de
+projeto e concepção da interface, através de protótipos e de versões do produto final,
+podendo ou não ter a participação de usuário. Sendo assim, pode-se:
+
+      •   Avaliar diferentes critérios utilizados no projeto de duas ou mais alternativas
+          de interfaces, visando usabilidade e melhor experiência do usuário, além da
+          relação de custo-benefício e viabilidade;
+
+      •   Comparar a situação proposta com a situação atual, considerando-se os
+          objetivos, necessidades, limitações e contexto de uso dos usuários.
+
+
+
+
+                                                                                              6
+                                                                                               Voltar ao sumário
+        A conformidade com padrões e normas pode ser feita pelos projetistas e
+desenvolvedores, de forma que não requer a presença de usuários. Por isso, pode-se
+verificar a conformidade com:
+
+      •   Padrões dos ambientes computacionais no qual o sistema se insere, como
+          Windows, Gnome, KDE, IOS, etc;
+
+      •   Normas de qualidade para interface, como de usabilidade, ergonomia,
+          acessibilidade, etc, como a norma ISO/IEC 9241;
+
+      •   Padrões e convenções de áreas específicas e que se tornaram populares a
+          partir da prática, como metáforas para barras de ferramentas de editores de
+          textos e menus por departamento em sites de e-commerce, etc.
+
+      •   Aportes regulatórios e legislativos, como os dos sites do Governo Federal
+          Brasileiro.
+
+       Os problemas na interação e na interface são os temas mais populares dentre
+as avaliações e podem ou não contar com a participação de usuários reais para a sua
+realização. Os problemas podem ser descritos a partir da:
+
+      •   Gravidade do problema ou grau do impacto nocivo (leve, médio, intenso, etc.);
+
+      •   Frequência do problema (esporádico, intermitente, frequente, etc.);
+
+      •   Natureza do problema (de usabilidade, acessibilidade, experiência do usuário e
+          comunicabilidade).
+
+      Veja mais, a seguir, um pouco mais sobre problemas de interação e de interface
+que podem ser explorados em avaliações de IHC.
+
+      1.3 Problemas de ergonomia, de usabilidade e de experiência com o usuário
+
+      Entenda, com o Quadro 1, as diferenças entre os problemas de ergonomia,
+de usabilidade e de experiência com o usuário, bem como as formas de detectar tais
+problemas.
+
+Quadro 1: Diferenças entre os problemas de ergonomia, usabilidade e de experiência
+do usuário.
+
+
+
+
+                                                                                           7
+                                                                                               Voltar ao sumário
+                       Definição do                                      Detecção do
+     Conceito                                           Problema
+                        conceito                                          problema
+
+                                                Interface que não
+                                                segue critérios
+                                                ergonômicos para a Uso de técnicas de
+                   Adaptar a interface          IHC.               inspeção;
+Ergonomia (em IHC) ao usuário e suas
+                   atividades.                                        Uso de técnicas de
+                                                Usuário é obrigado    observação.
+                                                a se adaptar à
+                                                interface.
+
+
+
+                    Medida da eficácia          Perda de
+                    e da eficiência da          produtividade ao
+                    interface                   realizar a tarefa.    Uso de técnicas
+                                                                      objetivas, como
+Usabilidade                                                           testes com o
+                    Medida da                                         usuário durante a
+                    satisfação do               Insatisfação do       interação.
+                    usuário durante a           usuário a curto e a
+                    interação com a             longo prazo.
+                    interface.
+
+                    Emoções do usuário
+                    influenciadas pela
+                    expectativa de              Perturbação
+                    uso da interface;           emocional no
+                    pelo uso; e pela            usuário, pois o       Técnicas
+Experiência do      percepção geral             produto não causa     prospectivas,
+usuário             sobre o uso.                estímulo ao uso,      como entrevistas e
+                                                identificação,        questionário.
+                    Emoções                     recordações, prazer
+                    influenciadas               e satisfação.
+                    por reputação do
+                    produto ou marca.
+
+                             Fonte: Cybis, Betiol e Faust (2015).
+
+
+
+
+                                                                                           8
+                                                                                                Voltar ao sumário
+  Caso hipotético:
+
+  Ainda no processo de desenvolvimento, os projetistas de um aplicativo móvel
+  detectaram a falta do critério ergonômico para diminuir a carga de trabalho do usuário,
+  proporcionando a concisão das apresentações individuais, ou seja, diminuindo o
+  tamanho dos textos de orientação, tornando-os mais rápidos de ler e mais objetivos.
+  Sendo assim, alguns problemas de ergonomia foram detectados durante a inspeção,
+  mas outros passaram e ocasionaram problemas de usabilidade. Isso foi constatado
+  durante um teste com usuários potenciais, ao final do desenvolvimento do produto.
+  Alguns usuários não conseguiram realizar a tarefa de solicitar um serviço sem ter
+  ajuda de terceiros, pois não visualizaram o botão “Enviar”, que só era visível rolando
+  a tela. Depois desses ajustes, o produto foi lançado e realizou-se uma pesquisa
+  de satisfação, aplicando-se questionários. Então, percebeu-se que a experiência
+  dos usuários não foi agradável pois suas expectativas não foram contempladas e
+  muitos deles não recomendariam o produto a parentes e amigos, pois se sentiram
+  frustrados ou irritados.
+
+
+
+      1.4 Atividades do processo da avaliação de interfaces
+
+      Percebemos com o Quadro 1 que muitos problemas podem ser cometidos ao
+longo do projeto desenvolvimento do produto e durante o seu período de produção, que
+é quando ele está disponível no mercado. Podem ser problemas de projeto, problemas
+detectados durante a interação ou mesmo problemas relativos à percepção geral dos
+usuários de acordo com sua expectativa e experiência de uso. Contudo, é fato que parte
+desses problemas acontecem também por erro no processo de planejamento da sua
+avaliação, seja durante o desenvolvimento, durante o lançamento ou após este.
+
+      O processo de avaliação como qualquer processo é dividido em atividades que
+precedem e procedem a execução da avaliação em termos de coleta de dados. Sendo
+assim, de forma geral, independente do método utilizado, as etapas da avaliação são:
+
+      •   Preparação: definição de objetivos; perfil e recrutamento de participantes;
+          escopo; métodos; questões éticas; logística; recursos; materiais de apoio;
+          ambiente; além de realização do pré-teste ou teste piloto.
+
+      •   Coleta de dados: de acordo com o método e o objetivo previamente definidos.
+
+      •   Interpretação: de dados qualitativos ou quantitativos de acordo com o definido
+          na preparação.
+
+
+
+
+                                                                                            9
+                                                                                                     Voltar ao sumário
+      •   Consolidação: além dos resultados individuais, é necessário realizar a
+          consolidação de todos os resultados, analisando-se recorrências, generalizações
+          e casos específicos.
+
+      •   Relato dos resultados: o relatório final deve apresentar objetivo da avaliação; escopo;
+          metodologia; sumários dos resultados; análises sobre os resultados; problemas
+          encontrados e insights para a melhoria do projeto (BARBOSA, SILVA, 2010).
+
+      1.5 Classificação das técnicas de avaliação
+
+       Existem diversas formas de classificar as avaliações de IHC, segundo seus
+objetivos, métodos e técnicas; momento de realização; e ambiente ou local de realização,
+segundo Barbosa e Silva (2010), como você verá a seguir.
+
+       Levando-se em consideração o momento da avaliação, ou seja, no qual a técnica é
+desenvolvida e do seu impacto sobre a cadeia de projeto e desenvolvimento do produto
+interativo, existe a seguinte classificação:
+
+      •   Avaliação formativa: realizada durante o processo de projeto da interface
+          do produto interativo, ou seja, antes da existência de uma solução em IHC já
+          concluída, servindo para guiar este processo e identificar se as alternativas
+          escolhidas são adequadas aos requisitos dos usuários e de qualidade.
+
+      •   Avaliação somativa: realizada quando a solução de IHC já está concluída,
+          parcial ou completamente, podendo ser um protótipo de fidelidade média ou
+          alta ou uma versão implementada do produto interativo, servindo assim para o
+          seu aprimoramento e para a avaliação da usabilidade.
+
+      Em relação ao ambiente da avaliação ou ao local no qual ela ocorre, a avaliação
+pode ser do tipo:
+
+      •   Avaliação em contexto: avaliação que ocorre no local e em situações de uso
+          reais dos sistemas pelos usuário, permitindo assim que questões típicas de uso
+          sejam analisadas. Como possibilita a análise de inúmeras variáveis relativas ao
+          uso e a sua qualidade, pode ser de difícil planejamento e execução.
+
+      •   Avaliação em laboratório: embora não possa verificar todas as situações de uso,
+          as avaliações de laboratório, ou seja, em um ambiente controlado, têm como
+          vantagens a possibilidade de controlar o contexto, de registrar os resultados
+          de formas mais fácil e de evitar interferências e perturbações advindas do
+          ambiente.
+
+       Outra forma de classificar o tipo de avaliação é em relação aos métodos da
+avaliação de IHC, que podem ser:
+
+
+
+                                                                                                10
+                                                                                                 Voltar ao sumário
+       •   Investigação ou avaliação prospectiva;
+
+       •   Inspeção, avaliação analítica ou preditiva;
+
+       •   Observação ou avaliação objetiva ou empírica.
+
+       Os métodos de investigação, também chamados de avaliações prospectivas, buscam
+pela opinião, perspectivas e expectativas dos usuários e demais stakeholders em relação ao
+produto interativo e seu contexto de uso. Visam obter a avaliação ou opinião do usuário sobre
+um sistema estudado e sua interface que já tenha sido utilizado por este usuário.
+
+      Podem ser aplicados via questionários ou formulários. Por exemplo, os formulários
+de avaliação do Google Play que pedem que o usuário atribua notas de 1-5 (estrelas) e
+que adicionem comentários sobre o que achou dos seus aplicativos instalados. Esta é
+uma técnica relativamente barata e de simples aplicação que pode ser realizada sobre
+produtos já em circulação.
+
+
+
+  Resumindo o método de Investigação:
+
+  •   Objetivos da avaliação: apropriação tecnológica da situação atual e futura;
+      alternativas de design e problemas da interação e da interface;
+  •   Momento: avaliação formativa e somativa;
+  •   Técnicas de coleta de dados: questionários, grupo focal, entrevista individual ou
+      contextual, estudo de campo, etc.;
+  •   Ambiente: contextual, laboratório, remoto, outro;
+  •   Quem participa: usuários;
+  •   Vantagens: coleta e analisa a opinião e experiência de usuários reais; podem ser
+      de execução rápida, prática e barata;
+  •   Desvantagens: algumas técnicas requerem experiência do projetista avaliador;
+      algumas técnicas podem ter complexidade mediana ou alta para a coleta e
+      análise dos dados.
+
+
+
+       O método da inspeção, que também é chamado de avaliação analítica ou preditiva,
+são métodos que examinam a interface a partir de uma marco preestabelecido, como
+padrões, normas e guias de estilo e heurísticas, no sentido de antecipar possíveis erros
+e inadequações, buscando corrigi-los. Dessa forma, podem ser feitas a partir de listas
+de verificação, de normas técnicas, de heurísticas ou do conhecimento acumulado do
+especialista sobre sistemas e usuários em questão. Um exemplo é a utilização, pelos
+projetistas, de ferramentas de verificação e avaliação de sites segundo critérios de
+acessibilidade.
+
+
+                                                                                            11
+                                                                                             Voltar ao sumário
+  Resumindo o método de Inspeção:
+
+  •   Objetivos da avaliação: conformidade com padrões e normas; problemas de
+      interação e interface; e alternativas de design.
+  •   Momento: avaliação formativa;
+  •   Técnicas de coleta de dados: inspeção de conformidade às normas; avaliação
+      heurística; percurso cognitivo e inspeção semiótica;
+  •   Quem participa: projetistas;
+  •   Vantagens: antecipam a correção de erros e testagens de alternativas de design;
+      são baratos, rápidos e de fácil aplicação;
+  •   Desvantagens: o projetista não tem a mesma perspectiva dos usuários reais.
+
+
+
+        O método da observação emprega técnicas de avaliação objetivas ou empíricas,
+que são avaliações operadas de forma a contar com a participação de usuários de um
+determinado sistema, sejam eles reais ou representativos. Sendo assim, podem ser
+feitos testes nos quais os usuários utilizam o sistema em condições reais ou simuladas
+(ensaios). Por exemplo, pode ser promovido um recrutamento de usuários que estejam
+dispostos a usar um aplicativo antes dele ser lançado, deixando-se gravar a si e às suas
+interações, enquanto narram suas percepções sobre o mesmo.
+
+
+
+  Resumindo o método de Observação:
+
+  •   Objetivos da avaliação: apropriação tecnológica e problemas de interação e de
+      interface;
+  •   Momento: avaliação somativa;
+  •   Técnicas de coleta de dados: teste ou ensaios com usuários; avaliação de
+      comunicabilidade.
+  •   Quem participa: usuários;
+  •   Vantagens: encontra erros em condições de uso real; aborda experiências de
+      diferentes usuários;
+  •   Desvantagens: é mais demorada, pode ser de difícil execução.
+
+
+
+      Perceba que algumas dessas técnicas podem ser feitas durante o desenvolvimento
+do sistema, afetando o rumo do seu desenvolvimento (técnica formativa); ou podem
+ocorrer antes do seu lançamento e, ainda, durante o seu tempo de produção (técnicas
+somativas).
+
+
+
+                                                                                        12
+                                                                                               Voltar ao sumário
+       Cada técnica tem sua vantagem e sua desvantagem para cada objetivo de avaliação
+definido e em termos de custos financeiros e de produção, cronograma, equipamentos,
+acesso a usuários reais e experiência dos avaliadores. Por isso, o projetista deve analisar
+as circunstâncias antes de decidir por uma ou por uma combinação desses métodos.
+
+      Como você já viu nos Percurso de Aprendizagens anteriores, o importante é ter em
+mente as necessidades do usuário, visando ouvir ou prever suas opiniões e necessidades,
+proporcionando experiências mais agradáveis junto às tecnologias da informação e
+comunicação (TIC).
+
+
+
+
+                                                                                          13
+    2.
+
+
+
+
+                                                                                               Voltar ao sumário
+                Avaliação por inspeção
+
+
+       Como já mencionado, as avaliações por inspeção são avaliações do tipo analíticas
+e preditivas, ou seja, são realizadas por projetistas com o intuito de detectar e antecipar
+problemas que poderiam impactar negativamente os usuários.
+
+      Algumas dessas técnicas de inspeção utilizam como instrumentos para condução
+da avaliação e para coleta de dados as listas de verificação, também denominadas
+de checklists. Cada projetista pode criar suas próprias listas ou podem se utilizar
+de instrumentos já estabelecidos na área. Os instrumentos pré-definidos têm como
+vantagens ter um caráter didático, auxiliando na formação e nas atividades de projetistas
+e desenvolvedores com pouca experiência em avaliações de IHC.
+
+      Veja, a seguir, três exemplos de técnicas de inspeção que se utilizam de listas
+de verificação: inspeção de conformidade às normas e inspeção preventiva de erros
+(BARBOSA, SILVA, 2010; CYBIS, BETIOL, FAUST, 2015).
+
+      2.1 Inspeção de conformidade às normas
+
+       Podem ser usados para a criação de listas de verificação: normas e padrões
+internacionais, códigos de boas práticas, regulamentos, contratos, documentos de
+requisitos de softwares, etc.
+
+     A norma ISO/IEC 9241 fornece critérios para inúmeras listas de verificação
+podem ser:
+
+      •   ABNT NBR ISO 9241-11:2011: (leia-se ISO 9241, parte 11, de 2011) requisitos
+          para especificação e avaliação de usabilidade em sistemas interativos,
+          considerando a eficácia, eficiência e a satisfação do usuário.
+
+            »   Disponível em: http://www.inf.ufsc.br/~edla/ine5624/_Walter/Normas/
+                Parte%2011/iso9241-11F2.pdf
+
+      •   ISO 9241-14:1997: requisitos e recomendações para projeto e avaliação de
+          menus de diálogo.
+
+      •   ISO 9241-143:2012: requisitos e recomendações para avaliação e projeto de
+          formulários.
+
+
+
+
+                                                                                          14
+                                                                                                Voltar ao sumário
+      •   ABNT NBR ISO 9241-110:2012: princípios para a análise, projeto e avaliação
+          de diálogos.
+
+        Em termos de acessibilidade, pode ser utilizada para a criação de listas as
+Diretrizes de Acessibilidade para Conteúdo Web (WCAG) 2.0 do Consórcio da World Wide
+Web (W3C), disponível em: https://www.w3.org/Translations/WCAG20-pt-br/.
+
+      Ao se usar uma lista de verificação, o projetista deve responder se:
+
+      •   a interface se adequa ao quesito
+      •   a interface não se adequa ao quesito;
+      •   o quesito não se aplica à interface;
+
+      Além disso, após usar a lista, o projetista deve calcular:
+
+      •   Taxa de aplicabilidade: porcentagem de questões que se aplicam à interface
+          estudada, ou seja, a questão não tem como ser avaliada na interface em
+          questão. Isso é diferente da interface não atender a determinada questão, pois
+          seria então uma não aderência.
+
+      •   Taxa de aderência: porcentagem de requisitos aplicáveis atendidas pela
+          interface estudada. Sendo assim, deve-se ter em mente a taxa de aplicabilidade
+          para se calcular a taxa de aderência(CYBIS, BETIOL, FAUST, 2015).
+
+       2.2 Inspeção preventiva de erros
+
+       É uma técnica criada para ser aplicada a um conjunto específico de sistemas, os
+chamados sistemas críticos, que possuem como requisitos a atender a atividades em
+tempo real. Como o sistema de controle de sinais de trânsito, controle aéreo, controle de
+usinas nucleares e outros sistemas que causariam catástrofes, caso ocorresse algum
+tipo de erro ou problema, incluindo os de IHC.
+
+        Esta inspeção requer que o projetista analise todos os casos de uso do sistema,
+identificando os riscos relativos às atividades não realizadas ou realizadas de forma
+errada. Para cada erro ou desvio possível de ser realizado pelo usuário, deve-se determinar:
+
+      •   A causa do erro;
+      •   A consequência do erro;
+      •   A probabilidade de ocorrer;
+      •   As medidas tomadas no ambiente para impedir que o erro ocorra;
+      •   A soluções e revisões do sistema necessárias para resolver o problema (CYBIS,
+          BETIOL, FAUST, 2015).
+
+
+
+                                                                                           15
+                                                                                               Voltar ao sumário
+      2.3 Exemplos de listas de inspeção
+
+       A ErgoList é uma lista de verificação on-line que se baseia nos critérios
+ergonômicos da ISO 9241 para interfaces humano-computador feita por pesquisadores
+do LabIUtil, Laboratório de Utilizabilidade (UFSC/SENAI-SC/CTAI). Como a sua principal
+finalidade é ser didática, a ferramenta apresenta um módulo de checklist, com perguntas
+divididas por tipo de critério e com legendas explicativas, além do módulo de glossário.
+
+       Mas preste atenção: a ErgoList teve a sua última atualização em 2011 e não
+apresenta critérios ergonômicos para a interação mobile. Mesmo assim, é um ótimo
+exercício de aplicação de teoria e prática para estudantes e projetistas iniciantes em IHC.
+
+       A MATcH é uma ferramenta de checklist on-line para avaliação da usabilidade de
+aplicativos para smartphones touchscreen feita por pesquisadores do Grupo de Qualidade
+de Software (UFSC). A checklist apresenta 48 perguntas divididas em 10 heurísticas.
+Além de apresentar o resultado da avaliação com o uso da checklist de inspeção de
+aplicativo mobile, o sistema ainda apresenta o rankeamento do aplicativo analisado em
+comparação com outros aplicativos avaliados por outros usuários.
+
+
+
+
+                                                                                          16
+    3.
+
+
+
+
+                                                                                                         Voltar ao sumário
+                Avaliação heurística
+
+
+      A avaliação heurística é uma técnica de avaliação do tipo analítica ou preditiva, na
+qual os avaliadores analisam o produto interativo com o intuito de descobrir possíveis
+problemas de ergonomia.
+
+       Veja, a seguir, saiba mais sobre heurísticas e entenda as diferenças entre a
+avaliação heurística feita por especialistas e a do tipo participativa, segundo Cybis, Betiol
+e Faust (2015).
+
+       3.1 As Heurísticas de Nielsen
+
+       Segundo o dicionário Priberam, o termo heurística significa “arte de inventar ou
+descobrir” ou “método que pretende levar a inventar, descobrir ou a resolver problemas”.
+No campo da informática, segundo o dicionário Dicio, heurística significa “método
+investigativo e de pesquisa que se pauta na aproximação, através da quantificação, de
+um determinado objeto”. Em outras palavras, é um método ou um conjunto de regras
+que ajudam na resolução de um problema pautado pela experiência e o conhecimento
+acumulado em uma área, proporcionando uma solução mais rápida.
+
+       Sendo assim, fica mais fácil entender ao que se refere a avaliação heurística:
+                            A avaliação heurística é um método de avaliação de IHC criado para
+                            encontrar problemas de usabilidade durante um processo de design
+                            interativo (Nielsen e Molich, 1990; Nielsen, 1993; Nielsen, 1994a). Esse
+                            método de avaliação orienta os avaliadores a inspecionar sistematicamente
+                            a interface em busca de problemas que prejudiquem a usabilidade.
+                            [...] A avaliação heurística tem como base um conjunto de diretrizes de
+                            usabilidade, que descrevem características desejáveis da interação e da
+                            interface, chamadas por Nielsen de heurísticas (BARBOSA, SILVA, 2010, p.
+                            316).
+
+       Conheça, a seguir, as chamadas 10 Heurísticas de Nielsen:
+
+       •   Visibilidade do estado do sistema;
+       •   Correspondência entre sistema e o mundo real;
+       •   Controle e liberdade do usuário;
+       •   Consistência e padronização;
+       •   Reconhecimento em vez de memorização;
+       •   Flexibilidade e eficiência de uso;
+       •   Projeto estético e minimalista;
+
+
+
+                                                                                                    17
+                                                                                              Voltar ao sumário
+      •   Prevenção de erros;
+      •   Ajuda os usuários a reconhecerem, diagnosticarem e se recuperarem de erros;
+      •   Ajuda e documentação do sistema (BARBOSA, SILVA, 2010, p. 316).
+
+       Perceba que todos esses conceitos já foram vistos no Percurso de Aprendizagem
+1, quando você estudou sobre critérios ergonômicos para a interface de produtos
+interativos. Afinal, as Heurísticas de Nielsen foram uma das bases para a criação da lista
+apresentada por Cybis, Betiol e Faust (2015).
+
+      3.2 Avaliação heurística por especialistas
+
+      Para entender melhor a avaliação heurística por especialistas, deve-se entender a
+composição e competências dos avaliadores, bem como suas abordagens de condução
+da avaliação, além das etapas que compõem a técnica (CYBIS, BETIOL, FAUST, 2015).
+
+      Nesta técnica, três a quatro avaliadores analisam individualmente a ergonomia do
+produto interativo, mediante:
+
+      1. A sua experiência em IHC; ou
+
+      2. A utilização de heurísticas baseadas em critérios ergonômicos produzidos por
+         especialistas em IHC. Sendo que esta última opção é a mais indicada por dar
+         mais organização e objetividade à avaliação.
+
+      Em ambos os casos os avaliadores podem conduzir a avaliação com foco na
+abordagem de:
+
+      1. Tarefas de usuários e seus objetivos diante do sistema;
+
+      2. Estruturas de interface, abordando os todos os menus no sentido da
+         profundidade (seguindo a hierarquia do elemento raiz/mãe para os elementos
+         folhas/filhos) primeiro plano ao mais profundo item) e em largura (seguindo
+         itens do mesmo nível de profundidade);
+
+      3. Ambas as abordagens, a depender da necessidade e escolha pessoal.
+
+      Em relação às suas competências, os avaliadores podem ser:
+
+      •   Novatos, com conhecimentos teóricos e poucos práticos;
+
+      •   Experientes, com conhecimento tanto teórico quanto prático;
+
+            »   Duplo especialistas, com conhecimentos tanto sobre IHC, quanto no
+                domínio do sistema.
+
+
+
+
+                                                                                         18
+                                                                                               Voltar ao sumário
+      As etapas relativas à avaliação heurística por especialistas são:
+
+      •   Definição do objetivo da avaliação pelo líder junto à equipe do sistema;
+      •   Escolha da equipe de avaliadores, dentre os profissionais disponíveis ou a
+          serem contratados;
+      •   Pesquisa sobre o contexto de uso do sistema, usuários, seus objetivos,
+          ambientes, tarefas, etc.;
+      •   Análise sobre o conhecimento em ergonomia acumulado sobre o domínio
+          específico;
+      •   Preparativos para a avaliação, como a estipulação de objetivos e cenários de
+          uso;
+      •   Execução das avaliações, individualmente, com a produção de diagnósticos;
+      •   Redação do relatório final pelo líder da equipe com base nos relatórios
+          individuais;
+      •   Apresentação dos resultados da avaliação para o restante da equipe do sistema
+          ou da interface.
+
+      3.3 Avaliações participativas com especialistas e usuários
+
+      Nesta técnica de avaliação heurística em específico, trabalho em colaboração
+do especialista e o usuário, que testam e analisam a interface proposta, que pode ser
+apresentada na forma de protótipos nos mais diferentes níveis de fidelidade (CYBIS,
+BETIOL, FAUST, 2015). Pode ser empregada uma alternativa a ser realizada após a
+avaliação heurística por especialista, com o intuito de examinar melhor algumas questões
+problemáticas apontadas pelo relatório da primeira avaliação.
+
+      As etapas para a realização da técnica da avaliação participativa é a seguinte:
+
+      •   O especialista deve apresentar a interface e os objetivos de uso ao usuário;
+      •   O especialista deve propor algumas tarefas a serem realizadas pelo usuário;
+      •   O usuário deve realizar tarefas solicitadas e outras que lhe sejam interessantes;
+      •   O Usuário deve falar sobre suas expectativas e impressões, bem como
+          sugestões de melhoria para cada tela e atividade realizadas;
+      •   O especialista deve questionar o usuário sobre o que pensa sempre que este
+          estiver em uma situação de hesitação, erro ou dúvida;
+      •   Ao final, o especialista deve perguntar a avaliação geral do usuário, bem como
+          que faça comentários finais sobre o que achar pertinente;
+      •   O especialista deve redigir seu relatório, indicando os problemas encontrados,
+          bem como possíveis soluções encontradas junto com o usuário (CYBIS, BETIOL,
+          FAUST, 2015).
+
+
+                                                                                          19
+    4.
+
+
+
+
+                                                                                            Voltar ao sumário
+              Avaliação de design visual e avaliação com usuários
+
+
+        Neste subcapítulo, você conhecerá algumas propostas para avaliação de design
+visual, que utilizam métodos de inspeção ou analíticos.
+
+      4.1 Avaliação dos Fundamentos do Design
+
+       Como você já estudou, anteriormente, conhecer os Fundamentos do Design é
+essencial para a criação de designs visuais mesmo por quem não é designer, pois tais
+princípios conferem qualidade ao produto.
+
+       Tais princípios também podem ser utilizados como critérios para a avaliação
+analítica ou inspeção do design visual realizado por projetistas. Sendo assim, revise os
+principais princípios do design:
+
+      •   Contraste: tem como objetivo diferenciar elementos diferentes e destacar os
+          elementos principais. Pode ser alcançado com diferentes elementos gráficos,
+          como tipografias, cores, tamanhos, espessuras, espaços e formas.
+
+      •   Repetição: tem como objetivo promover a unidade gráfica e a organização,
+          com o uso da repetição dos elementos gráficos e de outros conceitos criados
+          no design.
+
+      •   Alinhamento: tem como objetivo posicionar todos os elementos de uma página
+          de forma que haja uma ligação, proporcionando equilíbrio e organização.
+
+      •   Proximidade: visa agrupar elementos de forma a dar uma unidade visual e
+          informativa a eles, almejando a melhor estruturação do design (WILLIAMS,
+          2005)
+
+      4.2 Avaliação usando guias de estilo e manuais de marca
+
+       Um guia de identidade visual ou o Manual da Marca é um documento que especifica
+o significado da marca, bem como seus atributos relativos ao design gráfico, como logo
+(colorida, P&B, versão negativa), fontes, cores (básicas e complementares), margens,
+diferentes orientações, fundos, ícones, etc. Neste documento, podem constar o que pode
+e o que não pode ser feito com a identidade visual de uma marca, além de apresentar
+alguns exemplos para as diretrizes estipuladas (GUERRATO, 2013).
+
+
+
+
+                                                                                       20
+                                                                                              Voltar ao sumário
+       No campo da IHC, os guias de estilo são documentos que apresentam tantos
+os atributos do design gráficos, quanto os elementos da interface, como títulos, links,
+botões, menus, cabeçalho, formulários, parágrafos, ícones, campos de busca e demais
+elementos (GUERRATO, 2013).
+
+       Algumas alternativas menos detalhadas aos guias de estilo são: os moodboard
+(quadros criativos que trazem elementos que inspiram a aparência do produto); os
+wireframes e os mockups (GUERRATO, 2013).
+
+        Tanto os manuais de marcas quanto os guias de estilo podem ser utilizados para
+o levantamento de requisitos para as interfaces de softwares, bem como podem ser
+utilizados como listas de verificação de interfaces em sua fase de avaliação.
+
+
+
+
+  Saiba mais:
+
+  Uma inspiração são os guias de estilo interativo da Mozilla e do Firefox:
+  •   Disponível em: https://mozilla.design/
+
+  A Google Design disponibiliza diversos recursos para design de aplicativos, websites
+  e outras peças através dos seus projetos:
+
+  •   Material Design - https://material.io/resources.
+
+
+
+      4.3 Avaliação com usuários
+
+      As avaliações com os usuários, quando bem desenvolvidas, são muito produtivas,
+apontando problemas reais de interação a partir da perspectiva das pessoas que
+realmente usarão o sistema, além de encontrar algumas soluções relevantes. Contudo,
+podem ser de difícil planejamento e execução.
+
+     Este tipo de avaliação são classificadas como avaliações objetivas ou empíricas,
+sendo baseadas na observação do usuário em interação com o produto interativo,
+podendo ter natureza qualitativa ou quantitativa, sendo mais ou menos formal.
+
+       Conheça algumas técnicas de avaliações com usuários, como os ensaios de
+interface, testes de usabilidade, testes remotos e uso de dispositivos com sensores.
+(CYBIS, BETIOL, FAUST, 2015).
+
+
+
+
+                                                                                         21
+                                                                                                 Voltar ao sumário
+      4.4 Ensaios de interface
+
+       Os ensaios de interface ou ensaios de usabilidade são encontros informais
+entre avaliador e usuário, possivelmente, no local de uso do sistema, com o intuito de
+se observar e escutar sobre a apropriação tecnológica e sobre possíveis problemas de
+interação e de interface.
+
+       A técnica do ensaio de interface se assemelha com a técnica de avaliação
+participativa, sendo que a diferença está no tipo de participação e no processo. Na
+avaliação participativa, o usuário tem mais espaço e liberdade para experimentar outros
+objetivos e tarefas, bem como para sugerir soluções e melhorias. Além disso, nesta
+avaliação algumas mudanças de interface podem ser realizadas na hora sobre os
+protótipos. No ensaio, a responsabilidade recai sobre o avaliador e não há como fazer
+alterações imediatas na interface e testá-las na sequência (CYBIS, BETIOL, FAUST, 2015).
+
+      4.5 Testes de usabilidade
+
+       O teste de usabilidade é uma avaliação com usuários e que tem como objetivo
+observar o desempenho do usuário durante a interação com a interface do sistema,
+detectando problemas e suas causas, obtendo como resultados medidas e detecção de
+problemas de usabilidade e de experiência do usuário. Por exemplo, podem ser detectados
+quantos erros o usuário comete ao realizar uma tarefa em um novo produto ou podem
+ser identificadas as emoções positivas e negativas provocadas nos usuários durante a
+interação, o tempo médio para a realização das tarefas ou quais elementos da interface
+chamam mais atenção e quais não são rapidamente compreendidos.
+
+      O teste de usabilidade é uma avaliação formal que requer preparação e análise dos
+dados, além da execução da coleta de dados junto aos usuários em experimentação do
+sistema, como pode ser visto no Quadro 2:
+
+                     Quadro 2: Atividades do teste de usabilidade.
+
+                 Atividade                                     Tarefa
+
+                                            Definir tarefas para os participantes
+                                            executarem;
+                                            Definir o perfil dos participantes e recrutá-
+                Preparação                  los;
+                                            Preparar material para observar e registrar
+                                            o uso;
+                                            Executar um teste-piloto.
+
+
+
+
+                                                                                            22
+                                                                                                       Voltar ao sumário
+                                                      Observar e registrar a performance e a
+                Coleta de dados                       opinião dos participantes.
+                                                      Executar entrevista pós-teste.
+
+                 Interpretação
+                                                      Reunir, contabilizar e sumarizar os dados
+                                                      coletados dos participantes.
+          Consolidação dos resultados
+
+                                                      Relatar a performance e a opinião dos
+             Relato dos resultados
+                                                      participantes.
+
+                                  Fonte: Barbosa e Silva (2010, p. 342).
+
+
+
+       Outros aspectos importantes a serem analisados em relação aos testes de
+usabilidade são a escolha dos usuários participantes, do local dos testes, testes à
+distância, verbalização e situações de impasse e gestão do constrangimento (CYBIS,
+BETIOL, FAUST, 2015).
+
+        A escolha dos participantes deve ser feita de acordo com o público-alvo do
+sistema. Sistemas mais generalistas requerem um público alvo mais abrangente, o que
+dificulta a construção de uma amostra representativa para a participação nos testes. Já
+os sistemas de uso específico, tendem a tornar a tarefa mais simples.
+
+      O local de realização dos testes de usabilidade depende dos recursos disponíveis,
+do contexto de uso do sistema e do grau de exigência requerido dos resultados. Os testes
+podem ser realizados em laboratório ou no local de utilização dos usuários.
+
+      O laboratório pode ser equipado com os seguintes elementos:
+
+      •     Salas de teste e de controle separadas por vidro espelhado ou “espelho falso”;
+      •     Softwares de captura e análise de tela para gravar a interação do usuário;
+      •     Softwares de captura e análise de comportamento e emoções humanas;
+      •     Câmeras para registrar as emoções e comportamento do usuário durante o
+            teste;
+      •     Câmeras para registrar o uso do sistema pelo usuário;
+      •     Microfones para gravar as reações do usuário;
+      •     Sistemas de interfone para a comunicação entre usuário e avaliador, etc.
+
+      Um exemplo de laboratório de observação para testes de usabilidade e de
+experiência do usuário pode ser vista na Figura 2.
+
+
+
+                                                                                                  23
+                                                                                              Voltar ao sumário
+      Figura 2: exemplo de laboratório de observação para testes de usabilidade
+
+
+
+
+                                         Fonte: Noldus
+
+
+
+      Já a Figura 3 apresenta uma configuração mais simples para testes de usabilidade
+mobile, com software que espelha e registra no computador do avaliador as interações
+do usuário. Apesar do ambiente controlado, não requer um laboratório especializado.
+
+                         Figura 3 : Teste de usabilidade mobile
+
+
+
+
+                                  Fonte: UX Indonesia/ Unsplash
+
+
+
+      A realização dos testes no local de trabalho do usuário tem como vantagem a
+não necessidade de um ambiente destinado aos testes, mas requer adaptações para a
+presença do avaliador e dos seus registros. Além disso, o impacto da presença do avaliador
+deve ser minimizado para não impactar nas atividades e não causar constrangimentos.
+
+       Esta modalidade dos testes de usabilidade pode ser vista como uma análise
+contextual da situação nova (a que se utiliza do novo produto) e se assemelha à entrevista
+contextual, que são utilizadas para coleta de dados da situação atual. Contudo, como são
+testes, o usuário além de observado nas suas atividades, é solicitado a realizar tarefas
+específicas planejadas pelo avaliador.
+
+                                                                                         24
+                                                                                            Voltar ao sumário
+       Os testes a distância podem ser uma alternativa de menor custo e que
+proporcionam maior liberdade para os usuários. Podem ser realizados de forma remota
+com moderador por meio de ambientes que compartilham a tela do usuário com o
+moderador, podendo estes se comunicarem durante os testes. Outra opção é através do
+registro da interação do usuário para posterior análise pelo avaliador, que pode também
+entrevistar o usuário em outro momento. Também existem ambientes de testes que
+conduzem os testes, passando as tarefas e registrando as interações dos usuários
+(mouse, teclado, câmera, etc.).
+
+       A verbalização necessária para que o avaliador entenda a percepção e opiniões
+dos usuários deve ser incentivada devido à riqueza agregada aos dados coletados. Ela
+deve ser incentivada com perguntas sobre o que o usuário está pensando, sobre qual a
+sua intenção ou dúvidas no dado momento e sobre a justificativa das ações tomadas. A
+verbalização pode ser simultânea à interação, ou pode ser consecutiva, após visualização
+da gravação realizada durante a interação.
+
+      Como você já estudou no Percurso de Aprendizagem 1, as emoções do usuário
+afetam o seu desempenho ao interagir com produtos e serviços. Logo cabe ao avaliador
+garantir que o usuário esteja calmo e confortável para a realização dos testes, evitando
+situações de impasse e de constrangimentos. Para tanto, as questões éticas apresentadas
+no Percurso de Aprendizagem 2, a respeito da coleta de dados, junto ao usuário, na
+situação atual, fazem-se igualmente necessárias durante a realização das avaliações.
+
+
+
+
+                                                                                       25
+                                                                                                                                      Voltar ao sumário
+  Caso real:
+  A Udemy é uma das maiores plataformas de aprendizagem on-line do mundo, com
+  mais de 40 milhões de alunos em todo o mundo. A gigante do e-learning também
+  tem um aplicativo de smartphone extremamente popular. O exemplo de teste de
+  usabilidade em questão foi direcionado aos usuários de smartphone da Udemy.
+  Para descobrir quando, onde e por que os usuários da Udemy optaram pelo
+  aplicativo móvel em vez da versão desktop, a Udemy conduziu testes com usuário.
+  Como a Udemy é uma empresa 100% digital, eles escolheram o teste de usuário não
+  moderado totalmente remoto como método de teste.
+  Os participantes do teste foram solicitados a fazer pequenos vídeos mostrando
+  onde estavam localizados e em quais tarefas estavam focados no momento do
+  aprendizado e da gravação.
+  O que os pesquisadores de usuários descobriram foi que sua teoria inicial de “os
+  usuários preferem usar o aplicativo móvel enquanto estão em trânsito” era falsa. Em
+  vez disso, eles descobriram que a maioria dos usuários de aplicativos móveis eram
+  fixos. Os usuários da Udemy, por vários motivos, usaram o aplicativo móvel em casa
+  no sofá ou em uma lanchonete. As principais descobertas deste teste de usuário
+  foram utilizadas para o desenvolvimento de produtos e recursos do ano seguinte.
+  Esta é a aparência do aplicativo móvel da Udemy:
+
+
+
+
+  Este estudo de caso de teste de usabilidade demonstra que a percepção de uma
+  empresa sobre o comportamento do público-alvo nem sempre corresponde ao
+  comportamento dos usuários finais reais. Por isso, o teste com usuários é tão crucial.
+
+Fonte: ANALYSIA. 6 Usability Testing Examples & Case Studies. 2020. Disponível em: https://www.analysia.com/usability-testing-
+                            examples/#example-5-udemy. Acesso em 16 abr. 2021. (Tradução livre).
+
+
+
+
+                                                                                                                                 26
+                                                                                           Voltar ao sumário
+  Saiba mais:
+
+  Conheça um caso real de aplicação de testes de usabilidade realizada por uma
+  empresa de desenvolvimento de softwares e agência digital:
+
+  Visite http://www.vm2.com.br/portfolio-detalhe/elemidia-teste-de-usabilidade
+
+
+
+
+      Resumo:
+
+       Neste terceiro Percurso de Aprendizagem, você entendeu que a atividade de
+avaliação dentro do ciclo de vida do produto interativo tem como propósito garantir a
+qualidade da interface do sistema, bem como a garantia com conformidade com os
+requisitos do sistema e, especialmente, a satisfação dos usuários.
+
+      Ainda em relação à avaliação de produtos interativos, você também estudou:
+
+      •   as etapas ou atividades do processo de avaliação da interface: preparação,
+          coleta de dados, interpretação, consolidação e relato dos resultados;
+      •   as diferentes formas de classificação dos tipos de avaliação, quanto ao
+          momento (formativa ou somativa), locais (contextual, laboratório e remoto),
+          métodos (inspeção, investigação e observação);
+      •   os objetivos da avaliação de produtos interativos, como apropriação
+          tecnológica dos usuários; soluções e alternativas para o design; conformidade
+          com padrões; e problemas na interação e na interface;
+      •   os problemas de usabilidade, experiência do usuário e ergonomia;
+      •   os diferentes métodos de avaliação que compreendem a investigação, a
+          inspeção e a observação;
+      •   algumas técnicas de inspeção como, por exemplo, a inspeção de conformidade
+          com a norma e a inspeção preventiva de erros;
+      •   algumas técnicas de análise heurística, como a avaliação heurística por
+          especialistas e a avaliação participativa;
+      •   algumas possibilidades de avaliação de design visual, com base nos
+          fundamentos do design e em guias de estilo;
+      •   algumas técnicas de avaliação com usuários, como ensaios de interface e
+          testes de usabilidade.
+
+
+
+
+                                                                                      27
+                                                                                             Voltar ao sumário
+Referências:
+
+BARBOSA, S.D.J.. SILVA, B.S. Interação Humano-Computador. Rio de Janeiro: Elsevier,
+2010.
+
+CYBIS, W. A.; BETIOL, A. H.; FAUST, R. F.. (2015) Ergonomia e Usabilidade: Conhecimentos,
+Métodos e Aplicações. Novatec Editora, 3ª edição, 2015.
+
+DICIO, Dicionário Online de Português. Heurística. Disponível em: https://www.dicio.
+com.br/heuristica/. Acesso em 15 abr. 2021.
+
+GUERRATO, Dani. Guia de Estilos. 2013. Disponível em: https://tableless.com.br/guia-
+de-estilos/. Acesso em: 13 abr. 2021.
+
+PRIBERAM, Dicionário Online. Heurística. Disponível em: https://dicionario.priberam.
+org/heur%C3%ADstica. Acesso em 15 abr. 2021.
+
+
+
+
+                                                                                        28
+                                                                                                                                   Voltar ao sumário
+ UNIVERSIDADE DE FORTALEZA (UNIFOR)
+
+ Presidência
+ Lenise Queiroz Rocha
+
+ Vice-Presidência
+ Manoela Queiroz Bacelar
+
+ Reitoria
+ Fátima Maria Fernandes Veras
+
+ Vice-Reitoria de Ensino de Graduação e Pós-Graduação                AUTORA
+ Maria Clara Cavalcante Bugarim                                      MÔNICA PAZ
+ Vice-Reitoria de Pesquisa
+ José Milton de Sousa Filho                                          É graduada em Ciência da Computação pela Universi-
+ Vice-Reitoria de Extensão
+                                                                     dade Federal da Bahia (UFBA) e em Marketing pela Uni-
+ Randal Martins Pompeu                                               versidade Estácio de Sá (Unesa). É doutora e mestre em
+                                                                     Comunicação pela UFBA e especialista em Segurança da
+ Vice-Reitoria de Administração                                      Informação pela Unesa. Tem experiência em docência na
+ José Maria Gondim Felismino Júnior
+                                                                     graduação e na pós-graduação nas áreas de TI e de Comu-
+ Diretoria de Comunicação e Marketing                                nicação. É pesquisadora do GIG@ - Grupo de Pesquisa em
+ Ana Leopoldina M. Quezado V. Vale                                   Gênero, Tecnologias Digitais e Cultura e do Onda Digital -
+ Diretoria de Planejamento
+                                                                     Grupo de Pesquisa e Extensão em Informática, Educação
+ Marcelo Nogueira Magalhães                                          e Sociedade, ambos da UFBA.
+
+ Diretoria de Tecnologia
+ José Eurico de Vasconcelos Filho
+
+ Diretoria do Centro de Ciências da Comunicação e Gestão
+ Danielle Batista Coimbra
+
+ Diretoria do Centro de Ciências da Saúde
+ Lia Maria Brasil de Souza Barroso
+
+ Diretoria do Centro de Ciências Jurídicas
+ Katherinne de Macêdo Maciel Mihaliuc
+
+ Diretoria do Centro de Ciências Tecnológicas
+ Jackson Sávio de Vasconcelos Silva
+
+
+                                                  RESPONSABILIDADE TÉCNICA
+
+
+
+
+NÚCLEO DE TECNOLOGIAS EDUCACIONAIS (NTE)                         Projeto Instrucional
+                                                                 Silviane da Silva Rocha
+Gerência                                                         Revisão Gramatical
+Douglas Royer                                                    José Ferreira Silva Bastos
+Coordenação                                                      Identidade Visual / Arte
+Andrea Chagas Alves de Almeida                                   Emanoel Alves Cavalcante
+                                                                 Francisco Cristiano Lopes de Sousa
+Supervisão de Ensino e Aprendizagem
+Carla Dolores Menezes de Oliveira                                Editoração / Diagramação
+                                                                 Rafael Oliveira de Souza
+Supervisão de Planejamento Educacional
+                                                                 Régis da Silva Pereira
+Ana Flávia Beviláqua Melo
+                                                                 Produção de Áudio e Vídeo
+Supervisão de Recursos Educacionais
+                                                                 José Moreira de Sousa
+Josefa Braga Cavalcante Sales
+                                                                 Pedro Henrique de Moura Mendes
+Assessoria Administrativa                                        Kauê Nogueira da Silva
+Mírian Cristina de Lima
+                                                                 Programação / Implementação
+Assessoria Pedagógica de Polo                                    Francisca Natasha Q. Fernandes de Souza
+Jéssica de Castro Barbosa                                        Márcio Gurgel Pinto Dias
+                                                                 Francisco Weslley Lima
+
+
+
+                                                                                                                              29
+

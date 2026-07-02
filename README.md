@@ -11,9 +11,16 @@ Guia completo para montar o servidor dedicado (fork do [AppVS](https://github.co
 ## Estrutura
 
 ```
-web/      → Frontend React (formulário + admin)
-server/   → API Node.js (salva cadastros e arquivos)
+coopvitta-app/  → Plataforma COOPVITTA (fork AppVS: backend, frontend, landing, Docker)
+web/            → Cadastro legado (formulário + admin standalone)
+server/         → API legada do cadastro standalone
+infra/          → OpenObserve, OTel collector
+docuseal/       → Overrides de e-mail/jurídico
+docs/           → Guias de deploy e mapa de bordo
+scripts/        → Hardening VPS, regras UFW, status
 ```
+
+Deploy em produção (`app.coopvitta.cloud`): use `coopvitta-app/` em `/opt/coopvitta/coopvitta-app` (clone ou sync desta pasta).
 
 ## Como rodar
 

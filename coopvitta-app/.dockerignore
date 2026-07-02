@@ -1,0 +1,9 @@
+# Contexto do build do frontend: só frontend + landing (imagem não precisa do resto)
+.git
+.github
+.cursor
+backend
+docker
+**/node_modules
+**/.env
+*.log

@@ -1,0 +1,58 @@
+{
+  "name": "app-medico-frontend",
+  "version": "1.0.0",
+  "description": "Frontend React para sistema de médicos",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
+    "@tanstack/react-query": "^5.14.2",
+    "axios": "^1.6.2",
+    "clsx": "^2.0.0",
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "^5.0.7",
+    "leaflet": "^1.9.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.2",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.21.0",
+    "xlsx": "^0.18.5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.0.8",
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@capacitor/core": "^6.2.0",
+    "@capacitor/ios": "^6.2.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/check-env.js && tsc && vite build && node scripts/merge-landing.js",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives",
+    "mobile:config": "node scripts/write-capacitor-config.mjs",
+    "mobile:sync": "npm run build && npm run mobile:config && npx cap sync",
+    "mobile:open:ios": "npm run mobile:config && npx cap open ios",
+    "mobile:open:android": "npm run mobile:config && npx cap open android"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

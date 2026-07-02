@@ -1,0 +1,2023 @@
+P348i   Paz, Mônica.
+
+               Interação humano – computador [recurso eletrônico] : idealização e projeto de produto
+interativo / Mônica Paz. -- Fortaleza : Universidade de Fortaleza, [2021].
+
+           45 p. -- ( Percurso de Aprendizagem ; 2)
+
+
+
+           1. Interação humano – computador. I. Título. II. Série.
+
+
+
+                                                                              CDU 681.3:004.5
+
+
+
+
+                           Este trabalho está licenciado com uma Licença Creative Commons
+                              Atribuição-NãoComercial-SemDerivações 4.0 Internacional.
+     ENTENDER PARA ATENDER
+
+
+
+
+                Sumário
+
+1.   Design criativo
+
+
+
+
+2.   Técnicas para modelagem de usuário
+
+
+
+
+3.   Técnicas para modelagem de tarefas
+
+
+
+
+4.   Construção de alternativas de design
+
+
+
+
+                       Sumário clicável
+                                                                                                  Voltar ao sumário
+      A partir de uma perspectiva mais abrangente,
+      o processo de design da Interação Humano-
+      Computador (IHC) é um processo iterativo
+      que pode ser resumido em análise da situação
+      problema, síntese da intervenção e avaliação
+      da intervenção proposta. Nesta unidade, você
+      estudará mais a fundo as etapas de análise
+      e de síntese, perpassando pelas etapas
+      de coleta e análise de dados referentes ao
+      usuário e ao seu contexto de uso, além da                         Olá
+      especificação e da concepção do sistema
+      proposto. Para tanto, você conhecerá várias
+      técnicas e abordagens que serão úteis para o
+      planejamento e concepção de interfaces do
+      usuário de sistemas interativos.
+
+
+
+
+    1.         Design criativo
+
+
+       Seja para criar peças gráficas para impressos, social media, websites e aplicativos,
+o profissional precisa se sentir criativo. Mas será que a criatividade é uma dádiva dada
+apenas aos artistas? Ou será que qualquer pessoa pode desenvolver o seu lado criativo?
+
+      1.1 Interação Humano-Computador
+
+       Qualquer profissional e inúmeras áreas podem se beneficiar de um processo
+criativo bem conduzido, como as artes, a publicidade, o design e o desenvolvimento de
+software, dentre eles (Figura 1).
+
+
+
+
+                                                                                              4
+                                                                                              Voltar ao sumário
+                       Figura 1: Equipe em processo criativo.
+
+
+
+
+                                      Fonte: Pexels
+
+
+
+      Apesar de poder haver mudanças nas etapas a depender das necessidades
+específicas do projeto, as etapas do processo produtivo em geral são:
+
+     •   Identificação: detecção de um problema e levantamento de possíveis dúvidas;
+
+     •   Preparação: coleta de dados que ajudam a entender o problema a partir das
+         dimensões: O que? Quem? Quando? Quantos? Onde? Como? Por que? Momento
+         ideal para a realização de briefing com clientes e outros envolvidos, bem como
+         outras técnicas de coleta de dados;
+
+     •   Incubação: processo subjetivo de internalização do problema.
+
+     •   Aquecimento: levantamento e análise de possíveis soluções. No caso de um
+         processo coletivo, indica-se a realização da técnica brainstorming.
+
+     •   Iluminação: é o surgimento de uma ideia ou possível solução para o problema.
+
+     •   Elaboração: desenvolvimento e concretização da ideia.
+
+     •   Verificação: validação da hipótese, na qual se testa se a solução desenvolvida
+         atende às necessidades do problema (DESIGNCULTURE, 2015).
+
+     Para inspirar a criatividade, você pode seguir algumas dicas bem simples:
+
+     •   Ter uma boa noite de sono;
+
+     •   Aproveitar momentos de descanso e relaxamento ao longo do dia;
+
+
+
+                                                                                          5
+                                                                                                Voltar ao sumário
+      •   Dedicar-se às leituras descontraídas;
+
+      •   Visualizar galerias de arte, fotos, etc.;
+
+      •   Escutar músicas agradáveis;
+
+      •   Praticar exercícios físicos;
+
+      •   Não descartar ideias de imediato sem uma melhor análise;
+
+      •   Manter anotações manuais;
+
+      •   Quebrar a rotina, alterando o ambiente ou o local de trabalho.
+
+      1.2 Design Thinking
+
+     O Design Thinking tem como objetivo encontrar soluções para problemas
+complexos, considerando que o designer, além de suas habilidades técnicas, precisa ter o
+pensamento desenvolvido para o processo de design. Sendo assim, as etapas do Design
+Thinking podem ser definidas como (Figura 2):
+
+      ◊ Exploração do espaço do problema (o que fazer): as etapas de imersão e análise
+
+            •   Na imersão, o projetista conhece o problema e pesquisa sobre o tema até
+                compreender melhor todo o contexto.
+
+                        »   Deve-se pesquisar sobre pessoas envolvidas, atividades,
+                            ambientes, mercado, cultura, normas, etc.
+
+            •   Na definição, podem ser produzidos modelos e esquemas que ajudem a
+                entender e analisar melhor o que foi descoberto através das coletas.
+
+                        »   Deve-se desenvolver personas, modelos de             tarefas,
+                            cruzamentos de dados, busca por padrões, etc.
+
+      ◊ Exploração do espaço da solução (como fazer):
+
+            •   Na ideação, busca-se por ideias ou insights que ajudem na solução do
+                problema.
+
+                        »   Pode-se fazer mapas mentais, estudos de caso, processos
+                            colaborativos, pesquisas visuais, etc.
+
+            •   A prototipação é a etapa de validação das soluções elaboradas.
+
+                        »   Pode-se fazer testes com o usuário, apresentação para o
+                            cliente, projetos pilotos, etc.
+
+
+
+
+                                                                                            6
+                                                                                            Voltar ao sumário
+      ◊ Divergência: é o momento de expansão ou distanciamento no qual busca-se por
+        diferentes aspectos, seja do problema ou da solução.
+
+      ◊ Convergência: é o momento de contração ou de cruzamento de ideias e opções,
+        culminando na escolha de um problema a ser trabalhado ou na escolha de um
+        caminho para a solução, saindo assim do plano das ideias para o do concreto
+        (CYBIS, BETIOL, FAUST, 2015; MACHADO, 2019).
+
+                        Figura 2: Etapas do Design Thinking.
+
+
+
+
+                                  Fonte: Machado (2019).
+
+
+
+     Esta abordagem adequa-se ao processo criativo, visto anteriormente, segundo o
+Quadro 1:
+
+Quadro 1: relacionamento das etapas do processo criativo clássico, do Design Thinking
+                                e do design de IHC.
+
+
+  Processo criativo básico        Design Thinking                Design de IHC
+
+       Identificação                                       Coleta de dados da
+                                                           situação atual em termos
+                                       Imersão
+        Preparação                                         de usuários, trabalho e
+                                                           ambiente.
+
+                                                           Criação de modelos que
+        Incubação                     Definição            ajudem a interpretar a
+                                                           situação atual.
+
+
+
+                                                                                        7
+                                                                                                           Voltar ao sumário
+          Aquecimento                                                      Especificação da situação
+                                              Ideação
+          Iluminação                                                       proposta.
+
+                                                                           Concepção conceitual,
+          Elaboração                          Ideação                      informacional e da lógica
+                                                                           de uso.
+
+                                                                           Concepção da interface,
+           Validação                      Prototipação
+                                                                           seus elementos e estilos.
+
+                          Fonte: Cybis, Betiol e Faust (2015), Machado (2019).
+
+
+
+      1.3 Fundamentos do Design
+
+       Para a produção de design visual, além de criatividade, ter o domínio da técnica
+é um bom caminho para desenvolver peças com qualidade visual, mesmo para quem é
+iniciante. São quatro os princípios básicos do design que podem ajudar no planejamento
+e na produção visual:
+
+      •    Contraste: tem como objetivo diferenciar elementos diferentes e destacar os
+           elementos principais. Pode ser alcançado com diferentes elementos gráficos,
+           como tipografias, cores, tamanhos, espessuras, espaços e formas.
+
+      •    Repetição: tem como objetivo promover a unidade gráfica e a organização,
+           com o uso da repetição dos elementos gráficos e de outros conceitos criados
+           no design.
+
+      •    Alinhamento: tem como objetivo posicionar todos os elementos de uma página
+           de forma que haja uma ligação, proporcionando equilíbrio e organização.
+
+      •    Proximidade: visa agrupar elementos de forma a dar uma unidade visual e
+           informativa a eles, almejando a melhor estruturação do design (WILLIAMS,
+           2005).
+
+       Existem muitos outros conceitos em design, mas com o domínio sobre estes
+quatro, bem como com a busca de inspiração em trabalhos consagrados, muito pode
+ser feito, até mesmo por principiantes. Afinal, existem muitas ferramentas e bancos de
+elementos gráficos para auxiliar na criação
+
+
+
+
+                                                                                                       8
+                                                                                               Voltar ao sumário
+   Saiba mais…
+
+   Para buscar inspiração e imagens gratuitas para os seus projetos, tente os
+   seguintes repositórios:
+
+   •   Pexels, disponível em: https://www.pexels.com.
+
+   •   Pixabay, disponível em: https://pixabay.com/pt/.
+
+   •   Unsplash, disponível em:https://unsplash.com/.
+
+   Para pesquisar por fontes/tipografia:
+
+   •   Google Fonts: https://fonts.google.com/.
+
+   Para criar peças gráficas com um ferramenta on-line que forneça muitos templates:
+
+   •   Canva: https://www.canva.com/.
+
+
+
+       1.4 Design de IHC
+
+       Anteriormente, você conheceu os conceitos relevantes em IHC, como interação,
+interface, experiência do usuário, usabilidade, critérios ergonômicos, etc. Também
+estudou que o projetista de IHC precisa conhecer bastante o usuário e o seu contexto de
+uso para produzir interfaces intuitivas e amigáveis. Além disso, você já conhece como
+ocorre o processo de design de IHC, suas etapas (Figura 3) e principais características.
+
+                        Figura 3: O processo de design em IHC.
+
+
+
+
+                               Fonte: Barbosa e Silva (2010, p. 100).
+
+
+
+
+                                                                                           9
+                                                                                          Voltar ao sumário
+       Agora, é chegada a hora de conhecer técnicas para pôr em prática as etapas de
+análise da situação atual e de síntese da intervenção em IHC:
+
+      •   Análise da situação problema:
+
+            »   Coleta de dados da situação atual em termos de usuários, trabalho e
+                ambiente;
+
+            »   Criação de modelos que ajudem a interpretar a situação atual;
+
+      •   Síntese da intervenção proposta:
+
+            »   Especificação e modelagem da situação proposta;
+
+            »   Concepção conceitual, informacional e da lógica de uso;
+
+            »   Concepção da interface, seus elementos e estilos.
+
+       Como parte da análise da situação atual, o projetista deve conhecer técnicas de
+coleta de dados e análise dos perfis do usuário e seu contexto de uso (seção 2), além
+da coleta de dados e da especificação das tarefas a serem desenvolvidas, bem como do
+ambiente do sistema atual (seção 3). Já em relação à síntese da solução, o projetista
+precisa reunir um conjunto de competências para a concepção e construção da interface
+(seção 4).
+
+
+
+
+                                                                                     10
+    2.
+
+
+
+
+                                                                                               Voltar ao sumário
+                Técnicas de coleta de dados sobre os usuários
+
+
+        Diante de um novo desafio, um designer de IHC precisa se perguntar: quem são os
+usuários para os quais este sistema interativo será projetado e desenvolvido? Qual o perfil
+desses usuários? Quais são as suas principais características, necessidades e limitações?
+Em que ambiente este usuário desenvolverá suas atividades? Quais ferramentas podem
+ser utilizadas para reunir tais informações e como analisá-las?
+
+        Portanto, conheça, a seguir, como coletar tais informações (2.1), como analisá-las
+(2.2), além de conhecer algumas questões éticas envolvidas neste processo (2.3).
+
+      2.1 Técnicas de coleta de dados sobre os usuários
+
+       No que se refere o desenvolvimento de interfaces para produtos interativos, a
+coleta de informações deve levar em consideração:
+
+      •   Os usuários;
+
+      •   As tarefas dos usuários;
+
+      •   O sistema atual com o qual as tarefas são desenvolvidas;
+
+      •   O ambiente no qual estão inseridos os usuários, o sistema atual e as tarefas.
+
+      Sobre o usuário, devem ser coletadas informações sobre seus atributos pessoais,
+além de aspectos sociais, comportamentais e suas habilidades e conhecimentos (CYBIS,
+BETIOL, FAUST, 2015). Sendo assim, é possível coletar as seguintes informações sobre
+os usuários e suas experiências de uso:
+
+      ◊ Informações demográficas:
+
+            »   Faixa etária;
+
+            »   Sexo;
+
+            »   Limitações físicas;
+
+            »   Limitações intelectuais;
+
+            »   Origem ou localidade;
+
+            »   Classe social ou poder econômico.
+
+
+
+
+                                                                                          11
+                                                                                               Voltar ao sumário
+      ◊ Informações psicossociais:
+
+            »   Motivações;
+
+            »   Objetivos;
+
+            »   Preocupações;
+
+            »   Humor;
+
+            »   Atitude.
+
+      ◊ Habilidades:
+
+            »   Experiência com o produto ou serviço;
+
+            »   Experiência com a tarefa;
+
+            »   Experiência com o sistema existente;
+
+            »   Conhecimentos em informática;
+
+            »   Conhecimentos em línguas;
+
+            »   Conhecimento geral;
+
+            »   Nível de treinamento.
+
+      Conheça, a seguir, algumas técnicas de coleta de dados junto aos usuários, com as
+quais o projetista pode conhecer as suas características demográficas e psicossociais,
+além de suas habilidades e conhecimentos gerais (CYBIS, BETIOL, FAUST, 2015). São elas:
+
+      •   Questionários: são perguntas enviadas para serem respondidas pelos usuários,
+          sem o auxílio de um mediador, podendo ser do tipo objetiva ou subjetiva (aberta).
+          Contudo, as questões objetivas são de mais fácil resposta e análise. Devem
+          ser oferecidas questões com opções que denotem aproximação, quando for
+          perguntar, por exemplo, sobre frequência de uso. Antes da aplicação, um teste
+          deve ser feito, com um grupo pequeno de representantes dos usuários que
+          devem responder e dar um parecer geral sobre a dificuldade de preenchimento
+          e outros aspectos.
+
+            »   Vantagens: podem ser aplicados a grandes quantidades de possíveis
+                usuários do sistema; método rápido e barato; existem muitas ferramentas
+                on-line e até mesmo gratuitas que podem ser usadas; podem ter grande
+                abrangência quando feitos on-line.
+
+            »   Desvantagens: requer engajamento quando se precisa de um grande
+                número de respondentes;
+
+
+
+                                                                                          12
+•   Entrevistas individuais: coleta de informação com o contato direto entre o
+
+
+
+
+                                                                                           Voltar ao sumário
+    entrevistado e o analista. A preparação requer a determinação dos objetivos e
+    do roteiro da entrevista. As entrevistas podem ser gravadas e, posteriormente,
+    transcritas e analisadas. Quando seguem um roteiro como o de um questionário,
+    são denominadas entrevistas estruturadas. Quando seguem algumas perguntas
+    iniciais, mas há abertura para o aprofundamento de algumas questões, são
+    denominadas de entrevistas semiestruturadas. Mas também podem se dar no
+    formato de uma conversa informal. É importante que o analista abra espaço para
+    o usuário acrescentar informações além das perguntas inicialmente propostas.
+
+      »   Vantagens: podem ser gravadas; as perguntas e respostas podem ser
+          melhor elaboradas e desenvolvidas; há mais abertura para troca direta
+          entre projetista e usuário; podem ser realizadas remotamente.
+
+      »   Desvantagens: o entrevistado pode responder segundo o que pensa que
+          o entrevistador quer ouvir; o entrevistador pode influenciar as respostas
+          do usuário; pode ser de difícil condução; é mais demorada; pode ser difícil
+          compilar e analisar o montante de informações coletadas em várias
+          entrevistas; requer disposição do usuário em dedicar tempo para participar.
+
+•   Entrevistas em grupo (grupo focal): é uma entrevista em que um grupo diverso
+    e representativo dos usuários são convidados a dar suas opiniões sobre um
+    assunto ou produto. As pessoas podem se sentir mais à vontade para falar
+    quando em contato com outros usuários do que quando em companhia apenas
+    do entrevistador. A entrevista deve começar com a apresentação do tema geral
+    e algumas perguntas ou temas podem ser lançados ao grupo. A intenção é
+    levantar opiniões e não entrar em consenso. Deve ser reservado um tempo para
+    que o grupo se conheça e se enturme. A entrevista pode ser gravada para que
+    não se percam informações que não puderam ser anotadas durante a conversa
+    informal. O local e a ambientação devem ser planejados para facilitar a entrevista.
+
+      »   Vantagens: consulta vários usuários ao mesmo tempo; coleta de dados
+          junto a usuários e envolvidos com diferentes pontos de vista.
+
+      »   Desvantagens: a reunião costuma ser demorada; requer liderança do
+          entrevistador para conduzir os temas, estimular e dar abertura para as
+          falas dos usuários; a compilação e análise das informações podem ser
+          de difícil execução.
+
+•   Netnografia: com o advento da internet e das diversas possibilidades de criação
+    de comunidades virtuais, seja em fóruns ou em redes sociais, o projetista
+    pode fazer uma observação imersiva em tais ambientes e assim aprender
+    sobre diferentes aspectos dos públicos-alvo pesquisados, suas características
+    predominantes, seus hábitos de consumo, de linguagem, temas de interesse, etc.
+
+
+                                                                                      13
+                                                                                             Voltar ao sumário
+            »    Vantagens: facilidade de acesso a diferentes grupos e atividades via
+                 registros publicados em ambientes on-line; possibilidade de registro em
+                 imagens, vídeos, arquivos, etc.
+
+            »    Desvantagens: dificuldade de validação; possível excesso de dados
+                 desestruturados; e questões éticas sobre coleta de dados.
+
+      Outras técnicas de coletas de informações, que podem ser feitas com os usuários,
+serão abordadas na próxima seção.
+
+      2.2 Análise das informações ou modelagem dos usuários
+
+      Veja agora como as informações coletadas sobre os usuários e seus contextos
+de uso podem ser utilizadas, gerando produtos entregáveis que ajudarão os projetistas
+e desenvolvedores a entender a situação atual, como os papéis de usuários (2.2.1) e as
+personas (2.2.2).
+
+      2.2.1 Papéis de usuários
+
+      Os papéis de usuários são as relações que cada tipo de usuário mantém em
+relação ao sistema, podendo ser o atual ou o futuro.
+
+      •   Nome ou identificação do papel;
+
+      •   Atividades que realizam;
+
+      •   Objetivos junto ao sistema;
+
+      •   Contexto de uso;
+
+      •   Exigências e requerimentos para usar o sistema.
+
+
+
+                ATENÇÃO!
+                Papéis de usuário é uma técnica que pode ser usada tanto para modelar
+                a situação atual, quanto a situação proposta.
+
+
+
+      A seguir, no Quadro 2, podemos ver um exemplo de papel de usuário da situação
+proposta para um site de rede social, como o Facebook.
+
+
+
+
+                                                                                        14
+                                                                                                  Voltar ao sumário
+                             Quadro 2: Papéis de usuário.
+
+
+           Papel:                         usuário                     administrador
+
+                              usuário padrão do sistema
+                                                               usuário com poderes de
+         Descrição            e que utilizará as suas
+                                                               administração do sistema.
+                              funcionalidades.
+
+                                                               criar conta de usuário,
+                              criar conta, editar perfil,      monitorar atividades da
+                              adicionar contatos, publicar     rede, avaliar regras de
+         Atividades
+                              conteúdos, interagir com         uso, deletar conteúdos
+                              conteúdos dos contatos.          irregulares, banir usuários
+                                                               infratores.
+
+                              uso em diversos aparelhos,
+                              ambientes individuais      uso em escritório da
+      Contexto de uso         e coletivos, em seus       empresa, com outros
+                              momentos de microtédio e colegas do setor ao redor.
+                              busca por informação.
+
+                                                               conhecimentos avançados
+                              conhecimentos básicos
+                                                               em informática,
+         Exigências           de informática e
+                                                               computação e das regras
+                              conectividade.
+                                                               de negócios.
+
+                              Possui relacionamento
+                              com: outros usuários.            Possui relacionamento
+    Relacionamento com
+                                                               com: usuários e outros
+      outros usuários         Sub papel: usuário               administradores.
+                              administrador de página.
+
+                                    Fonte: produção própria.
+
+
+
+      2.2.2 Personas
+
+      A criação de personas é uma ferramenta muito popular nas áreas da computação e
+do marketing e tem o intuito de personificar o público-alvo, ajudando a equipe a conhecer
+melhor os usuários e seus contextos de uso.
+
+       A coleta e análise do público-alvo deve indicar conjuntos de usuários com
+características em comum em relação à idade, gênero, comportamentos, habilidades,
+etc. Após identificar tais conjuntos (ou clusters) de usuários, uma persona deve ser
+criada para representar cada um deles, podendo assim serem consideradas exemplos de
+arquétipos de comportamento (CYBIS, BETIOL, FAUST, 2015; SDT, s.d.).
+
+       Entenda a diferença entre os conceitos de público-alvo e persona, no Quadro 3.
+
+
+
+                                                                                             15
+                                                                                            Voltar ao sumário
+                  Quadro 3: Diferenças entre público-alvo e persona.
+
+
+                 Público-alvo                                 Persona
+
+    Dados reais coletados e que
+    representam as características do           Uma pessoa fictícia que é criada a
+    grupo de pessoas que utilizam ou            partir dos dados conhecidos sobre
+    a quem se destina um determinado            subgrupos que compõem o público-
+    produto ou serviço.                         alvo do produto ou serviço.
+
+
+
+
+                                                Exemplo de persona da situação
+                                                atual: Maria é brasileira e tem 27
+    Exemplo de público-alvo: No                 anos. É advogada, tem personalidade
+    Facebook, os usuários, em sua               marcante, é dinâmica. Usa o
+    maioria, são mulheres, são pessoas          celular inúmeras vezes ao dia para
+    jovens e com alta ou média                  fins de trabalho, comunicação
+    escolaridade.                               e entretenimento. É usuária do
+                                                Facebook desde 2013, sendo esta a
+                                                sua principal rede social.
+
+                                   Fonte: produção própria.
+
+
+
+
+              ATENÇÃO!
+              Usaremos, ao longo deste subcapítulo, nos demais exemplos, este
+              mesmo caso de estudo que se trata da criação da versão mobile do
+              Facebook.
+
+
+      O objetivo da persona é sistematizar e representar as características do público-
+alvo em personagens, de forma a criar empatia na equipe de projetistas e desenvolvedores
+em relação aos usuários, lembrando assim que estes são pessoas com objetivos,
+necessidades e desafios particulares (TEIXEIRA, 2014).
+
+
+
+
+                                                                                       16
+       As personas devem ser produzidas em fichas gráficas, com as informações
+
+
+
+
+                                                                                                    Voltar ao sumário
+classificadas por tipo, como exemplificado no Quadro 4.
+
+                    Quadro 4: Ficha de persona da situação atual.
+
+
+
+
+Informações gerais:                                  Oportunidades:
+(Figura ) Maria é brasileira, tem 27 anos e          •    Usuária com habilidades
+é solteira. É advogada, tem personalidade                 intermediárias no uso de internet,
+marcante e é dinâmica. Usa o celular                      redes sociais e dispositivos
+inúmeras vezes ao dia para fins de trabalho,              móveis;
+comunicação e entretenimento. É usuária do
+Facebook na versão web desde 2013, sendo             •    Usuária com conta no WhatsApp,
+esta a sua principal rede social, juntamente              o que facilita o compartilhamento
+com o WhatsApp.                                           entre as plataformas.
+“O meu dia a dia é muito movimentado e eu
+estou o tempo todo conferindo as novidades
+no meu celular!”
+
+Necessidades/Atividades:                             Desafios:
+•   Comunicar-se com potenciais clientes;            •    Impulsionar seus conteúdos para
+                                                          um público qualificado;
+•   Publicar e divulgar seus conteúdos;
+                                                     •    Selecionar e priorizar as
+•   Acompanhar discussões de grupos                       discussões em grupos de interesse
+    específicos sobre direitos humanos;                   em detrimento de outros assuntos;
+•   Interagir com amigos e familiares.               •    Fazer a divisão de tempo entre
+                                                          trabalho, lazer e família;
+                                                     •    Realizar a maior parte das suas
+                                                          tarefas em seu smartphone, devido
+                                                          a sua vida movimentada.
+                                   Fonte: produção própria.
+
+                                                                                               17
+                                                                                             Voltar ao sumário
+      Em relação às fotografias, nunca se deve utilizar imagens de pessoas conhecidas
+ou famosas, para que suas características não se confundam com as das personas.
+Também é importante usar imagens livres, com permissão para uso comercial, como as
+encontradas em bancos de imagens, como Pexel e Pixabay.
+
+       Outra forma de produzir as fichas da persona é com campos que focam nas
+atividades do usuário:
+
+      •   Fotografia
+
+      •   Biografia
+
+      •   Narrativa sobre desejos e objetivos
+
+      •   Descrição de um dia típico
+
+      •   Objetivos na atividade
+
+      •   Atividades
+
+      •   Papéis na atividade
+
+      •   Depoimento/citação da persona (CYBIS, BETIOL, FAUST, 2015).
+
+
+              ATENÇÃO!
+              É possível realizar a criação de personas tendo como base dois
+              momentos distintos da análise e desenvolvimento de sistemas
+              interativos, portanto é possível ter:
+
+              •   Personas da situação atual: pessoas que usam o sistema atual a
+                  ser analisado para dar subsídios para o projeto da proposta.
+
+              •   Personas da situação proposta (ou situação futura): representam
+                  uma pessoa fictícia usuária do sistema proposto, sendo que
+                  são construídas com base nas personas da situação atual e,
+                  principalmente, nos papéis de usuários especificados para o sistema
+                  futuro. Os atributos utilizados podem ser: dados de informação,
+                  perfil, objetivos, papéis no trabalho e ambiente (CYBIS, BETIOL,
+                  FAUST, 2015).
+
+
+       Além de personalizar um indivíduo da população estudada, orientando a concepção
+da interface e podendo ser utilizadas na abordagem de design orientada por cenários,
+as personas também servem para guiar o planejamento dos testes realizados pelos
+avaliadores. Portanto, são uma importante ferramenta para o design centrado no usuário.
+
+
+                                                                                        18
+                                                                                               Voltar ao sumário
+      2.3 Ética nos processos de Design de IHC
+
+       Tomando como base o código de ética de outras áreas do conhecimento, como a da
+saúde, sabe-se que as pesquisas científicas devem favorecer os seguintes princípios éticos:
+
+      •   Princípio da autonomia: garante-se a autonomia da pessoa humana por meio
+          de termos de consentimento livre e esclarecido e com a proteção de pessoas
+          vulneráveis, como crianças e adolescentes.
+
+      •   Princípio da beneficência: garantido por meio da avaliação de riscos e
+          benefícios, levando-se em conta danos físicos, psicológicos, culturais, sociais,
+          econômicos, etc.
+
+      •   Princípio da não maleficência: relativo a se evitar danos previsíveis.
+
+      •   Princípio da justiça e equidade: referente à relevância e vantagens trazidas
+          pela pesquisa aos participantes de forma a minimizar o ônus para todos os
+          grupos envolvidos (BARBOSA e SILVA, 2010).
+
+      É com base nesses princípios que são propostas as seguintes diretrizes para as
+pesquisas em IHC:
+
+      •   Explicar os objetivos da pesquisa;
+
+      •   Explicar qual a participação dos pesquisados;
+
+      •   Garantir a confidencialidade e privacidade dos dados brutos dos participantes;
+
+      •   Garantir o anonimato quando os resultados da pesquisa forem divulgados;
+
+      •   Solicitar a permissão previamente para gravar os participantes;
+
+      •   Pedir o consentimento livre e esclarecido através de um termo com objetivos,
+          procedimentos, efeitos colaterais, etc;
+
+      •   Prezar pelo conforto físico e psicológico dos participantes;
+
+      •   Informar sobre a liberdade de se recusar a participar ou cancelar a participação
+          a qualquer momento e sem prejuízos;
+
+      •   Garantir autonomia dos participantes em participar da pesquisa, evitando
+          constrangimentos a vulneráveis como crianças, subordinados, etc.
+
+      •   Proteger os dados coletados em termos de confidencialidade e integridade;
+
+      •   Solicitar o acordo de confidencialidade caso o participante não possa divulgar
+          informações acessadas durante o processo de pesquisa (BARBOSA e SILVA,
+          2010)...
+
+
+
+
+                                                                                          19
+    3.
+
+
+
+
+                                                                                            Voltar ao sumário
+              Técnicas para modelagem de tarefas
+
+
+        Nesta seção, você estudará sobre técnicas de coleta de dados da situação atual
+(3.1), técnicas de especificação (3.2) e de modelagem ou concepção das lógicas de uso
+(3.3) e da lógica de informação (3.4) do sistema interativo proposto.
+
+      3.1 Técnicas de coleta de dados sobre atividades, sistema atual e ambiente
+
+      Em relação às tarefas, o projetista ou o analista pode planejar a coleta de dados
+com o intuito de sanar dúvidas sobre informações sobre as tarefas realizadas pelos
+usuários:
+
+      •   Identificação ou nome da tarefa
+
+      •   Objetivo e resultados esperados
+
+      •   Frequência e duração da tarefa
+
+      •   Sequência de etapas que compõem a tarefa
+
+      •   Possibilidades e restrições para execução da tarefa
+
+      •   Relacionamentos da tarefa com outras tarefas
+
+      •   Possibilidades e resultados da execução errada da tarefa
+
+      •   Requerimentos físicos e intelectuais para realização da tarefa (CYBIS, BETIOL,
+          FAUST, 2015).
+
+       As tarefas executadas pelos usuários pertencem a um sistema, que pode ou não
+ser informatizado e que também deve ser estudado para o levantamento de requisitos
+para o sistema proposto. Logo, deve-se coletar informações sobre o sistema atual,
+buscando-se por:
+
+      •   Especificações do sistema e sua base de dados, como requisitos,
+          funcionalidades, principais casos de uso, etc.
+
+      •   Especificações do sistema computacional, como equipamentos, softwares,
+          serviços, documentos, etc. (CYBIS, BETIOL, FAUST, 2015).
+
+      Também é muito importante coletar informações inerentes ao local ou ambiente
+no qual o usuário desempenha as suas atividades e executa as tarefas, levando-se em
+conta as informações sobre os ambientes físico, organizacional e tecnológico:
+
+
+
+                                                                                       20
+                                                                                           Voltar ao sumário
+  •   Ambiente físico:
+
+        »   Posto de trabalho: localização, espaço, mobiliário, ergonomia.
+
+        »   Ambiente do trabalho: atmosfera, acústica, temperatura, poluição e
+            comunicação visual, instabilidade, etc..
+
+        »   Segurança do trabalho: equipamentos de proteção individual e coletiva,
+            riscos para saúde, outras especificações legais.
+
+  •   Ambiente organizacional
+
+        »   Estrutura: escala de horários, organograma e funções exercidas, processos
+            gerenciais, processos comunicacionais, atividades de apoio, etc.
+
+        »   Cultura organizacional: políticas de uso, de conduta, relações industriais,
+            objetivos da organização, etc.
+
+        »   Projeto do trabalho: flexibilidade, controles de desempenho, sistemas de
+            feedback, evolução, autonomia, etc.
+
+  •   Ambiente tecnológico:
+
+        »   Configurações dos equipamentos, softwares             e   documentações
+            regulamentares (CYBIS, BETIOL, FAUST, 2015).
+
+
+
+As técnicas de coletas de dados a seguir podem ser usadas tanto para entender
+os usuários e suas características pessoais, como também são essenciais para
+a coleta de dados sobre as tarefas do usuário e o seu local de realização, bem
+como todo o conjunto de limitações e possibilidades.
+
+
+
+  •   Entrevistas contextuais: são entrevistas que ocorrem no local de atuação do
+      usuário com o intuito de se aprofundar sobre a atividade desenvolvida, seus
+      equipamentos, dinâmicas, sentimentos e opiniões do usuário no local e durante
+      a atividade, etc. A entrevista ocorre em três etapas: na primeira etapa, ocorre
+      uma entrevista inicial na qual deve-se tratar de aspectos gerais da atividade;
+      na segunda, o entrevistado pode assumir o papel de um aprendiz querendo
+      entender como realizar as tarefas e as dinâmicas do local; na última etapa,
+      o projetista deve fazer um resumo de tudo o que foi abordado para fins de
+      validação junto ao usuário.
+
+        »   Vantagens: associa a realização de entrevistas com observação de
+            campo; aproxima o projetista ao contexto de uso do usuário, para melhor
+
+
+                                                                                      21
+                                                                                         Voltar ao sumário
+          entender a tarefa e o local de realização da entrevista; o projetista pode
+          ter contato com o usuário e com os seus clientes in loco.
+
+      »   Desvantagens: pode ser demorada, por isso, deve ser projetada para não
+          ocupar por demais o usuário; requer autorização e consentimento do
+          usuário, do responsável pelo local e dos clientes, quando for o caso.
+
+•   Observação em campo: nesta técnica o projetista observará o usuário
+    realizando suas tarefas sem interferências. É preciso que as pessoas
+    envolvidas estejam cientes da observação e dos seus objetivos. O projetista
+    deve ter em mente que a sua observação precisa deve ser discreta, mas
+    que mesmo assim tenderá a alterar o comportamento das pessoas. A
+    observação pode ser presencial ou remota, de forma síncrona ou assíncrona.
+    Anotações devem ser feitas durante e após a observação, de acordo com o
+    planejamento do projetista em relação aos assuntos a serem abordados. A
+    observação pode ser complementada com uma entrevista contextual para
+    iniciar ou sanar dúvidas após a coleta inicial. Podem ser registrados dados
+    quantitativos, como frequência, duração, quantidades, etapas, etc., e também
+    dados qualitativos, como reações, hábitos, etc.
+
+      »   Vantagens: pode ser presencial, on-line ou gravada; aproxima o projetista
+          do mundo do usuário e do seu contexto de uso.
+
+      »   Desvantagens: requer tempo de planejamento e execução; pode ser
+          de difícil execução e análise de informações coletadas devido ao seu
+          volume.
+
+•   Imersão: é quando o projetista dedica um tempo a desempenhar as atividades
+    no lugar do usuário para ter um ponto de vista próprio sobre o sistema atual.
+
+      »   Vantagens: aproxima o projetista do mundo dos usuários;
+
+      »   Desvantagens: requer autorização para estar no local e realizar as tarefas.
+
+•   Simulação: as atividades e as necessidades dos usuários são replicadas pelos
+    projetistas para se ter um ponto de vista de um determinado grupo de usuário,
+    como o de idosos com baixa visão.
+
+      »   Vantagens: facilita o entendimento de certos contextos de uso.
+
+      »   Desvantagens: requer recursos para ajudar na simulação de necessidades
+          e limitações.
+
+
+
+
+                                                                                    22
+                                                                                            Voltar ao sumário
+      •   Teatralização: um grupo de projetistas encenam as situações relativas ao
+          sistema atual, quando este requer cooperação entre diferentes atores e não se
+          tem acesso aos envolvidos in loco.
+
+            »   Vantagens: facilita o entendimento do contexto de uso, sequências e
+                outros requisitos.
+
+            »   Desvantagens: requer validação com representantes reais dos usuários;
+                requer cooperação da equipe de desenvolvimento do sistema proposto.
+
+      •   Diários: o usuário é convidado a manter um diário para registro de suas
+          atividades e impressões ao longo de um período e dos locais pelos quais
+          transita. É uma opção para quando o projetista não pode acompanhar o usuário
+          devido a duração e os locais da atividade.
+
+            »   Vantagens: é de baixo custo e de fácil execução.
+
+            »   Desvantagens: pode ser de difícil compilação e análise dos dados; requer
+                comprometimento do usuário em fazer os registros de forma mais
+                imediata possível (CYBIS, BETIOL, FAUST, 2015).
+
+      3.2 Técnicas de especificação do sistema proposto
+
+      Conheça agora algumas técnicas para especificação do contexto de uso do
+sistema proposto.
+
+      3.2.1 Especificação de Requisitos de Software
+
+       Advinda da Engenharia de software, a Engenharia de Requisitos nos ensina que,
+após a coleta de dados para o projeto de um novo software, requer a importante atividade
+de levantamento e elicitação de requisitos, sendo que requisitos são as especificações
+das características do sistema. Então, temos as seguintes estruturas hierárquicas para
+as formas de produção de requisitos e especificação de software:
+
+      •   Requisitos de usuários: especificações escritas em linguagem acessível que
+          revela o que o sistema deve fazer a partir da visão dos usuários.
+
+      •   Requisitos de sistema: especificações técnicas sobre as funcionalidades e
+          comportamentos esperados do sistema. Podem ser requisitos funcionais e
+          não funcionais (Figura 4).
+
+
+
+
+                                                                                       23
+                      Figura 4: Tipos de requisitos não funcionais.
+
+
+
+
+                                                                                              Voltar ao sumário
+                                   Fonte: Sommerville (2005).
+
+
+
+      3.2.2 Especificação do contexto de uso
+
+      Especificar o contexto de uso significa descrever os usuários, as tarefas e o
+ambiente de uso do sistema proposto, a partir de aspectos que influenciam no seu projeto
+e implementação. Sendo assim, seguindo o exemplo da ISO 9241, deve-se especificar o
+contexto de uso com base nas seguintes informações (CYBIS, BETIOL, FAUST, 2015):
+
+      ◊ Especificação dos usuários
+
+            »   Exemplo: “O usuário esperado são pessoas com os mais diferentes níveis de
+                conhecimento sobre uso de computador, dispositivos móveis e sites de redes
+                sociais. Contudo, assume-se que o usuário deve conhecer o mínimo sobre
+                navegação na web para usar as funcionalidades básicas da rede social”.
+
+      ◊ Especificação das tarefas
+
+            »   Exemplos:
+
+                 *   Instalação: baixar o aplicativo na loja de seu sistema operacional e
+                     torná-lo operacional no dispositivo móvel;
+
+                 *   Registro: tornar-se um usuário cadastrado de posse de credenciais
+                     de login e senha.
+
+                 *   Publicação de conteúdos: responder à pergunta “O que você está
+                     pensando?", compartilhando com os seus contatos seus conteúdos.
+                     Alternativas: postar imagens, vídeos e status predefinidos.
+
+
+                                                                                         24
+                                                                                             Voltar ao sumário
+      ◊ Especificação de ambientes
+
+            »   Exemplo: Disponibilidade de conexão 3G, 4G ou Wifi.
+
+      ◊ Especificação dos equipamentos
+
+            »   Exemplo: Smartphone.
+
+
+
+                ATENÇÃO!
+                As personas e os papéis de usuários também podem ser usados como
+                técnicas de especificação dos usuários do sistema proposto.
+
+
+
+
+   Para a especificação do contexto de uso, uma equipe interdisciplinar deve ser
+   montada com integrantes das equipes de projetistas, treinadores, técnicos de
+   suporte, desenvolvedores, usuário e clientes.
+
+
+
+      3.2.3 Especificação de requisitos de usabilidade
+
+       A especificação de requisitos de usabilidade deve levar em consideração as
+tarefas, os usuários, estabelecendo medidas de eficácia, eficiência e satisfação, sendo
+estas etapas:
+
+      1. Analisar documento de especificação de contexto de uso ou de cenário de uso,
+         destacando as tarefas e estipulando a sua relevância ou prioridade;
+
+      2. Para cada tarefa, definir as medidas exigidas para eficiência, eficácia e
+         satisfação do usuário, levando-se em conta o tipo ou papel de usuário;
+
+      3. Definir requisitos específicos para tarefas e usuários especiais (CYBIS, BETIOL,
+         FAUST, 2015).
+
+      Acompanhe alguns exemplos de objetivos gerais e específicos no que se refere às
+exigências de uma interface para a usabilidade, no Quadro 5:
+
+
+
+
+                                                                                        25
+                                                                                                                   Voltar ao sumário
+                Quadro 5: Especificação de exigências para a usabilidade.
+
+
+                     Objetivo de              Medidas de                 Medida de
+                                                                                             Satisfação
+                     usabilidade               eficácia                  eficiência
+
+                   Tarefa:                 - Porcentagem             - Tempo médio         - Frequência
+                   postar uma              de usuários               usado para            de uso da
+                   atualização             realizando a              realizar a            funcionalidade.
+                   no feed de              tarefa.                   publicação.
+                   notícias.                                                               - Avaliação
+                                           - Média de                - Quantidade          geral na loja de
+                                           postagem por              de publicações        aplicativos.
+ Objetivo geral                            usuário.                  feitas por hora.
+                                                                                           - Quantidade de
+   da tarefa
+                                                                                           reclamações.
+
+
+
+
+                   Satisfazer às           Porcentagem                                     - Taxa de
+                                                                     - Taxa de
+                   necessidade de          de tarefas                                      utilização
+                                                                     sucesso
+                   usuários sem            realizadas                                      espontânea
+                                                                     do usuário
+                   treinamento             com sucesso                                     após o primeiro
+                                                                     principiante
+                   mobile                  em relação ao                                   acesso.
+                                                                     no mobile
+                                           total de tarefas
+    Objetivo                                                         em relação a
+                                           realizadas.
+   específico                                                        um usuário
+                                                                     experiente.
+                                                                     - Tempo
+                                                                     médio usado
+                                                                     na primeira
+                                                                     postagem.
+
+                      Fonte: produção própria, adaptado de Cybis, Betiol e Faust (2015).
+
+
+
+      3.3 Técnicas de modelagem e concepção das tarefas ou fluxo do trabalho
+
+      Após as especificações, o projetista pode criar modelos para representar o que
+será feito de sistema proposto, iniciando assim a etapa de concepção do sistema.
+Como forma de modelar o trabalho realizado com o sistema, pode-se usar as técnicas
+de cenários de uso e de fluxo dos usuários. Isto compreende a concepção do modelo
+conceitual (3.3.1) e da lógica de uso (3.3.2 e 3.3.3).
+
+
+
+
+                                                                                                              26
+                                                                                               Voltar ao sumário
+      3.3.1 Modelo Conceitual
+
+       O modelo conceitual do novo sistema deve ser criado com base no que foi coletado
+e analisado sobre a situação atual, aproximando o mundo dos usuários e dos projetistas.
+Para tanto, pode-se fazer a sua construção com base nas seguintes dimensões:
+
+      •   Modelo conceitual da ecologia do sistema: descreve o sistema a partir de seus
+          elementos e subsistemas.
+
+            »   Exemplo: O sistema é um aplicativo mobile, que possibilita a publicação
+                de textos, fotos arquivadas no celular e de status predefinidos.
+
+      •   Modelo conceitual da interação: define a interação fornecida pelo sistema, seus
+          objetos de interação, metáforas utilizadas e como será utilizado.
+
+            »   Exemplo: O sistema apresentará ícones amplamente conhecidos para
+                indicar a ação de publicar uma atualização com o botão de “+”. Um feed
+                de notícias será apresentado em fluxo contínuo, com a foto e nome do
+                usuário, imagem e resumo do texto.
+
+      •   Modelo conceitual emocional: que indica qual a satisfação e emoções causadas
+          nos usuários através do uso do sistema.
+
+            »   Exemplo: O sistema trará uma ideia de comunicação fluida e limpa com
+                os contatos, grupos e tópicos de interesse das pessoas.
+
+      3.3.2 Descrição de cenários de uso
+
+       Os cenários de uso são ferramentas que complementam as personas, que podem
+ser usados tanto na especificação quanto na concepção das interfaces. “Os cenários
+de uso são descrições textuais de como e em que ambientes um usuário realiza suas
+atividades na situação de trabalho [...]” (CYBIS, BETIOL, FAUST, 2015, p.177). Sendo assim,
+existem quatro tipos de cenários:
+
+      •   Cenários-problema: são os cenários relativos à situação atual, sendo assim
+          uma técnica de análise do contexto de uso atual;
+
+      •   Cenários de atividades: relativa à concepção da lógica de uso, tem foco em
+          descrever as atividades realizadas pelo usuário, seus objetivos, motivações e
+          processo de execução.
+
+      •   Cenários de informação: relativa à concepção da lógica de uso, descrevem o
+          cenário de atividades, acrescentando as estruturas de informação da interface
+          do usuário;
+
+      •   Cenários de interação: relativa à concepção da lógica de uso, adicionam ao
+
+
+
+                                                                                          27
+                                                                                                 Voltar ao sumário
+         cenário descrito até então, os objetos de interação que o usuário utilizará na
+         interface do produto interativo.
+
+      Veja no Quadro 6, como o nosso estudo de caso seria apresentado a partir da
+abordagem de concepção por cenários:
+
+                             Quadro 6: Cenários de uso.
+
+1. Cenário-problema (sistema atual)         Argumentos positivos:
+Maria inicia mais um dia agitado,           - Flexibilidade para realizar muitas tarefas;
+analisando as suas tarefas na agenda,
+e lendo notícias em diferentes jornais      - Habilidade com dispositivos e
+online logo durante o café da manhã em      ferramentas;
+seu apartamento a partir do celular. Na     - Mobilidade e conectividade.
+sequência, ela segue com o seu carro
+para o escritório que fica a 20 Km, onde    Argumentos negativos:
+atualiza alguns processos e pega os         - Uso de várias formas de comunicação;
+arquivos necessários para as audiências
+da manhã no tribunal nas redondezas do      - Necessidade de realizar muitas
+seu escritório e, por isso, se locomove     atividades: leitura, postagem, interação,
+a pé. Ela realiza vários contatos para      comunicação em diferentes contextos de
+confirmar e recolher informações com        uso;
+clientes, fornecedores e colegas, tendo
+                                            - Tempo escasso.
+cuidado com o trânsito, sacolas que
+carrega e com outros transeuntes. As
+audiências costumam ocorrer pela manhã
+sem horário certo para finalizar e usa um
+tablet para acessar os seus processos.
+No restante do dia, ela trabalha nos
+processos, precisa prospectar clientes
+e se atualizar e resolver seus problemas
+pessoais do seu escritório. À noite, após
+o jantar, no seu horário de descanso,
+costuma contatar amigos e ver séries em
+casa, caso não surja trabalho extra.
+
+
+
+
+                                                                                            28
+                                                                                               Voltar ao sumário
+2. Cenário de atividade (sistema               Argumentos positivos:
+proposto)
+                                               - Integração entre versão web e online
+Desde o café da manhã, Maria já utiliza o      para se adaptar ao dia movimentado;
+seu celular para ler notícias e atualizações
+dos seus contatos no aplicativo. Nas           - Uso para atividades informativas e de
+primeiras horas do dia, entre estar no         compartilhamento de conteúdos, tanto
+seu escritório e a caminho do tribunal,        sociais quanto profissionais;
+entra em contato com um cliente em uma         - Segmentação das atividades e públicos.
+comunicação rápida no celular, enquanto
+anda pela rua. Após sair do tribunal, de       Argumentos negativos:
+volta ao escritório, lê e interage com as      - Necessidade de conexão;
+atualizações da sua rede de contatos
+profissionais, faz postagens no seu perfil     - Riscos e obstáculos devido ao uso com
+e em grupos nos quais pode encontrar           atenção dividida em ambientes urbanos.
+novos clientes, usando o computador ou
+o celular. À noite, faz vídeo chamadas
+informais e publicações no seu aplicativo
+móvel.
+
+3. Cenário de informação (sistema              Argumentos positivos:
+proposto)
+                                               - Diferentes níveis de visualização de
+De manhã em casa, usando o celular,            atualizações: pessoas, páginas, grupos.
+Maria percorre as postagens de pessoas
+e organizações em um único fluxo que           - Apresenta contatos prioritários para
+é influenciado por seus interesses e           separar família, amigos e clientes.
+atividades anteriores, lendo apenas títulos    - Seleção simplificada de status e de
+e resumos e vendo imagens do autor e           arquivos do celular;
+as miniaturas das imagens principais das
+matérias, até que escolhe uma postagem         - Facilita a seleção de destino de
+sobre direitos humanos para “ler mais”.        postagens para todos ou grupos
+À tarde, usando o celular, ela selecionou      escolhidos;
+“Ministério Público” na lista “Minhas          Argumentos negativos:
+Páginas” e a estava lendo até que foi
+contatada por um novo cliente. A partir        - Requer dar permissão para acessar
+da notificação de nova mensagem, ela           novos contatos do celular para o
+lê o texto e visualiza o perfil do cliente,    aplicativo para que fiquem visíveis.
+respondendo à solicitação e enviando
+uma mensagem de voz. Antes de encerrar
+o dia, precisa atualizar seu feed de
+notícias, postando sua opinião sobre
+as notícias lidas durante o dia e utilizou
+o status preestabelecido “dia intenso”
+para postar uma foto recém tirada. Ao
+chegar em casa, utiliza a lista de contatos
+prioritária para fazer uma chamada de
+vídeo com a irmã usando o aplicativo.
+
+
+
+
+                                                                                          29
+                                                                                            Voltar ao sumário
+4. Cenário de interação (sistema                 Argumentos positivos:
+proposto)
+                                                 - Uso de ícones padronizados para
+[...] À tarde, com o aplicativo ativo no         diminuir a densidade informacional;
+celular na tela principal, tocou no menu
+sanduíche no canto superior direito e, na   - Uso de tela específica para manter o
+tela seguinte, escolheu o botão com a       foco na atividade;
+opção “Páginas”. Como visualizou apenas - Uso da opção deslizar para visualizar um
+as “Suas páginas”, usou as opções no        espaço maior do que o da tela.
+início da tela e tocou no botão “Páginas
+curtidas”, tendo para isso que deslizar     Argumentos negativos:
+as opções para o lado esquerdo para         - Não existe a opção para publicar texto
+visualizar a todas. Na tela das páginas que sem antes passar pela escolha do tipo de
+ela segue, escolheu a página “Ministério    publicação, o que alonga a publicação de
+Público”, deslizando as publicações         textos simples.
+para cima até escolher uma para ler por
+completo.[...]
+À noite, a partir da tela principal do
+aplicativo, alcançada usando o ícone de
+casa na barra superior, toca na caixa de
+edição que apresenta o convite “O que
+você está pensando”. Na tela seguinte,
+tocou na opção “Escreva algo”, que levou
+a uma tela com a opção “No que você
+está pensando”, que acionou o teclado
+do celular. Após digital, usou o botão
+“Publicar” no canto superior direito. [...]
+
+                                    Fonte: produção própria.
+
+
+
+      Nesta abordagem da concepção de interfaces a partir de cenários de uso, pode-se
+dar sequência ao processo com a criação de storyboards e wireframes, como você verá
+mais adiante.
+
+      3.3.3 Modelagem de tarefas ou Fluxo das tarefas do usuário
+
+      Existem várias formas de representar os fluxos de tarefa, tanto no que se refere à
+situação atual quanto à solução proposta.
+
+      Uma forma simples de apresentar a sequência de uma tarefa é através de um
+diagrama do tipo fluxograma (Figura 5) que representa o fluxo do usuário, que apresenta
+o passo a passo para a execução de uma tarefa, podendo ser tanto após a coleta de
+dados da situação atual, quanto para representar a concepção do sistema, ajudando a
+entender as telas a serem projetadas.
+
+
+
+
+                                                                                       30
+        Figura 5: Fluxograma da tarefa “Fazer publicação” no sistema proposto.
+
+
+
+
+                                                                                               Voltar ao sumário
+                                     Fonte: produção própria.
+
+
+
+       Para a modelagem das atividades no sistema interativo proposto, também é
+possível usar uma árvore hierárquica (Figura 6), que apresenta no primeiro nível o objetivo
+geral da tarefa. No nível seguinte, apresenta-se os objetivos específicos ou as ações que
+devem ser realizadas para que o usuário atinja o objetivo geral. No nível seguinte, mostra-
+se as operações junto aos dispositivos de entrada e saída.
+
+                    Figura 6: Fazer publicação no Facebook mobile.
+
+
+
+
+                                     Fonte: produção própria.
+
+                                                                                          31
+                                                                                           Voltar ao sumário
+      As atividades do sistema também podem ser modeladas com o diagrama de casos
+de uso da linguagem de especificação de sistema UML. Neste diagrama, há formas de
+representação para os atores ou os papéis de usuário e para as tarefas. As tarefas ou
+casos de uso podem ter relacionamentos entre si do tipo
+
+      •   Especialização: quando um caso de uso é um tipo específico de um caso de
+          uso mais abrangente. Exemplo: “Publicar atualização” (caso geral) e “Publicar
+          uma foto” (caso específico).
+
+      •   Extensão: quando um caso de uso é uma opção alternativa à execução de um
+          caso de uso anterior, sendo assim o caso extensão pode ser executado ou não.
+          Exemplo: “Mudar imagem do perfil” (caso a ser estendido) e “Procurar imagem
+          no computador” (extensão).
+
+      •   Composição: quando um caso é composto obrigatoriamente por dois outros
+          casos para que seja concluído devidamente. Exemplo: “Fazer primeiro acesso”
+          é composto por “Fazer registro” e “Fazer login”.
+
+      •   Afinidade: quando dois casos possuem uma certa similaridade entre si.
+          Exemplo: “Visualizar atualizações de amigos” e “Visualizar visualizações de
+          páginas curtidas” (CYBIS, BETIOL, FAUST, 2015).
+
+                         Figura 7: Casos de uso no Facebook
+
+
+
+
+                                   Fonte: produção própria.
+
+
+
+       Além da representação como diagramas, a descrição do caso de uso pode ser
+feita detalhado-se sequencialmente das intenções do usuário e das responsabilidades
+do sistema (Quadro 7).
+
+
+
+
+                                                                                      32
+                                                                                                 Voltar ao sumário
+                          Quadro 7: Descrição do caso de uso.
+
+                                     Publicar atualização
+
+             Ações do usuário                                  Ações do sistema
+
+1. Acionar função publicar
+                                                 2. Apresentar tela de escolha do tipo de
+                                                 publicação
+3. Escolher tipo de publicação
+                                                 4. Apresentar tela de entrada de texto
+5. Digitar o texto
+6. Finalizar a edição e publicar
+                                                 7. Gravar e exibir mensagem de
+                                                 publicação feita com sucesso.
+                                                 8. Retornar à tela inicial.
+                                                 Postar vídeo, Postar status predefinido,
+Fluxos alternativos:
+                                                 Cancelar/desistir da publicação.
+                                    Fonte: produção própria.
+
+
+
+       Estas técnicas de concepção ou modelagem são úteis para todo o projeto do
+sistema, inclusive dão várias informações para a modelagem da interface com o usuário,
+por indicar como ocorre a interação entre eles.
+
+      3.4 Concepção da lógica de informação
+
+      Inicialmente, entenda do que se trata a arquitetura da informação (AI) (3.4.1) e,
+depois, entenda como coletar dados e modelar a AI (3.4.2) em sistemas interativos.
+
+      3.4.1 Arquitetura da informação
+
+       A arquitetura da informação é muito importante para que o usuário consiga
+entender a lógica informacional da interface, impactando diretamente na experiência do
+usuário, principalmente, no sentido da usabilidade. Para tanto, a concepção da arquitetura
+da informação é feita, definindo-se os seguintes mecanismos:
+
+      •   Organização: definir como as informações estão agrupadas (classificadas),
+          relacionadas (ou ligadas) e quais os metadados as estão indexando.
+
+            »   Critérios de organização exatos ou sistemáticos: ordem alfabética, ordem
+                cronológica, frequência e localização.
+
+            »   Critérios de organização menos sistemáticos ou ambíguos: assunto, tipo,
+                estilo.
+
+
+                                                                                            33
+                                                                                        Voltar ao sumário
+      »   Metadados: indexação a partir de dicionário fixo ou controlado ou a partir
+          de folksonomia (dicionário criado colaborativamente pelos usuários,
+          tags).
+
+      »   Técnicas de coleta e/ou modelagem: arranjo de cartas (card sorting) e
+          diagramas de afinidade.
+
+      »   Técnicas de modelagem: diagrama de arquitetura da informação e
+          sitemap.
+
+•   Navegação:
+
+*   Tipo de navegação:
+
+      »   Global: mecanismos que aparecem em todas as páginas ou telas, por
+          exemplo, um menu principal.
+
+      »   Local: mecanismos que aparecem em uma parte do sistema ou em um
+          conjunto de páginas, por exemplo, sumário da página.
+
+      »   Contextual: aparecem apenas quando algum evento ou funcionalidade
+          está em uso. Exemplo: trilha de links (breadcrumbs) que aparecem de
+          acordo com o caminho percorrido pelo usuário.
+
+*   Elementos de navegação:
+
+      »   Elementos integrados às páginas ou telas: menus, trilhas de links
+          (breadcrumbs, “você está aqui”), hiperlinks.
+
+      »   Elementos extra páginas: mapa do site, índices e tutoriais de primeiros
+          passos.
+
+      »   Elementos do navegador web: campo da URL, históricos, favoritos,
+          próxima página (avançar) e página anterior (voltar).
+
+*   Técnicas de modelagem: sitemap.
+
+•   Rotulação: “Os rótulos têm o objetivo de comunicar sobre o conteúdo dos
+    grupos de informações de maneira eficiente, sem ocupar muito lugar na tela”
+    (CYBIS, BETIOL, FAUST, 2015, p. 209). Aparecem na forma de títulos, legendas,
+    etiquetas (opções), textos alternativos, textos de botão de comando, links no
+    texto e nos menus, ícones, etc.
+
+*   Técnicas: arranjo de cartas.
+
+•   Busca: Mecanismos para descoberta e acesso direto aos conteúdos do site ou
+    sistema. Pode-se utilizar tanto o conteúdo textual do sistema, quanto os seus
+    metadados, incluindo vocabulários controlados e tags da folksonomia.
+
+
+                                                                                   34
+                                                                                              Voltar ao sumário
+      *   Orientações e possibilidades: usar filtros e operadores para buscas avançadas;
+          destacar os termos pesquisados nos resultados apresentados; apresentar os
+          resultados por relevância, usar autocompletar com os termos mais utilizados
+          ou com o histórico do usuário, usar corretores ortográficos e derivadores para
+          incluir variações do termo pesquisado (CYBIS, BETIOL, FAUST, 2015).
+
+      Como visto, uma parte importante da arquitetura da informação é a definição da
+sua taxonomia, que é relativa à organização e rotulação:
+                           Uma exploração em torno das múltiplas formas de categorizar
+                           conteúdos e informação: como as editorias em um site de
+                           notícias ou as categorias de produtos em um e-commerce, por
+                           exemplo. Contribui para que os designers definam a estrutura
+                           de conteúdo e rótulos que ajudarão o usuário a se movimentar
+                           pelo site (TEIXEIRA, 2014, p. 29).
+
+
+
+   Refletindo...
+
+   A arquitetura da informação também é um conhecimento importante para o
+   Marketing Digital, pois na Web, torna-se também um fator crucial na relevância de
+   um site, através das estratégias do chamado SEO (Search Engine Optimization), ou
+   seja, otimização para mecanismos de buscas, como o Google. Afinal, hierarquizar,
+   classificar, dar profundidade ao conteúdo (breadcrumb) e linkar internamente o
+   conteúdo de um site, dentre outros, ajuda no seu rankeamento, facilitando que os
+   usuários encontrem o que procuram ou façam novas descobertas.
+
+
+
+      3.4.2 Técnicas de coleta de dados e concepção para arquitetura da informação
+
+       Como visto, existem algumas técnicas úteis para a coleta de dados e conceção da
+arquitetura da informação de sistemas interativos, como: arranjo de cartas (card sorting),
+diagramas de afinidade, diagrama de arquitetura da informação, mapa do site (sitemap)
+(CYBIS, BETIOL, FAUST, 2015; SDT, s.d.).
+
+       O arranjo de cartas (card sorting) é uma técnica importante para a coleta de dados
+junto aos usuários, pois visa entender os seus modelos mentais, mas também pode ser
+considerada uma forma de concepção da arquitetura da informação no que se refere à
+organização e rotulação. A atividade consiste na criação de cartões ou fichas com as
+descrições de elementos de informação de um sistema. Tais cartões são disponibilizados
+para que cada participante os organize e os denomine como achar correto sobre uma mesa
+em paredes (Figura 8). Ao final, os arranjos feitos individualmente pelos participantes
+devem ser analisados, de preferência estatisticamente.
+
+
+                                                                                         35
+                                                                                           Voltar ao sumário
+                 Figura 8: Card sorting - modelos mentais individuais.
+
+
+
+
+                                      Fonte: Unsplash
+
+
+
+       O diagrama de afinidade é uma técnica muito parecida com a card sorting, mas
+é feita coletivamente em uma dinâmica de grupo, na qual as pessoas precisam entrar
+em consenso sobre a organização dada aos cartões disponibilizados pelo projetista.
+Podem ser criados pelos participantes cartões para nomear os agrupamentos. O ideal é
+que os participantes sejam escolhidos de forma a serem representantes dos envolvidos
+com o sistema futuro. O mediador deve conduzir a dinâmica de forma a estimular a livre
+participação de todos (Figura 9).
+
+               Figura 9: Diagrama de afinidade - modelo mental coletivo.
+
+
+
+
+                                      Fonte: Unsplash
+
+
+
+      O mapa do site (sitemap) é uma técnica de concepção que é uma estrutura que
+apresenta todas as páginas que compõem um site e a relação hierárquica (por parentesco)
+ou associativa (por assuntos) entre elas. Pode ser adicionado em um sistema web em
+
+
+                                                                                      36
+                                                                                             Voltar ao sumário
+uma página própria, no rodapé ou em um menu de apoio. Como exemplo, temos o caso
+do site a Apple Brasil, que apresenta em seu rodapé um link “Mapa do site”, que leva
+o usuário a uma nova página (https://www.apple.com/br/sitemap/) que apresenta, por
+sua vez, os links para as demais páginas do site organizadas por assuntos (Sobre, Onde
+comprar, Serviços, etc) e por produto (Mac, iPhone, iPad, etc). Ainda no rodapé do site,
+também é disponibilizada uma versão mais resumida do mapa do site.
+
+       O diagrama de arquitetura da informação é uma forma de agregar todo o
+conhecimento coletado no que se refere à organização, rotulação, navegação e busca
+para definir a concepção da informação e conteúdo do sistema. Nele, podem ser
+representados graficamente páginas, componentes de páginas, grupos de páginas
+similares e de páginas relacionadas
+
+       Os diagramas de arquitetura de informação podem ser construídos em diferentes
+níveis de abstração. No nível mais abstrato (alto nível de abstração), pode-se apresentar
+os elementos mais gerais do sistema. No nível mais detalhado (baixo nível de abstração),
+pode-se detalhar melhor cada elemento, seus componentes, etiquetas e estruturas
+(CYBIS, BETIOL, FAUST, 2015).
+
+
+
+   Saiba mais…
+
+   Anteriormente, você viu que mapa do site (sitemap) é uma estrutura apresentada
+   para o usuário para que este visualize de forma sumarizada os conteúdos e
+   estruturação do site. Contudo, é importante diferenciar i) o sitemap apresentado
+   como um elemento de navegação do ii) arquivo XML (eXtensible Markup Language)
+   denominado “Sitemap.xml”. O sitemap em XML indica aos mecanismos de busca
+   quais páginas devem ser rastreadas e preferencialmente apresentadas em suas
+   páginas de resultados. Sendo assim, ambos são ferramentas importantes para as
+   estratégias de SEO de um website.
+
+
+
+
+                                                                                        37
+    4.
+
+
+
+
+                                                                                               Voltar ao sumário
+               Construção de alternativas de design
+
+
+       Até o momento, você estudou sobre a coleta de dados sobre os usuários e seu
+contexto de uso e como tais informações podem ser analisadas para o conhecimento
+da situação atual, o que constitui a exploração do espaço do problema de acordo com o
+Design Thinking.
+
+       Já como parte da exploração do espaço da solução, você conheceu técnicas de
+especificação e de modelagem da lógica de utilização e da lógica de informação da
+interface de um sistema interativo.
+
+       Então é chegada a hora de você conhecer algumas técnicas de concepção de
+interfaces, relativas ao design de interface, seu estilo e interação.
+
+       É importante ter em mente que o design de interface é influenciado pelo estilo de
+interação a ser adotado pelo sistema interativo: linguagem de comando; linguagem natural;
+interação por menus; interação por formulários, interação por manipulação direta; WIMP
+(windows/janelas, ícones, menus e pointers/cursores); interação 3D para realidades virtuais
+e aumentadas; Interação mobile com gestos, caneta e toques (BARBOSA, SILVA, 2010).
+
+      Mas quais técnicas podem ser usadas para a concepção do design de interface?
+
+      4.1 Storyboard
+
+       Storyboard ou narrativa gráfica é a representação gráfica do processo de interação
+entre o usuário e o sistema proposto, apresentando elementos que compõem o contexto
+de uso e a interface gráfica. Cada cena da história pode ser acompanhada de uma
+informação textual, como mostra o template na Figura 11.
+
+
+
+
+                                                                                          38
+                                                                                                            Voltar ao sumário
+                                       Figura 11: Template para Storyboard.
+
+
+
+
+                                                             Fonte: Togal.
+
+
+
+       A narrativa gráfica é uma ferramenta importante de comunicação e validação
+entre projetistas e usuários, que podem adicionar comentários nas cenas a depender da
+avaliação feita. Esta ferramenta pode ser usada em diferentes áreas, como a da produção
+de sistemas de informação, filmes, jogos, publicidade, etc.
+
+      Para a criação de storyboard, precisa-se definir, basicamente, os protagonistas, o
+cenário e o enredo. Pode-se usar o desenho a mão livre em papel ou ferramentas editoras
+de imagens vetoriais a partir de templates, além de ferramentas como o Canva1 e outras
+ferramentas especializadas2.
+
+          4.2 Maquetes em papel
+
+       As maquetes em papel são formas de apresentar as interfaces e seus elementos,
+diagramação e até mesmo uma forma de simular a interação. São ferramentas úteis
+para a comunicação e validação de ideias entre projetistas e usuários. São rapidamente
+produzidas tanto a mão livre, quanto com o uso de moldes e instrumentos de desenho,
+sendo denominados também de sketches (Figura 12).
+
+
+
+
+1. Visite o site da ferramenta online, disponível em: https://www.canva.com/pt_br/criar/storyboard/.
+
+2. Ver o artigo , disponível em: https://neilpatel.com/br/blog/storyboard/.
+
+
+
+
+                                                                                                       39
+                             Figura 12: Maquetes de papel.
+
+
+
+
+                                                                                              Voltar ao sumário
+                                        Fonte: Pixabay
+
+
+       Como são de baixo custo, por isso, podem ser alteradas e descartadas a depender
+dos resultados acordados entre as partes. Mesmo diante da simplicidade, as maquetes em
+papel são importantes para a validação das especificações da interface junto aos clientes
+e usuários do sistema, podendo ser utilizadas em testes com o usuário, utilizando-se uma
+sequência de maquetes, que simulam a transição entre páginas ou telas do fluxo do usuário.
+
+      4.3 Wireframes
+
+      Os wireframes representam o “esqueleto” de uma interface, indicando os elementos
+que a compõe, atentando para as questões de diagramação, arquitetura da informação,
+sem maiores preocupações com o conteúdo (Figura 13).
+
+                 Figura 13: Exemplo de wireframe de uma página web.
+
+
+
+
+                                       Fonte: Lucidchat
+
+
+
+                                                                                         40
+                                                                                                   Voltar ao sumário
+          Podem ser representados de forma visual simplificada por wireframes:
+
+          •    A hierarquia ou prioridade dos elementos da interface, sem a identidade visual;
+
+          •    A disposição dos elementos da interface, sem ser o layout final;
+
+          •    Quantidade e tipo de conteúdos, mas sem textos e conteúdos finais;
+
+          •    Elementos de navegação, como menus, slideshows, etc.
+
+          •    Aparência em diferentes tamanhos de tela, como notebooks, smartphones e
+               tablets.
+
+          •    Requisitos de negócio e do sistema, como suas funcionalidades;
+
+          •    Estados do sistema, como usuário logado, carrinho de compras cheio ou vazio,
+               etc.
+
+          Em relação às suas características, podem ser do tipo:
+
+          •    Wireframe de baixa fidelidade: apresentam o rascunho da estrutura das
+               telas ou páginas, sinalizando diagramação e elementos da interfaces, sendo,
+               normalmente, criados em preto e branco (ou tons de cinza).
+
+          •    Wireframe de alta fidelidade: aproximam-se em aparência do sistema proposto,
+               podendo ser acrescidos de cores, imagens, etc.
+
+          •    Wireframes anotados: quando apresentam além das informações visuais,
+               legendas textuais.
+
+          •    Wireframes interativos ou navegáveis: são wireframes de alta fidelidade criados,
+               apresentando possibilidades de navegação através do fluxo do usuário ao
+               realizar uma tarefa.
+
+       Wireframes são ferramentas úteis para comunicação entre projetistas, designers
+gráficos, usuários, desenvolvedores, atuando na validação da especificação da interface e,
+ainda, nos testes com os usuários.
+
+       Há quem considere que os wireframes são maquetes eletrônicas, criadas
+digitalmente, o que exclui as maquetes de papel (CYBIS, BETIOL, FAUST, 2015; TEIXEIRA,
+2014). Um exemplo de ferramenta para a criação de wireframe é o software livre Pencil
+Project3 , que pode ser instalado em GNU/Linux, Windows e Mac OSX.
+
+
+
+
+3. Ver site do programa disponível em: https://pencil.evolus.vn/.
+
+
+
+
+                                                                                              41
+                                                                                               Voltar ao sumário
+          4.4 Mockups
+
+       Os mockups são simulações da interface final, apresentando muitos elementos
+visuais, incluindo a aplicação da interface no produto ou mídia (Figura 14). São a evolução
+dos wireframes no que diz respeito à fidelidade do design visual.
+
+          Figura 14: Mockup para aplicação de webdesign em múltiplos dispositivos.
+
+
+
+
+                                                            Fonte: Pexels
+
+
+
+      Os mockups são uma alternativa atraente e de baixo custo para apresentar um
+design visual aos clientes e usuários. Existem vários sites que disponibilizam mockups de
+objetos e suportes para a aplicação de designs, como o caso do PlaceIt by Envato4.
+
+          4.5 Protótipos
+
+      Cada vez mais os protótipos vem ganhando o mercado devido às possibilidades de
+simular o produto pretendido, sua interface e fluxo do usuário com alta fidelidade.
+
+
+
+
+4. Ver site do programa disponível em: https://pencil.evolus.vn/.
+
+
+
+
+                                                                                          42
+                                                                                                 Voltar ao sumário
+      1. Protótipo horizontal: aquele que apresenta apenas a interface do sistema,
+         configurando uma prototipação de baixa fidelidade;
+
+      2. Protótipo vertical: aquele que apresenta as funcionalidades do sistema, sendo
+         assim uma prototipação de alta fidelidade;
+
+            1. orientado a cenários de tarefas: quando apresenta funções para uma
+               situação em específico.
+
+            2. orientado a tarefas: quando apresenta a interface e muitas funcionalidades
+               para diferentes situações.
+
+            3. Podem ser denominados protótipos os wireframe funcional ou wireframe
+               interativo, quando se trata de wireframes de elevada fidelidade.
+
+      A prototipagem apresenta as seguintes vantagens:
+
+      1. Possibilita a experiência de interação com as interfaces do sistema;
+
+      2. Apresentação mais enxuta para a realização de testes;
+
+      3. Apresentação e validação junto aos clientes;
+
+      4. Diversidade de ferramentas de fácil uso;
+
+      5. Melhor comunicação entre designers, desenvolvedores e usuários;
+
+      6. Estimula a criatividade e o entendimento do sistema proposto;
+
+      7. Possibilita diversos tipos de avaliação e testes com o usuário (TEIXEIRA, 2014).
+
+       “Conceitualmente, os protótipos são usados apenas para elucidar e especificar
+aspectos da interface, sendo descartados depois de terem desempenhado a sua missão”
+(CYBIS, BETIOL, FAUST, 2015, p. 237-238). Contudo, há abordagens nas quais o protótipo
+acaba se tornando a versão inicial do sistema, uma vez que o programa de prototipagem
+gera a codificação de seus componentes. Também há as abordagens evolutivas, nas
+quais as versões iniciais do sistema já permitem a testagem e validação junto ao usuário,
+podendo ser feitas em conjunto entre UX designer e desenvolvedor (CYBIS, BETIOL, FAUST,
+2015; TEIXEIRA, 2014).
+
+
+
+
+                                                                                            43
+                                                                                              Voltar ao sumário
+   Saiba mais…
+
+   Existem muitas ferramentas de UX design para criação de wireframes e protótipos,
+   conheça algumas:
+
+   •   Axure - popular programa para desktop que possibilita prototipagem de alta
+       fidelidade sem códigos, disponível em https://www.axure.com/
+
+   •   Figma - muito popular na categoria freemium online. Disponível em: https://
+       www.figma.com/.
+
+   •   Adobe XD - poderosa ferramenta da família Adobe, com versão para desktop e
+       mobile, disponível em: https://www.adobe.com/br/products/xd.html.
+
+
+
+
+       Resumo:
+
+      A unidade 2 teve como tema a ideação e o projeto de produtos interativos a partir
+das técnicas da IHC, tendo como foco principal do processo os usuários. Portanto, nesta
+unidade, você:
+
+       1. Entendeu o processo criativo e a abordagem do Design Thinking e sua relação
+          com o Design de IHC;
+
+       2. Estudou diferentes tipos de técnicas de coleta de dados sobre o usuário, suas
+          tarefas e ambiente de uso do sistema atual, como questionários, grupo focal,
+          observação em campo, imersão, etc;
+
+       3. Conheceu diferentes técnicas de especificação de requisitos de software, de
+          contexto de uso e de exigências de usabilidade;
+
+       4. Foi apresentado às técnicas de concepção da lógica de uso, como cenários de uso
+          e fluxos do usuário, além de técnicas da lógica da informação da interface, como
+          card sorting, diagrama de afinidade e diagrama de arquitetura da informação;
+
+       5. Compreendeu a etapa da concepção da interface, com as técnicas de storyboard,
+          wireframe, mockups e sobre prototipagem.
+
+
+
+
+                                                                                         44
+                                                                                           Voltar ao sumário
+Referências:
+
+BARBOSA, Simone Diniz Junqueira; SILVA, Bruno Santana. Interação Humano-Computador.
+Rio de Janeiro: Elsevier, 2010.
+
+CYBIS, Walter; BETIOL, Adriana Holtz; FAUST, Richard. Ergonomia e Usabilidade:
+conhecimentos, métodos e aplicações. 3ª edição. São Paulo: Novatec, 2015.
+
+DESIGNCULTURE. O processo criativo desnudado: Por quê você precisa entender disso?
+2015. Disponível em: https://designculture.com.br/o-processo-criativo-desnudado-por-
+que-voce-precisa-saber-disso. Acesso em: 05 mar. 2021.
+
+MACHADO, Pamela. O Processo Criativo na abordagem do Design Thinking. 2019.
+Disponível  em:    https://www.pamelamachado.com.br/post/o-processo-criativo-na-
+abordagem-do-design-thinking. Acesso em: 05 mar. 2021.
+
+SDT, Service Design Tools. Personas. Disponível em: https://servicedesigntools.org/
+tools/personas. Acesso em 27 mar. 2021.
+
+SOMMERVILLE, Ian. Engenharia de software. São Paulo: Pearson Prentice Hall, 2005.
+
+TEIXEIRA, Fabricio. Introdução e boas práticas em UX Design. São Paulo: Caso do Código,
+2014.
+
+WILLIAMS, Robin. Design para quem não é designer. 2ª Ed. São Paulo: Callis Editora,
+2005.
+
+
+
+
+                                                                                      45
+                                                                                                                                   Voltar ao sumário
+ UNIVERSIDADE DE FORTALEZA (UNIFOR)
+
+ Presidência
+ Lenise Queiroz Rocha
+
+ Vice-Presidência
+ Manoela Queiroz Bacelar
+
+ Reitoria
+ Fátima Maria Fernandes Veras
+
+ Vice-Reitoria de Ensino de Graduação e Pós-Graduação                AUTORA
+ Maria Clara Cavalcante Bugarim                                      MÔNICA PAZ
+ Vice-Reitoria de Pesquisa
+ José Milton de Sousa Filho                                          É graduada em Ciência da Computação pela Universi-
+ Vice-Reitoria de Extensão
+                                                                     dade Federal da Bahia (UFBA) e em Marketing pela Uni-
+ Randal Martins Pompeu                                               versidade Estácio de Sá (Unesa). É doutora e mestre em
+                                                                     Comunicação pela UFBA e especialista em Segurança da
+ Vice-Reitoria de Administração                                      Informação pela Unesa. Tem experiência em docência na
+ José Maria Gondim Felismino Júnior
+                                                                     graduação e na pós-graduação nas áreas de TI e de Comu-
+ Diretoria de Comunicação e Marketing                                nicação. É pesquisadora do GIG@ - Grupo de Pesquisa em
+ Ana Leopoldina M. Quezado V. Vale                                   Gênero, Tecnologias Digitais e Cultura e do Onda Digital -
+ Diretoria de Planejamento
+                                                                     Grupo de Pesquisa e Extensão em Informática, Educação
+ Marcelo Nogueira Magalhães                                          e Sociedade, ambos da UFBA.
+
+ Diretoria de Tecnologia
+ José Eurico de Vasconcelos Filho
+
+ Diretoria do Centro de Ciências da Comunicação e Gestão
+ Danielle Batista Coimbra
+
+ Diretoria do Centro de Ciências da Saúde
+ Lia Maria Brasil de Souza Barroso
+
+ Diretoria do Centro de Ciências Jurídicas
+ Katherinne de Macêdo Maciel Mihaliuc
+
+ Diretoria do Centro de Ciências Tecnológicas
+ Jackson Sávio de Vasconcelos Silva
+
+
+                                                  RESPONSABILIDADE TÉCNICA
+
+
+
+
+NÚCLEO DE TECNOLOGIAS EDUCACIONAIS (NTE)                         Projeto Instrucional
+                                                                 Silviane da Silva Rocha
+Gerência                                                         Revisão Gramatical
+Douglas Royer                                                    José Ferreira Silva Bastos
+Coordenação                                                      Identidade Visual / Arte
+Andrea Chagas Alves de Almeida                                   Emanoel Alves Cavalcante
+                                                                 Francisco Cristiano Lopes de Sousa
+Supervisão de Ensino e Aprendizagem
+Carla Dolores Menezes de Oliveira                                Editoração / Diagramação
+                                                                 Rafael Oliveira de Souza
+Supervisão de Planejamento Educacional
+                                                                 Régis da Silva Pereira
+Ana Flávia Beviláqua Melo
+                                                                 Produção de Áudio e Vídeo
+Supervisão de Recursos Educacionais
+                                                                 José Moreira de Sousa
+Josefa Braga Cavalcante Sales
+                                                                 Pedro Henrique de Moura Mendes
+Assessoria Administrativa                                        Kauê Nogueira da Silva
+Mírian Cristina de Lima
+                                                                 Programação / Implementação
+Assessoria Pedagógica de Polo                                    Francisca Natasha Q. Fernandes de Souza
+Jéssica de Castro Barbosa                                        Márcio Gurgel Pinto Dias
+                                                                 Francisco Weslley Lima
+
+
+
+                                                                                                                              46
+

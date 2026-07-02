@@ -1,0 +1,31 @@
+node_modules
+npm-debug.log
+.env
+.env.local
+.env.*.local
+dist
+*.log
+.git
+.gitignore
+.vscode
+.idea
+coverage
+.nyc_output
+.DS_Store
+Thumbs.db
+
+# Arquivos de desenvolvimento
+*.test.ts
+*.spec.ts
+__tests__
+__mocks__
+
+# Documentação (mas mantém o entrypoint)
+README.md
+DEPLOY*.md
+!docker-entrypoint.sh
+
+# Docker
+Dockerfile.dev
+docker-compose*.yml
+.dockerignore

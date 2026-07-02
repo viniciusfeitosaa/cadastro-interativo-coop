@@ -1,0 +1,48 @@
+{
+  "site": {
+    "name": "Viva Saúde",
+    "url": "https://www.sejavivasaude.com.br/",
+    "description": "A inteligência que conecta e otimiza a saúde no Brasil. Gestão integral de médicos e escalas, com suporte administrativo e app de apoio à rotina profissional.",
+    "contact": {
+      "email": "contato@sejavivasaude.com.br",
+      "phone": "+55 11 4040-2345",
+      "phoneWa": "551140402345",
+      "whatsapp": "https://wa.me/551140402345",
+      "address": "Rua Serra de Botucatu, 1195, Sala 103, Vila Gomes Cardim, São Paulo, SP, Brasil"
+    },
+    "social": {
+      "instagram": "https://www.instagram.com/sejavivasaude",
+      "instagramHandle": "@sejavivasaude"
+    },
+    "apps": {
+      "ios": "https://apps.apple.com/br/app/viva-saude/id6772163116",
+      "android": "https://play.google.com/store/apps/details?id=com.vivasaude.appvs"
+    },
+    "stats": {
+      "institutions": "50+",
+      "institutionsLabel": "Instituições Atendidas",
+      "professionals": "2.000+",
+      "professionalsLabel": "Médicos e Especialistas disponíveis",
+      "shifts": "10.000+",
+      "shiftsLabel": "Plantões Gerenciados por Mês",
+      "states": "15+",
+      "statesLabel": "Estados com Atendimento Ativo"
+    }
+  },
+  "identity_visual": {
+    "colors": {
+      "primary": "#1A4011",
+      "secondary": "#2d6a1f",
+      "accent": "#52a33a",
+      "gold": "#c9a227",
+      "background": "#fafaf9",
+      "text": "#111827"
+    }
+  },
+  "pages": {
+    "home": {
+      "hero_headline": "A inteligência que conecta e otimiza a saúde no Brasil.",
+      "hero_subheadline": "Chega de escala de última hora. A Viva Saúde assume a gestão integral dos profissionais e da operação: montamos a cobertura, conduzimos a rotina médica e cuidamos de ponta a ponta para que sua instituição possa focar no que realmente importa, o cuidado ao paciente."
+    }
+  }
+}

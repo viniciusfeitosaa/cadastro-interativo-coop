@@ -1,0 +1,1267 @@
+P348i   Paz, Mônica.
+
+            Interação humano – computador [recurso eletrônico] : usabilidade e ergonomia em
+soluções físicas / Mônica Paz. -- Fortaleza : Universidade de Fortaleza, [2021].
+
+           27 p. -- ( Percurso de Aprendizagem ; 4)
+
+
+
+           1. Interação humano – computador. I. Título. II. Série.
+
+
+
+                                                                                   CDU 681.3:004.5
+
+
+
+
+                        Este trabalho está licenciado com uma Licença Creative Commons
+                           Atribuição-NãoComercial-SemDerivações 4.0 Internacional.
+ USABILIDADE E ERGONOMIA
+   EM SOLUÇÕES FÍSICAS
+
+
+
+
+                Sumário
+
+1.   Ergonomia de produtos
+
+
+
+
+2.   Componentes de hardware: funções e utilizações
+
+
+
+
+3.   Experiência do usuário (ux) em projetos de soluções de
+     hardware
+
+
+
+
+4.   Avaliação da interação de protótipos físicos
+
+
+
+
+                      Sumário clicável
+                                                                                             Voltar ao sumário
+      Neste último Percurso de Aprendizagem,
+      você estudará sobre a interação humano-
+      computador em soluções físicas que
+      abordam ergonomia e usabilidade no
+      projeto e desenvolvimento e avaliação de
+      produtos. Para isso, é preciso entender o que
+      é ergonomia de produtos e quais critérios
+      devem ser empregados para o design e
+      avaliação de produtos em termos de suas
+      características técnicas, ergonômicas e
+      estéticas, além da importância do uso de                       Olá
+      protótipos, modelos e versão piloto para
+      validação e testes com o usuário. Por fim,
+      você conhecerá aspectos da IHC no contexto
+      da interação com computadores de mesa,
+      além da interação mobile e com videogames.
+
+
+
+
+    1.        Ergonomia de produtos
+
+
+       A Ergonomia é a disciplina que estuda a interação dos seres humanos com os
+objetos e ambientes nos quais eles atuam, buscando adequar o sistema e os seus
+elementos (processos, tecnologias, mobiliário, etc.) ao ser humano. Sendo assim, os
+objetivos da ergonomia é promover saúde, segurança e satisfação, tendo a eficiência
+como consequência, além de evitar estresse, fadiga, acidentes e erros (IIDA, 2005).
+
+      Os tipos de ergonomia são:
+
+      •   Ergonomia física: relaciona as características anatômicas, fisiológicas,
+          biomecânicas e antropométricas do ser humano com as suas atividades físicas.
+
+      •   Ergonomia cognitiva: relaciona o trabalho realizado pelas pessoas com
+          aspectos do processamento cognitivo ou mental, como percepção, memória,
+          raciocínio e resposta motora.
+
+      •   Ergonomia organizacional: relaciona o trabalho com a organização do ambiente
+          sociotécnico em termos de estruturas, processos e políticas (IIDA, 2005).
+
+
+
+                                                                                         4
+                                                                                                Voltar ao sumário
+       A ergonomia possui um caráter interdisciplinar, portanto, recebe a colaboração de
+algumas áreas de estudos, como a anatomia, a fisiologia e a psicologia. As orientações
+ergonômicas são baseadas, dentre outros conhecimentos, na antropometria e na
+biomecânica. A antropometria aborda as medidas físicas do corpo humano, as quais
+podem ser médias ou padrões e variam de acordo com idade, sexo, etnia e outras variações
+externas. Tais medidas também podem ser relativas ao corpo parado (antropometria
+estática) ou ao alcance dos movimentos do corpo (antropometria dinâmica) (IIDA, 2005).
+
+       Já a biomecânica ocupacional estuda as interações entre os corpos, seus
+movimentos e trabalhos realizados, por isso, aborda temas como: trabalho muscular,
+trabalho estático e dinâmico, posturas do corpo, aplicação de forças, levantamento e
+transporte de cargas (IIDA, 2005).
+
+      A ergonomia também é aplicada ao processo produtivo de objetos, a ergonomia
+de produto, ajudando a definir suas especificações e configurações para que sejam
+produtos eficientes e seguros. Portanto, antes de entender sobre o projeto de produtos
+ergonômicos, é importante conhecer sobre suas características e formas de classificação,
+como se segue, segundo Iida (2005).
+
+      Todos os produtos apresentam as seguintes características desejáveis para
+garantir que atendam bem aos seus usuários:
+
+      •   Qualidade técnica: diz respeito à funcionalidade técnica, que pode ser de
+          origem elétrica, eletrônica, mecânica, química, etc, levando-se em consideração
+          a eficiência (fazer a função da forma certa com redução do uso de recursos) e
+          a eficácia (fazer a função certa).
+
+      •   Qualidade ergonômica: diz respeito ao conforto e segurança proporcionada
+          pelo produto de forma que seu manuseio esteja fácil, explicativo e adaptado às
+          medidas e aos movimentos do corpo humano.
+
+      •   Qualidade estética: diz respeito às características como cores, formas,
+          materiais, movimentos, acabamentos e outros elementos do design que
+          impactem o usuário de forma positiva.
+
+      Para garantir a qualidade do produto, estas qualidades devem estar em equilíbrio,
+mas o mercado por questões de viabilidade e rendimento acabam fazendo escolhas para
+atender necessidades específicas, alterando este equilíbrio.
+
+      A classificação dos produtos pode ser feita de diversas formas:
+
+      •   Quanto à tecnologia: tradicional, intermediária, avançada.
+
+      •   Quanto ao tipo de tração: manual, mecânica, elétrica, etc.
+
+
+
+
+                                                                                            5
+                                                                                        Voltar ao sumário
+  •   Quanto ao usuário: bens de capital (produtos de qualidade técnica como
+      equipamentos utilizados por organizações e profissionais) e bens de consumo
+      (de uso individual e doméstico).
+
+
+
+Estude, a seguir, as funções e usos de produtos de informática utilizados na
+IHC antes de abordarmos sobre o projeto, desenvolvimento e avaliação de
+produtos.
+
+
+
+
+                                                                                    6
+    2.
+
+
+
+
+                                                                                                Voltar ao sumário
+               Componentes de hardware: funções e utilizações
+
+
+       Quando falamos de interação humano-computador, vem à mente a manipulação
+de um software, mas este é executado em um dispositivo, seja um computador de mesa
+e seus periféricos, um notebook, console de jogos com joysticks, smartphones e tablets
+com seus sensores e telas. Logo, além de pensar na interface lógica, a área de IHC também
+se preocupa com os componentes de hardware que compõem o sistema interativo, seus
+periféricos de entrada e saída (I/O) e suas diversas formas de proporcionar interação
+com o usuário, seja de forma tátil, visual ou sonora.
+
+        As aplicações da ergonomia na informática (denominada por alguns autores de
+ergonomia de hardware) devem visar a diminuição dos esforços feitos pelas pessoas ao
+utilizarem os hardware, evitando o esgotamento físico e mental. Caso contrário, alguns
+possíveis sintomas podem ser observados, como dores na coluna, ombros, pulsos,
+cabeça, irritação nos olhos, etc. (BORGES, s.d.).
+
+      Sendo assim, a ergonomia deve analisar os equipamentos, como teclado, mouse
+e monitor de vídeo, e todo o ambiente, como o que inclui iluminação, cadeira, mesa, som,
+cores e clima do ambiente (BORGES, s.d.).
+
+       O contexto de uso do computador de mesa é praticamente o modelo clássico de
+interação humano-computador, no qual:
+
+      •   Ambiente fechado e, provavelmente, controlado;
+
+      •   O usuário está possivelmente sentado;
+
+      •   O principal dispositivo de saída é uma tela grande de monitor, que pode ou não
+          ser sensível ao toque, mas que normalmente não o é;
+
+      •   Os principais dispositivos de saída são o teclado e o mouse;
+
+      •   Os equipamentos estão sobre uma mesa ou outro anteparo;
+
+      •   Os equipamentos estão ligados à rede elétrica;
+
+      •   Os equipamentos estão ligados à internet, provavelmente, a fixa, mas também
+          pode ser wifi;
+
+      •   Há a possibilidade de conexão de outros dispositivos por diferentes formas de
+          conexão, porta USB, Bluetooth, drivers, etc. (CYBIS, BETIOL, FAUST, 2015).
+
+
+
+
+                                                                                            7
+                                                                                                 Voltar ao sumário
+       A interação com o computador de mesa, leva em consideração a ergonomia dos
+dispositivos de entrada e saída de dados:
+
+      •   Teclado: não pode estar muito baixo em relação ao piso e nem muito alto em
+          relação à mesa. Deve ter um posicionamento que evite ângulo maior que 20º
+          entre mãos e antebraços. Devem ser observados a disposição e a sensibilidade
+          das teclas, a inclinação do teclado, existência de teclado numérico, cor das
+          teclas e das inscrições, retroiluminação e configuração em português.
+
+      •   Monitor de vídeo: O contraste entre os tipos e o fundo é mais importante para
+          a legibilidade do que a quantidade de cores apresentadas. Também deve-se
+          evitar o uso de letras claras no fundo escuro, que causam uma diminuição da
+          visão, pois as áreas escuras aumentam a sensibilidade da retina. Junto com a
+          iluminação e postura, os monitores podem causar a fadiga visual devido a fixação
+          de detalhes (objetos pequenos), iluminação inadequada, pouco contraste, pouca
+          definição, objetos em movimento e má postura. Deve ser posicionado de forma
+          a ser visualizado sem que o usuário precise baixar a cabeça.
+
+      Alguns elementos do ambiente também precisam ser analisados, como:
+
+      •   Iluminação: deve ser difusa ou indireta para evitar reflexos na tela, bem como
+          evitando-se objetos refletores e ofuscamento. A luminária deve lançar raios
+          com ângulos até 45º com a vertical, estando lateralizados em relação à estação
+          de trabalho.
+
+      •   Som: o organismo pode se acostumar com ruídos contínuos do ambiente,
+          sendo que 60Db é o aceitável para o trabalho cotidiano em escritório, 65Db é o
+          limite para ambientes ruidosos e 90Db já pode causar problemas fisiológicos,
+          irritação e fadiga, diminuindo a produtividade.
+
+      •   Clima do ambiente: o conforto térmico ajuda na produtividade, podendo ser
+          atingido entre 18-28º.
+
+      Os móveis para escritório são regulamentados, no Brasil, pela NBR 13962 para
+cadeiras, NBR 13966 para mesas de escritório e NBR 13965 para mesas de informática:
+
+      •   Cadeira: o encosto deve ser grande e inclinável entre 90-120º; o assento pouco
+          estofado, com altura regulável e bordas arredondadas; eixo giratório com 5 pés
+          com rodízio; amortecimento vertical; e apoio para os braços.
+
+      •   Mesa para computadores: deve acomodar o monitor, teclado e mouse e
+          fornecer espaço para o usuário digitar com o braço formando um ângulo de
+          90º com a mesa, segundo as seguintes medidas em centímetros:
+
+      •   tampo da mesa: 78 x 75;
+
+
+                                                                                             8
+                                                                                       Voltar ao sumário
+      •   tampo do monitor: (64-75) x 46;
+
+      •   tampo do teclado: (64-75) x 50 x 22;
+
+      •   altura livre para os joelhos: 56-66;
+
+      •   Profundidade livre para os joelhos: 45;
+
+      •   Largura para as pernas: 60;
+
+      •   Profundidade livre para os pés: 57;
+
+      •   distância para visualização do monitor: 45;
+
+      •   raio da borda: 0,25 (IIDA. 2005).
+
+
+
+   Saiba mais:
+
+   Conheça opções ergonômicas de mouses e teclados disponíveis no mercado
+   e perceba as estratégias utilizadas para que tais produtos se adaptem às
+   inclinações e curvaturas das mãos e braços do usuário.
+
+   Visite: https://www.logitech.com/pt-br/ergo/keyboard-mice-series.html.
+
+
+
+       Por muito tempo, o uso de computadores de mesa representou o contexto de
+interação predominante, mas com o lançamento de diversos dispositivos, o mercado
+mudou bastante, exigindo o investimento em pesquisas em IHC que fornecessem
+soluções para o aprimoramento da experiência do usuário.
+
+
+
+
+                                                                                   9
+    3.
+
+
+
+
+                                                                                             Voltar ao sumário
+              Experiência do usuário (ux) em projetos de soluções
+              de hardware
+
+
+      Para garantir uma boa experiência do usuário é preciso pesquisar suas necessidade
+e objetivos, bem como seguir diretrizes de usabilidade e ergonomia para projetar e
+desenvolver produtos confortáveis, úteis e seguros.
+
+       Por isso, nesta seção discutiremos o projeto universal de produtos ergonômicos, o
+processo de desenvolvimento de produtos e veremos os casos específicos da interação
+e projeto de dispositivos móveis e videogames, a partir da integração de aspectos de
+software e de hardware através da interface.
+
+      3.1 Projeto universal de produtos ergonômicos
+
+      O objetivo do projeto universal é planejar e construir produtos adequados para o
+número maior de pessoas, independente de idade, de deficiências e da destreza (destro,
+canhoto). Os seus princípios são:
+
+      •   Uso equitativo para garantir que as dimensões, acessórios e ajustes façam
+          com que os produtos sejam adequados à maioria, mantendo a segurança e a
+          privacidade.
+
+      •   Flexibilidade no uso, possibilitando o uso em diferentes níveis de experiência,
+          destreza, modos e ritmos.
+
+      •   Uso simples e intuitivo, sem complexidades desnecessárias e independente
+          das diferenças culturais, de linguagem, de nível de conhecimento, para isso,
+          a informação deve ser hierarquizada, fornecida sempre que preciso de forma
+          rápida e precisa.
+
+      •   Informação perceptível para diferentes sistemas de linguagem (visual, sonora,
+          tátil), com redundância, legibilidade, contrastes e adequação ao meio.
+
+      •   Tolerância ao erro para evitar erros involuntários e acidentais, com
+          configurações sobre sensibilidade e outras opções sempre de forma lógica
+          e com mecanismos e avisos de proteção contra ações inseguras, além do
+          retorno às configurações anteriores.
+
+      •   Redução do gasto energético, preservando-se a postura de uso neutra e
+          evitando-se as contrações musculares estáticas.
+
+      •   Espaço apropriado, dimensionando-se os produtos para o uso, acesso e
+
+
+
+                                                                                        10
+                                                                                                       Voltar ao sumário
+          manipulação de forma independente do tamanho do usuário, da sua postura
+          ou do seu nível de mobilidade (IIDA, 2005).
+
+       Diante disso, percebe-se que o projeto universal defende um alto nível de
+usabilidade, que também é relativa à intuição de como usar (evidência), consistência,
+compatibilidade, carga de trabalho (capacidade), prevenção e correção dos erros,
+realimentação das orientações e mensagens de erros (IIDA, 2005).
+
+      Sendo assim, a usabilidade de produtos físicos pode ser otimizada através de
+características físicas e cognitivas:
+                         A usabilidade pode ser melhorada com alteração de algumas características
+                         físicas do produto, como dimensões, pesos, formas, resistências e
+                         outras. Essas mudanças devem visar sempre a adaptação do produto às
+                         características do usuário ou grupo de usuários. [...]
+
+                         As características cognitivas referem-se aos conhecimentos do usuário
+                         sobre o modo de usar o produto baseando-se em suas experiências
+                         anteriores. Se as características físicas assemelham-se ao hardware, as
+                         cognitivas podem ser consideradas como softwares. Em outras palavras,
+                         os produtos não devem contrariar as experiências e os [padrões] já
+                         estabelecidos e que provocam certas expectativas (IIDA, 2005, p. 322-323).
+
+
+       O investimento em usabilidade é, inclusive, um diferencial competitivo que
+influencia na aceitação do produto no mercado.
+
+
+
+    Refletindo...
+
+    Certamente, produzir produtos universalmente projetados é uma meta de
+    difícil comprimento. Na falta da universalidade, o usuário com deficiência
+    tem que adotar tecnologias assistivas e o usuário com outras necessidades
+    mais específicas acabam tendo que recorrer a produtos mais caros e feito sob
+    encomenda. Um exemplo, do setor de transportes, são os ônibus específicos
+    para cadeirantes em contraste com os que habitualmente rodam nas cidades.
+    Outro exemplo são lojas virtuais especializadas em sapatos femininos de
+    numeração baixa (30-35) para o público adulto ou especializadas em sapatos
+    femininos com numeração considerada mais alta (39-46) pelo mercado.
+
+
+
+      3.2 Processo de desenvolvimento de produtos
+
+       O processo de desenvolvimento de produtos pode e deve ser influenciado pela
+disciplina da ergonomia em suas diferentes etapas. Além disso, a prototipagem é uma
+prática que proporciona dinamismo à especificação, concepção e avaliação dos produtos.
+
+
+
+                                                                                                  11
+      3.2.1 A ergonomia no processo de desenvolvimento dos produtos
+
+
+
+
+                                                                                                       Voltar ao sumário
+      A ergonomia de produtos não apenas está presente no projeto de produtos, mas
+sim em todo o ciclo de vida do produto, como pode ser visto no Quadro 1:
+
+Quadro 1: participação da ergonomia nas diversas etapas do desenvolvimento de
+produtos.
+
+      Etapas                Atividades gerais                     Participação da ergonomia
+
+                   - Examinar as oportunidades
+                   - Verifica as demandas                        - Examinar o perfil do usuário
+    Definição      - Definir objetivos do produto                - Analisar os requisitos do
+                   - Elaborar as especificações                  produto
+                   - Estimar custo/benefício
+
+                   - Analisar os requisitos do sistema           - Analisar as tarefas/
+                   - Esboçar a arquitetura do sistema            atividades
+ Desenvolvimento
+                   - Gerar alternativas de soluções              - Analisar a interface
+                   - Desenvolver o sistema                       (informações e controles)
+
+                   - Detalhar o sistema
+                   - Especificar os componentes
+                                                                 - Acompanhar os
+  Detalhamento     - Adaptar as interfaces                       detalhamentos
+                   - Detalhar os procedimentos de
+                   teste
+
+                   - Avaliar o desempenho
+                                                                 - Testar a interface com o
+    Avaliação      - Comparar com as especificações
+                                                                 usuário
+                   - Fazer os ajustes necessários
+
+                   - Prestar serviço pós-venda                   - Realizar estudos de
+ Produto em uso    - Adquirir experiências para outros           campo junto aos usuários e
+                   projetos                                      consumidores
+
+                                   Fonte: IIDA (2005, p. 234).
+
+
+
+      3.2.2 Prototipagem de produtos físicos
+
+       As representações bidimensional e tridimensional são utilizadas nos processos
+de projeto e de desenvolvimento de produtos com o intuito de facilitar a comunicação
+entre os membros da equipe e entre os projetistas e os usuários (BEZERRA, 2014). Dessa
+forma, podem ser informados requisitos do produto e outras alternativas de soluções,
+além de servir como objeto das avaliações.
+
+
+                                                                                                  12
+      A criação de representação tridimensional acabou sendo popularizada com o
+
+
+
+
+                                                                                           Voltar ao sumário
+termo prototipagem, que pode ser caracterizada para diferentes níveis de fidelidade,
+etapa do processo de desenvolvimento, materiais, tecnologia e objetivos. Dessa forma,
+os protótipos podem aparecer em modalidade física ou virtual no que se referem aos
+produtos (BEZERRA, 2014).
+
+     Sendo assim, a concepção de produtos pode ser representada de várias formas,
+como mostra o Quadro 2:
+
+                        Quadro2: Representação de produtos.
+
+ Representação                  Descrição                          Objetivo
+
+                  Representação em narrativa              Análise da situação atual
+                  gráfica com textos explicativos que     ou Definição: compreender
+   Storyboard                                             o fluxo de tarefas;
+                  apresentam a interação e o contexto
+                  de uso do produto.                      Concepção da interface.
+
+                  Apresentação gráfica e realista do
+                                                          Detalhamento:
+                  produto em sua fase final de projeto,
+    Rendering                                             apresentação do produto
+                  podendo ser um desenho à mão livre
+                                                          em detalhes.
+                  ou computadorizado em 2D ou 3D.
+
+                                                      Detalhamento:
+                                                      apresentação do produto
+                  Apresentação gráfica e em movimento
+    Animação                                          em movimento e em
+                  do produto.
+                                                      diversos ângulos, situações
+                                                      e montagens.
+                  Qualquer representação física do
+                  produto, independente do quão fiel se
+                  apresente. Pode ser do tipo:
+                  - Proporcional ou modelo de conceito:
+                  modelo de baixo orçamento e de fácil
+                  fabricação.                             Detalhamento:
+     Modelo                                               apresentação da aparência
+                  - Ergonômico: modelo que apresenta
+                                                          visual do produto.
+                  a forma e algumas funções.
+                  - Estética e modelagem: modelos com
+                  a aparência do produto
+                  - Funcional: modelos com funções
+                  para testes.
+                  Em projeto de produtos, é a
+                  representação volumétrica do produto Avaliação: validar
+     Mockup
+                  em escala real, independente do nível características do produto.
+                  de fidelidade.
+
+
+
+
+                                                                                      13
+                                                                                                         Voltar ao sumário
+                   Prototipação em papel: representação
+                   gráfica da interface e da interação  Concepção da interface;
+                   através das simulações feitas por um Avaliação: testes de
+                   mediador simulando as respostas do usabilidade com o usuário.
+                   sistema.
+    Protótipos
+                   Protótipo virtual: qualquer protótipo          Detalhamento e avaliação
+                   desenvolvido em computador.                    do produto.
+
+                   Protótipo de alta fidelidade:                  Avaliação de aspectos
+                   representação do produto com todas             físicos, estéticos e técnicos
+                   as suas características.                       do produto.
+
+                                                         Avaliação de aspectos
+                                                         físicos, estéticos e técnicos
+                   Primeira produção do produto, sendo a do produto.
+      Piloto
+                   primeira amostra da série.
+                                                         Avaliação do processo
+                                                         produtivo.
+
+                                      Fonte: Bezerra (2014).
+
+
+
+        A prototipação pode ser feita de forma física ou virtual (BEZERRA, 2014). Alguns
+exemplos de prototipação física são conseguidas com as técnicas de prototipagem rápida,
+como a da impressão tridimensional (3DP) e da estereolitografia, que usa resina líquida
+fotocurável. Já a prototipação virtual pode ser conseguida com o uso de programas de
+edição de imagens vetoriais (Inkscape), de modelagem 3D (Blender) e, principalmente,
+programas de desenho/projeto assistido por computador (AutoCAD), além da realidade
+virtual e realidade aumentada.
+                          Modelos e protótipos físicos reduzem o esforço cognitivo de interpretar
+                          palavras ou imagens virtuais, e trazem ao mesmo tempo a possibilidade
+                          da idealização física do produto.
+
+                          Quando apresentado diretamente ao usuário, esse pode tocar no produto,
+                          sentir sua textura, seu cheiro, e outras sensações importantes em uma
+                          decisão de compra. Atualmente, uma das empresas mais inovadoras
+                          do globo, a IDEO, utiliza a prática da fabricação de modelos e protótipos
+                          físicos, como ferramenta essencial na resolução de problemas e para
+                          a criação de produtos inovadores. Hoje em dia, na área industrial e na
+                          pesquisa, a prototipagem é uma técnica conhecida e consagrada, sendo
+                          aplicada, por exemplo, para estudo de produtos, desenvolvimento de
+                          biomodelos, produção em série e outras. Os modelos virtuais também têm
+                          seu espaço e sua aplicação tanto no ensino, na pesquisa, na área industrial
+                          e vem revolucionando e agilizando o lançamento de novos produtos.
+                          Porém, o contato físico com os materiais é de extrema importância para
+                          a aprendizagem de acadêmicos de Design e de outras áreas (CÂNDIDO,
+                          KINDLEIN JÚNIOR, 2009, p. 17).
+
+
+
+
+                                                                                                    14
+                                                                                            Voltar ao sumário
+    Todas estas técnicas podem ser utilizadas para a avaliação da experiência do
+    usuário, simulando o produto final com diferentes níveis de interatividade e
+    fidelidade da aparência, com diferentes configurações em termos de curto e
+    conhecimento técnico.
+
+
+
+
+    Saiba mais:
+
+    Conheça um caso real de aplicação de testes de usabilidade realizada por uma
+    empresa de desenvolvimento de softwares e agência digital:
+    Visite: http://www.vm2.com.br/portfolio-detalhe/elemidia-teste-de-usabilidade
+
+
+
+      3.3 Interação e projeto de dispositivos móveis e videogames
+
+       Anteriormente, você estudou sobre as funções e características de dispositivos de
+entrada/saída e outros objetos relativos ao ambiente de interação com os computadores
+de mesa, que podem ser considerados a interação padrão na área da informática.
+Contudo, outros dispositivos e aparelhos ganharam fatias consideráveis do mercado,
+como os dispositivos móveis e os videogames, o que levou a mais estudos na área de
+IHC e de experiência do usuário.
+
+      3.3.1 Interação com dispositivos móveis
+
+      Diferentemente do que já foi visto em relação à IHC fixa, a IHC móvel se passa
+em um ambiente difícil de determinar. Há mais possibilidades de variação em termos
+de mobilidade do usuário, atenção dividida com outras atividades, segurança, condições
+sonoras e luminosas, dentre outras.
+
+       O Quadro 3 apresenta uma comparação entre aspectos que distinguem o contexto
+da interação fixa da interação móvel:
+
+
+
+
+                                                                                       15
+                                                                                                                  Voltar ao sumário
+         Quadro 3: Principais aspectos da interação fixa e da interação móvel.
+
+
+  Aspectos da interação                     Interação fixa                            Interação móvel
+
+                                Normalmente interno, pouca                       Interno e externo,
+Ambiente
+                                variação, controlado                             imprevisível e dinâmico
+
+                                Tela grande, mouse, teclado
+                                                                                 Tela pequena, teclados
+                                físico, conectado à rede
+                                                                                 pequenos, carregamento
+Equipamento                     elétrica, conexão estável à
+                                                                                 por bateria, conexão
+                                internet, conexão de outros
+                                                                                 instável à internet
+                                equipamentos
+
+                                Necessita de uma superfície                      O dispositivo é operado
+Forma de operação
+                                de apoio, como uma mesa                          nas mãos do usuário
+
+Tempo de duração da
+                                Médio a longo                                    Médio a curto
+interação
+                                                                                 Alta, usuário sentado ou
+Mobilidade do usuário           Baixa, normalmente sentado
+                                                                                 em movimento
+
+Privacidade durante a
+interação (visibilidade
+                                Média a baixa                                    Média a alta
+da tela por terceiros e
+dispositivos pessoais)
+
+                                                                                 A interação pode ser
+                                                                                 atividade primária ou
+                                A interação é a atividade
+                                                                                 atividade secundária.
+Hierarquia das atividades       primária. Facilita o uso de
+                                                                                 Dificulta a divisão de
+                                multitarefas em uma só tela.
+                                                                                 tela com mais de um
+                                                                                 aplicativo.
+
+                                Média a alta. Atenção                            De média a baixa.
+                                na tarefa. Baixa taxa de                         Atenção parcial. Alta
+Atenção do usuário
+                                interrupções vindas do                           taxa de interrupções/
+                                sistema.                                         notificações.
+
+Manipulação de outros
+objetos que não estão           Rara                                             Frequente
+relacionados à interação
+
+                                                                                 Manipulação direta em
+                                                                                 tela de toque, linguagem
+                                Alta dependência da                              natural, uso dos diversos
+Estilos de interação            manipulação direta; outros                       sensores e recursos
+                                estilos são complementares                       dos equipamentos
+                                                                                 (acelerômetro, sensor de
+                                                                                 iluminação, câmera, etc.)
+
+                            Fonte: adaptado de Cybis, Betiol, Faust (2015, p. 308).
+
+
+
+                                                                                                             16
+                                                                                                Voltar ao sumário
+       Tratando-se de interação móvel, deve-se pensar na redução de carga de trabalho
+com a concisão das legendas e textos, a mínima solicitação de ações e de entradas de
+dados, além de diminuir a densidade informacional. Além disso, o excesso de estímulos
+do ambiente dinâmico pode prejudicar a atenção e exigir uma alta carga cognitiva. Afinal,
+o contexto de uso dos dispositivos móveis, bem como suas características pedem uma
+interação fácil e rápida, muitas vezes com o uso de apenas uma mão (CYBIS, BETIOL,
+FAUST, 2015). Sendo assim, este uso visa as micro atividades e os momentos ociosos de
+longo e de curto prazo (microtédio).
+
+       A necessidade de investimentos em usabilidade é importante, visto que a maioria
+das metáforas e os elementos de interação típicos da interação no computador não se
+aplicam aos dispositivos móveis. Ou seja, é importante investir no aprendizado, ainda
+mais que em uma população como a do Brasil, na qual a presença do telefone celular
+(93% dos domicílios) vem se igualando à presença da televisão (95%) e a presença do
+tablet (13%) e do videogame (15%) tem apresentado pouca diferença em relação ao
+computador de mesa (16%) e ao notebook (26%) (CETIC, 2019).
+
+       Uma vez compreendido o contexto de uso, é importante conhecer as características
+dos dispositivos móveis, uma vez que tais informações são importantes para o seu
+projeto e avaliação:
+
+      •   Tamanho de tela: impõe limitação para legibilidade e manuseio (rolagem de
+          telas compridas e seleção de itens). No mercado, podem ser encontrados
+          smartphones a partir de 4”, que se adaptam melhor à mão, até algo em torno
+          de 7”, que favorece o consumo de vídeos (Figura 2).
+
+      •   Tela multitoque: facilitam a interação através do reconhecimento de padrões
+          produzidos pelos dedos do usuário, como: toque simples: toque longo (manter
+          pressionado), duplo toque, arrastar, deslizar (mais rápido que o anterior), juntar
+          ou separar (pinça com os dedos polegar e indicador usado normalmente para
+          dar zoom na tela), girar (com o uso de um ou dois dedos).
+
+      •   Multitarefas: embora alguns sistemas operacionais possibilitem a divisão da
+          tela do dispositivo móvel em duas partes, o uso de smartphone e tablets costuma
+          ser feito com uma tela por vez, para tanto, existe também a funcionalidade
+          de alternância e de sobreposição de telas para facilitar a multitarefa, além da
+          execução em segundo plano.
+
+      •   Entrada e saída (I/O): além da conexão de outros dispositivos com o auxílio de
+          cabos USB ou um adaptador USB fêmea, os dispositivos atuais vêm equipados
+          com vários sensores que ajudam na interação automatizando vários comandos.
+
+
+
+
+                                                                                           17
+                                                                                      Voltar ao sumário
+    Por exemplo:
+
+      »   Sensores de movimento:
+
+           *   Acelerômetro: define a movimentação e orientação do equipamento,
+               usado, por exemplo, em aplicativos de mapas.
+
+           *   Giroscópio: define a orientação do equipamento, usado por
+               aplicativos de vídeo para adequar a resolução ao espaço disponível.
+
+      »   Sensores de posicionamento:
+
+           *   Localização: define a localização geográfica, como o GPS de
+               aplicativos de mapas e de pedidos de delivery.
+
+           *   Campo geomagnético: detecta o norte magnético (bússola).
+
+           *   Proximidade: percebe a proximidade do aparelho com outros
+               objetos, como o utilizado para bloquear a tela durante o uso do
+               celular em uma ligação telefônica.
+
+      »   Sensores de ambiente: que detectam a iluminação, umidade, temperatura
+          e pressão (barômetro), utilizados para otimizar as configurações do
+          aparelho de acordo com o ambiente.
+
+      »   Sensores de sinais fisiológicos: detectam informações biométricas e
+          fisiológicas do usuário.
+
+           *   Frequência cardíaca: registro de batimentos cardíacos, como o
+               utilizados em aplicativos de monitoramento de práticas esportivas;
+
+           *   Impressão digital: faz a leitura biométrica da impressão digital,
+               sendo utilizado como mecanismo de identificação e de segurança
+               para o dono do dispositivo.
+
+•   Outras limitações: velocidade de conexão; capacidade de armazenamento;
+    duração da bateria (CYBIS, BETIOL, FAUST, 2015), além de questões sobre
+    privacidade e segurança.
+
+Figura 2: Diferentes tamanhos de dispositivos móveis.
+
+
+
+
+                           Fonte: Gabriel Freytez / Pexels
+
+
+                                                                                 18
+                                                                                             Voltar ao sumário
+      Outros aspectos importantes são o peso, a largura e o arredondamento de bordas,
+o que ajuda na adequação desses objetos às mãos humanas.
+
+       Unindo conectividade, portabilidade, carregamento de energia por bateria e
+diversos recursos de interação e de entrada/saída, a mobilidade vem ganhando cada
+vez mais espaço no mercado, fazendo parte das estratégias de marketing, muitas vezes,
+assumindo o papel de principal meio de comunicação entre empresas e público. Não é
+à toa que a tecnologia vem avançando no sentido da internet das coisas e da tecnologia
+vestível (Wearable Technology).
+
+      São princípios para o projeto de interfaces de dispositivos móveis:
+
+      •   Adequar os aplicativos ao contexto do usuário móvel;
+      •   Considerar que as experiências do usuário do computador de mesa não são as
+          mesmas do móvel;
+      •   Priorizar o conteúdo em detrimento de outros elementos visuais;
+      •   Manter a consistência interna (elementos do aplicativo) e externas (elementos
+          já padronizados pelo mercado);
+      •   Projetar para diferentes orientações de tela (retrato e paisagem);
+      •   Minimizar a carga de trabalho, facilitando a realização das tarefas;
+      •   Projetar a navegabilidade, evitando muita profundidade e permitindo a opção
+          de voltar à tela inicial, sem a necessidade de usar os recursos do sistema
+          operacional;
+      •   Minimizar a entrada de dados, facilitando entradas de dados e passagem de
+          comandos;
+      •   Ter cuidado com a rolagem infinita para não sobrecarregar os recursos e indicar
+          ao usuário a existência de mais conteúdo;
+      •   Apoiar distrações e interrupções, armazenando o estado da atividade para
+          quando o usuário retornar à interação;
+      •   Possibilitar a personalização da interface, uma vez que são dispositivos de uso
+          pessoal e que devem atender as necessidades de seus usuários.
+
+
+
+    Perceba que estas diretrizes estão estritamente ligadas às características dos
+    dispositivos mencionados anteriormente, como tamanho de tela, recursos
+    mais escassos, etc.
+
+
+
+
+                                                                                        19
+                                                                                                                                            Voltar ao sumário
+          3.3.2 Interação com videogames
+
+        Quando falamos de jogos, também estamos falando de atividades que envolvem
+Metas, Pontuação, Progressão, Regras e Desafio. Além disso, os jogos podem assumir
+diferentes modalidades. Sendo assim, em particular, há os videogames, que estão no
+mercado desde 1960, originados nos EUA, com considerável evolução desde então. Por
+isso, é interessante estabelecer que:
+                                        A definição usada aqui, emprestada de John Salisbury, é de que um
+                                        videogame abrange todas as experiências computadorizadas de jogo
+                                        onde uma tela é o meio principal de exibição da saída do jogo. Assim,
+                                        abrange jogos de computador e de celular, mas não inclui jogos em que um
+                                        computador pode estar envolvido para processar regras e movimentações,
+                                        mas nos quais a tela não é um elemento central da experiência (CYBIS,
+                                        BETIOL, FAUST, 2015, p. 340).
+
+       Mas, desde sempre, o principal objetivo dos videogames é a diversão. Para tanto,
+dois aspectos de IHC para jogos são:
+
+          •    Usabilidade: possibilidades fornecidas pelo jogo para que o usuário alcance
+               suas metas de forma efetiva, ou seja, focando na eficácia e na eficiência, com
+               satisfação.
+
+          •    Jogabilidade: estratégias usadas pelo jogo para tornar o cumprimento das
+               metas desafiador e instigante de forma criativa.
+
+       Em termos de dispositivos e controles físicos em videogames, destacam-se os
+consoles com joysticks (Figura 3), computadores gamers (Figura 4), consoles portáteis
+(Figura 5), óculos para jogos de realidade virtual (Figura 6), etc.
+
+
+                                         3                                                   4
+
+
+
+
+                                         5                                                   6
+
+
+Figura 3: Joysticks wireless com vibração (PlayStation). Fonte: Jeshoots.com / Unsplash. Figura 4: Computadores Gamers. Fonte:
+Ella Don / Unsplash. Figura 5: Console portátil (Nintendo). Fonte: Erik Mclean / Unsplash. Figura 6: Óculos de realidade virtual. Fonte:
+Jessica Lewis / Unsplash
+
+
+
+
+                                                                                                                                       20
+                                                                                             Voltar ao sumário
+       O projeto de IHC para videogames abarca processos e elementos de diferentes
+indústrias criativas, como a cinematográfica, a de software e a criada para o papel do
+game designer:
+
+      •    Indústria cinematográficas:
+      •    Aspectos ficcionais: enredo, cenários, personagens, sons e música;
+      •    Indústria de software:
+      •    Processos de avaliação de usabilidade e jogabilidade.
+      •    Game design:
+      •    Aspectos interativos: situações de desafios e possibilidades de interação.
+
+      O Quadro 4 apresenta importantes elementos que compõem o projeto de
+videogames:
+
+      Quadro 4: Elementos que contribuem para a diversão e a imersão em videogames.
+
+
+  Componentes do
+                                                             Descrição
+     projeto
+
+                       Desenho dos cenários 2D ou 3D, estilos de exibição da
+      Gráficos         informação, componentes de escolhas e orientação aos
+                       usuários.
+
+          Som          Música temática, incidental, efeitos sonoros.
+
+                       Dispositivos de entrada/saída, facilidade de aprendizagem e de
+      Interface
+                       uso da interface, configurabilidade.
+
+                       Diversão, liberdade de movimento, regras, balanceamento,
+     Gameplay          processo de aprendizagem do jogo, variedade de ações
+                       possíveis para atingir as metas do jogo.
+
+                       Roteiro, conteúdo, navegação entre os níveis, personagens,
+      História
+                       metas a alcançar.
+
+                               Fonte: Cybis, Betiol, Faust (2015, p. 346).
+
+
+
+      O hardware está relacionado à Interface, podendo ser projetado e avaliado, visando
+questões de usabilidade e ergonomia.
+
+       O Quadro 5 apresenta os princípios para o projeto da interação com videogame,
+indicando se são relativos à jogabilidade ou à usabilidade. No caso de ser uma questão de
+usabilidade, o princípio de projeto está associado ao critério ergonômico para interfaces
+com o usuário.
+
+
+                                                                                        21
+                                                                                                     Voltar ao sumário
+Quadro 5: Princípios de projeto de um jogo com base na usabilidade e na jogabilidade.
+
+
+     Princípio de Projeto de Interação                   Atributo de qualidade da interação
+
+O desafio é otimizado e estimular o jogador. Jogabilidade
+
+A atenção do usuário deve ser absorvida
+                                                     Jogabilidade
+pelo jogo.
+
+                                                     Usabilidade
+
+As metas do jogo devem ser claras e                  Presteza: parte das instruções podem
+cumpridas.                                           ser inseridas como parte da narrativa do
+                                                     jogo, ajudando no aprendizado de como
+                                                     utilizá-lo, o que inclui os controles.
+
+                                            Usabilidade
+Deve ser dado o feedback de forma clara e
+consistente para indicar que as metas estão Feedback: parte do retorno é passado
+sendo cumpridas.                            como confirmações de pontuação,
+                                            mudanças de fase, etc.
+
+O jogo deve liberar o jogador de suas
+preocupações e frustrações, pelo menos, de Jogabilidade
+forma temporária.
+
+                                                     Usabilidade
+                                                     Controle do usuário: apesar da
+O jogador deve ter o sentimento de controle          receptividade do público à inovação
+da atividade.                                        é interessante usar elementos
+                                                     padronizados para os controles,
+                                                     incluindo os físicos.
+
+Todos os sentimentos de autoconsciência
+                                                     Jogabilidade
+devem desaparecer durante a imersão.
+
+O jogador deve ter uma sensação de
+                                                     Jogabilidade
+alteração do tempo durante a atividade.
+
+                               Fonte: Cybis, Betiol e Faust (2015).
+
+
+
+
+                                                                                                22
+    4.
+
+
+
+
+                                                                                                 Voltar ao sumário
+               Avaliação da interação de protótipos físicos
+
+
+       Sobre a avaliação de produtos físicos, abordaremos o desenvolvimento com
+avaliação participativa, aspectos avaliados em testes com usuários e inspeções de
+conformidade com leis e normas técnicas, segundo Iida (2005).
+
+       4.1 Avaliação de produtos segundo a ergonomia
+
+      A avaliação de produtos pode ser realizada com o uso de produtos finais já
+produzidos ou lançados no mercado, com a versão piloto do produto antes do seu
+lançamento e até mesmo com simulações ou representações, como protótipos e
+modelos, ainda durante o projeto. Afinal, a prototipagem é uma atividade cada vez mais
+importante para as áreas criativas, como a IHC e o design de produtos, etc.
+
+       Sendo assim, o processo de avaliação ergométrica de produtos pode ocorrer
+em diferentes momentos e métodos para atender a diferentes objetivos de avaliação.
+Da mesma forma, a avaliação de produtos físicos pode ocorrer desde o seu projeto e
+desenvolvimento ou como forma de controle de qualidade e satisfação do cliente. Neste
+caso, os clientes podem ser distribuidores atacadistas, varejistas e clientes finais e outros
+relativos à cadeia produção, distribuição, consumo, descarte e reciclagem.
+
+       Durante a produção, pode-se assumir a abordagem do desenvolvimento
+participativo, no qual são feitas consultas ao cliente ou a possíveis clientes que opinam e
+testam os produtos. Para entender o consumo na situação atual, podem ser realizadas as
+técnicas prospectivas de entrevistas e aplicação de questionários. Também podem ser
+realizadas as técnicas de grupo focal e observação em campo (in loco).
+
+       Seja a avaliação do tipo investigação, seja do tipo empírica, é importante que as
+pesquisas, junto ao usuário, sejam realizadas de acordo com os objetivos da pesquisa, os
+requisitos e restrições levantados para os produtos. Para ajudar na análise, é importante
+que os quesitos analisados, como as características dos produtos, sejam quantificados
+e priorizados, utilizando-se de fator de prioridade e conceitos como ruim, regular, bom,
+muito bom, por exemplo.
+
+      Em termos de ergonomia, podem ser observados ou questionados os seguintes
+aspectos:
+
+       •   Causas de mau uso, fadiga, acidentes, estresses;
+       •   Emoções provocadas pelo produto no usuário;
+
+
+
+                                                                                            23
+                                                                                               Voltar ao sumário
+      •   Formas de uso previstas e inesperadas;
+      •   Opinião sobre as características do produto;
+      •   Dúvidas sobre formas de uso, limpeza, manutenção, outros cuidados, etc.
+
+      A avaliação pode ser feita em relação às características dos produtos:
+
+      •   Técnicas: dimensões, peso, resistência dos materiais, durabilidade, estabilidade,
+          etc.
+      •   Estéticas: emoções, sentimentos de aceitação e prazer proporcionado ao
+          usuário.
+      •   Usabilidade: postura, incidência de erros, eficiência, eficácia, conforto,
+          satisfação.
+
+
+
+    As avaliações também podem ser realizadas com o intuito de se determinar
+    a conformidade do produto com normas e regulamentos. No Brasil, podemos
+    destacar o INMETRO e a ANATEL para a regulação e certificação de produtos.
+
+
+
+       O Instituto Nacional de Metrologia, Qualidade e Tecnologia (INMETRO) tem como
+missão “viabilizar soluções de infraestrutura da qualidade que adicionem conﬁança,
+qualidade e competitividade aos produtos e serviços disponibilizados pelas organizações
+brasileiras, em prol da prosperidade econômica e bem-estar da nossa sociedade”
+(INMETRO, 2021).
+
+      Já a Agência Nacional de Telecomunicações (ANATEL) tem como objetivo “regular
+o setor de telecomunicações para contribuir com o desenvolvimento do Brasil”, sendo
+que uma das suas atribuições é “expedir ou reconhecer a certificação de produtos,
+observados os padrões e as normas por ela estabelecidos” (ANATEL, 2021).
+
+      4.2 Avaliação de usabilidade da interação móvel
+
+      Para a área de IHC, a mobilidade representou um desafio em termos de adaptação
+de suas técnicas para contexto da interação móvel, bem como para a diversidade de
+dispositivos presentes no mercado. Podem ser realizados diferentes tipos de testes:
+
+      •   Testes de usabilidade móvel em laboratório: como vantagens, os laboratórios
+          podem ser planejados, controlados e equipados, mas têm como desvantagem
+          não conseguirem representar todos os aspectos da interação móvel. São mais
+          indicados para testagem de produtos que estão para ser lançados no mercado.
+
+
+
+                                                                                          24
+                                                                                              Voltar ao sumário
+      •   Testes de usabilidade móvel em campo: apesar de reproduzirem melhor
+          a diversidade de elementos da interação móvel real, os testes em campo
+          apresentam dificuldades em termos de execução, registro e controle, que
+          geralmente interferem na avaliação. O uso dos equipamentos reais do usuário
+          facilita quando o que se pretende é testar os sistemas.
+
+      •   Testes com emuladores: os emuladores reproduzem em computador a
+          execução do produto interativo que deve ser utilizado nos dispositivos móveis,
+          quando não se tem acesso aos mesmos, contudo as dificuldade de interação
+          com ambos os dispositivos (o real e o emulado) pode trazer consequências
+          negativas para a avaliação. Pode ser usado para testar dispositivos novos, mas
+          não é adequado para avaliar a interação física com os produtos.
+
+      •   Testes com protótipos: o uso de protótipos para testes pode se dar em uma
+          vasta configuração, pois podem ser utilizados em modalidade virtual ou
+          física, com diferentes níveis de fidelidade. Os protótipos e os modelos físicos
+          possibilitam a interação física com os produtos em planejamento.
+
+      •   Testes remotos: são feitos através de sistemas que registram e analisam os
+          dados coletados, tem como vantagem usar os aparelhos reais dos usuários,
+          que podem estar geograficamente distantes.
+
+      4.3 Avaliação de usabilidade de interação com videogames
+
+      A avaliação da interação em videogames pode ser feita de acordo com os aspectos:
+
+       1. Usabilidade: deve ser avaliada primeiro, observando-se a interação do
+          usuário com o jogo (software + hardware) no intuito de resolver problemas
+          de dificuldade de uso, a compreensão e a memorização dos controles e a
+          satisfação do usuário.
+
+       2. Jogabilidade: deve ser avaliada após a usabilidade, investigando-se a opinião
+          dos usuários no sentido de entender seus sentimentos, comportamentos e
+          opiniões sobre o jogo e a diversão que ele proporciona.
+
+      A diferença entre esses dois aspectos está no fato que usabilidade está ligada
+à produtividade e satisfação e deve ser observado em termos de comportamentos,
+envolvendo tanto questões relativas à interface quanto aos dispositivos de controle (I/O).
+Enquanto a jogabilidade está relacionada ao interesse e ao desafio que estimulam os
+usuários, que devem ser convidados a opinar sobre suas impressões.
+
+
+
+
+                                                                                         25
+                                                                                             Voltar ao sumário
+      Resumo:
+
+       Neste Percurso de Aprendizagem, você estudou sobre a usabilidade e ergonomia
+em relação à IHC de produtos físicos, entendendo o seu contexto e diretrizes para projeto
+e avaliação dessas soluções físicas. Para isso,
+
+      •   Entendeu melhor a ergonomia e sua aplicação na área de design de produtos
+          e as diferentes formas de classificar e avaliar produtos de acordo com as suas
+          características técnicas, ergonômicas e estéticas;
+
+      •   Estudou sobre o projeto universal de produtos ergonômicos e as aplicações
+          da ergonomia nas etapas do processo de desenvolvimento de produtos que
+          possam ser usados por pessoas com diferentes necessidades e objetivos;
+
+      •   Conheceu as diferentes formas de representação de produtos durante o seu
+          projeto e desenvolvimento, como modelos, protótipos e pilotos;
+
+      •   Conheceu os contextos de uso e as orientações ergonômicas e de usabilidade
+          para o design de interação relativos ao computador de mesa, aos dispositivos
+          móveis e aos videogames;
+
+      •   Estudou sobre avaliação de produtos físicos, como a avaliação participativa,
+          observação e testes com usuário e inspeção de conformidade com as normas,
+          suas vantagens e desvantagens;
+
+      •   Entendeu as diferenças entre os contextos de interação fixa, interação móvel e
+          a interação com videogames em produtos físicos e interativos, bem com suas
+          questões de projeto e avaliação a partir do marco teórico da ergonomia e da
+          usabilidade.
+
+
+
+
+                                                                                        26
+                                                                                               Voltar ao sumário
+Referências:
+
+ANATEL, Agência Nacional de Telecomunicações. Institucional. 2021. Disponível em:
+https://www.gov.br/anatel/pt-br/acesso-a-informacao/institucional. Acesso em 24 abr.
+2021.
+BEZERRA, Mariana Pereira. Avaliação de projetos de produto sob a ótica do usuário:
+protótipos físicos x virtuais e sua validade de uso. Dissertação (Mestrado) –
+Universidade Federal de Pernambuco, CAC. Design, 2014.
+BORGES. Roberto Cabral de Mello. Ergonomia de Hardware. Disponível em: https://www.
+inf.ufrgs.br/~cabral/INF141.Cap.02.html. Acesso em: 19 abr. 2021.
+CÂNDIDO, Luís Henrique Alves; KINDLEIN JÚNIOR, Wilson. Design de produto e a prática
+de construção de modelos e protótipos. 2009. Disponível em: http://www.dominiopublico.
+gov.br/download/texto/ea000423.pdf.
+CETIC, Centro Regional de Estudos para o Desenvolvimento da Sociedade da Informação.
+TIC Domicílios - 2019: A - Domicílios que possuem equipamento TIC. 2019. Disponível
+em: https://cetic.br/pt/tics/domicilios/2019/domicilios/A/. Acesso em: 24 abr. 2021.
+CYBIS, W. A.; BETIOL, A. H.; FAUST, R. F.. (2015) Ergonomia e Usabilidade: Conhecimentos,
+Métodos e Aplicações. Novatec Editora, 3ª edição, 2015.
+IIDA, Itiro. Ergonomia: projeto e produção. 2ª edição revista e ampliada. São Paulo: Edgard
+Blucher, 2005.
+INMETRO, Instituto Nacional de Metrologia, Qualidade e Tecnologia. Institucional. 2021.
+Disponível em:      https://www.gov.br/anatel/pt-br/acesso-a-informacao/institucional.
+Acesso em 24 abr. 2021.
+
+
+
+
+                                                                                          27
+                                                                                                                                   Voltar ao sumário
+ UNIVERSIDADE DE FORTALEZA (UNIFOR)
+
+ Presidência
+ Lenise Queiroz Rocha
+
+ Vice-Presidência
+ Manoela Queiroz Bacelar
+
+ Reitoria
+ Fátima Maria Fernandes Veras
+
+ Vice-Reitoria de Ensino de Graduação e Pós-Graduação                AUTORA
+ Maria Clara Cavalcante Bugarim                                      MÔNICA PAZ
+ Vice-Reitoria de Pesquisa
+ José Milton de Sousa Filho                                          É graduada em Ciência da Computação pela Universi-
+ Vice-Reitoria de Extensão
+                                                                     dade Federal da Bahia (UFBA) e em Marketing pela Uni-
+ Randal Martins Pompeu                                               versidade Estácio de Sá (Unesa). É doutora e mestre em
+                                                                     Comunicação pela UFBA e especialista em Segurança da
+ Vice-Reitoria de Administração                                      Informação pela Unesa. Tem experiência em docência na
+ José Maria Gondim Felismino Júnior
+                                                                     graduação e na pós-graduação nas áreas de TI e de Comu-
+ Diretoria de Comunicação e Marketing                                nicação. É pesquisadora do GIG@ - Grupo de Pesquisa em
+ Ana Leopoldina M. Quezado V. Vale                                   Gênero, Tecnologias Digitais e Cultura e do Onda Digital -
+ Diretoria de Planejamento
+                                                                     Grupo de Pesquisa e Extensão em Informática, Educação
+ Marcelo Nogueira Magalhães                                          e Sociedade, ambos da UFBA.
+
+ Diretoria de Tecnologia
+ José Eurico de Vasconcelos Filho
+
+ Diretoria do Centro de Ciências da Comunicação e Gestão
+ Danielle Batista Coimbra
+
+ Diretoria do Centro de Ciências da Saúde
+ Lia Maria Brasil de Souza Barroso
+
+ Diretoria do Centro de Ciências Jurídicas
+ Katherinne de Macêdo Maciel Mihaliuc
+
+ Diretoria do Centro de Ciências Tecnológicas
+ Jackson Sávio de Vasconcelos Silva
+
+
+                                                  RESPONSABILIDADE TÉCNICA
+
+
+
+
+NÚCLEO DE TECNOLOGIAS EDUCACIONAIS (NTE)                         Projeto Instrucional
+                                                                 Silviane da Silva Rocha
+Gerência                                                         Revisão Gramatical
+Douglas Royer                                                    José Ferreira Silva Bastos
+Coordenação                                                      Identidade Visual / Arte
+Andrea Chagas Alves de Almeida                                   Emanoel Alves Cavalcante
+                                                                 Francisco Cristiano Lopes de Sousa
+Supervisão de Ensino e Aprendizagem
+Carla Dolores Menezes de Oliveira                                Editoração / Diagramação
+                                                                 Rafael Oliveira de Souza
+Supervisão de Planejamento Educacional
+                                                                 Régis da Silva Pereira
+Ana Flávia Beviláqua Melo
+                                                                 Produção de Áudio e Vídeo
+Supervisão de Recursos Educacionais
+                                                                 José Moreira de Sousa
+Josefa Braga Cavalcante Sales
+                                                                 Pedro Henrique de Moura Mendes
+Assessoria Administrativa                                        Kauê Nogueira da Silva
+Mírian Cristina de Lima
+                                                                 Programação / Implementação
+Assessoria Pedagógica de Polo                                    Francisca Natasha Q. Fernandes de Souza
+Jéssica de Castro Barbosa                                        Márcio Gurgel Pinto Dias
+                                                                 Francisco Weslley Lima
+
+
+
+                                                                                                                              28
+

@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-bg: linear-gradient(165deg, rgba(239,248,247,0.98) 0%, rgba(227,244,242,0.95) 50%, rgba(255,255,255,0.97) 100%);
+  --app-surface: rgba(255, 255, 255, 0.85);
+  --app-border: rgba(13, 148, 136, 0.14);
+  --app-accent: #0d9488;
+  --app-accent-hover: #115e59;
+  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --card-shadow-hover: 0 12px 28px rgba(15, 23, 42, 0.1);
+}
+
+@layer base {
+  body {
+    background-color: #ffffff;
+    background-image: var(--app-bg);
+    background-attachment: fixed;
+    color: #1a1a1a;
+    font-feature-settings: "ss01", "ss02";
+  }
+}
+
+/* Safe area global (Capacitor / Safari): empurra TODAS as rotas para baixo da status bar.
+   Usa max(..., 44px) como fallback quando env(safe-area-inset-top) vem 0 no WebView. */
+.app-safe-root {
+  box-sizing: border-box;
+  /* Fallback ~59px: iPhones com Dynamic Island quando safe-area vem 0 no WebView. */
+  padding-top: max(constant(safe-area-inset-top), env(safe-area-inset-top), 59px);
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200;
+  }
+
+  .btn-primary {
+    background-color: var(--app-accent);
+    color: white;
+    @apply shadow-sm;
+  }
+  .btn-primary:hover {
+    background-color: var(--app-accent-hover);
+    @apply shadow-md;
+  }
+  .btn-primary:active {
+    @apply scale-[0.98];
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200;
+  }
+  .btn-sm.btn-primary {
+    background-color: var(--app-accent);
+    color: white;
+  }
+  .btn-sm.btn-primary:hover {
+    background-color: var(--app-accent-hover);
+  }
+
+  .btn-secondary {
+    @apply bg-white/80 text-coop-900 border border-coop-200 hover:bg-coop-50 hover:border-coop-300;
+  }
+
+  .input {
+    @apply w-full px-4 py-2.5 border border-coop-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-coop-500/40 focus:border-coop-400 bg-white/90;
+  }
+
+  /** Controle nativo type="time" precisa de largura mínima (~8.5rem) e padding horizontal menor. */
+  .input-time {
+    @apply w-full min-w-[8.75rem] max-w-[10rem] shrink-0 px-2.5 py-2 border border-coop-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-coop-500/40 focus:border-coop-400 bg-white/90 text-sm tabular-nums;
+  }
+
+  .card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl p-6 border border-[var(--app-border)];
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  .card:hover {
+    box-shadow: var(--card-shadow-hover);
+  }
+
+  .dashboard-hero {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, rgba(13, 148, 136, 0.02) 100%);
+    @apply border border-coop-200/60;
+  }
+
+  .stagger-1 { animation: fadeInUp 0.5s ease-out 0.05s forwards; opacity: 0; }
+  .stagger-2 { animation: fadeInUp 0.5s ease-out 0.12s forwards; opacity: 0; }
+  .stagger-3 { animation: fadeInUp 0.5s ease-out 0.19s forwards; opacity: 0; }
+  .stagger-4 { animation: fadeInUp 0.5s ease-out 0.26s forwards; opacity: 0; }
+  .stagger-5 { animation: fadeInUp 0.5s ease-out 0.33s forwards; opacity: 0; }
+  .stagger-6 { animation: fadeInUp 0.5s ease-out 0.4s forwards; opacity: 0; }
+
+  .app-shell {
+    min-height: 100vh;
+    background-color: #ffffff;
+    background-image: var(--app-bg);
+    background-attachment: fixed;
+  }
+
+  .nav-pill {
+    @apply px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-200;
+  }
+  .nav-pill-active {
+    @apply bg-coop-900 text-white shadow-sm;
+  }
+  .nav-pill-inactive {
+    @apply text-coop-800 hover:bg-coop-100/80;
+  }
+
+  /* Cadastro público — superfície tipo app premium (claro, vidro, tipografia contida) */
+  .cadastro-page {
+    @apply min-h-screen flex flex-col items-center justify-center px-4 py-14 sm:px-8 relative overflow-hidden;
+    background: linear-gradient(180deg, #e8e8ed 0%, #f2f2f7 42%, #fafafa 100%);
+  }
+  .cadastro-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 110% 72% at 50% -32%, rgba(22, 101, 52, 0.09), transparent 52%);
+    pointer-events: none;
+  }
+  /* Conteúdo alinhado ao fundo — sem cartão nem vidro */
+  .cadastro-panel {
+    @apply relative z-10 w-full mx-auto;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .cadastro-panel-inner {
+    @apply px-4 py-8 sm:px-6 sm:py-10 space-y-8 w-full;
+  }
+  .cadastro-kicker {
+    @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500;
+  }
+  .cadastro-title {
+    @apply text-[1.65rem] sm:text-[1.9rem] font-semibold text-zinc-900 tracking-tight leading-[1.15] font-display;
+  }
+  .cadastro-subtitle {
+    @apply text-[15px] text-zinc-500 leading-relaxed max-w-md mx-auto font-normal antialiased;
+  }
+  .cadastro-field-label {
+    @apply block text-[0.8125rem] font-medium text-zinc-500 mb-1.5 tracking-wide;
+  }
+  .cadastro-section-title {
+    @apply text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500;
+  }
+  .cadastro-field {
+    @apply w-full rounded-2xl border border-zinc-200/85 bg-zinc-50/35 px-4 py-3 text-[0.9375rem] text-zinc-900 placeholder:text-zinc-400 antialiased;
+    @apply transition-[border-color,box-shadow,background-color] duration-200 ease-out;
+    @apply focus:outline-none focus:bg-white focus:border-zinc-300 focus:ring-[3px] focus:ring-emerald-900/10;
+  }
+  .cadastro-progress-track {
+    @apply h-[3px] rounded-full bg-zinc-200/90 overflow-hidden;
+  }
+  .cadastro-progress-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-zinc-800 via-zinc-700 to-emerald-800 transition-[width] duration-500 ease-out;
+  }
+  .cadastro-error {
+    @apply rounded-2xl border border-red-100/90 bg-red-50/90 text-red-800/95 px-4 py-3 text-[13px] leading-snug;
+  }
+  .cadastro-btn-row .btn-primary {
+    @apply rounded-full py-3.5 font-medium tracking-tight shadow-sm;
+  }
+  .cadastro-btn-row .btn-secondary {
+    @apply rounded-full py-3.5 font-medium tracking-tight border-zinc-300/80 bg-zinc-200/35 hover:bg-zinc-200/55 text-zinc-900;
+  }
+  .cadastro-btn-row a.btn-secondary {
+    @apply rounded-full py-3.5 font-medium tracking-tight;
+  }
+
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}

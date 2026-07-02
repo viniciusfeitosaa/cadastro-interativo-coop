@@ -1,0 +1,126 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: left;
+}
+
+.field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.required {
+  color: var(--brand-green);
+  margin-left: 0.2rem;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.95rem;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.field input::placeholder {
+  color: var(--text-muted);
+}
+
+.field select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%230d9488' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+.phone-group .phone-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.65rem;
+}
+
+.file-field .file-drop {
+  position: relative;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-muted);
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  overflow: hidden;
+}
+
+.file-field .file-drop:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.file-field input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+.file-drop-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.file-drop-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.file-drop-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

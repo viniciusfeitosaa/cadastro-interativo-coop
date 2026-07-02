@@ -1,0 +1,8 @@
+{
+  "name": "appvs",
+  "private": true,
+  "scripts": {
+    "backend:migrate": "npm run prisma:migrate:deploy --prefix backend",
+    "backend:prisma:generate": "npm run prisma:generate --prefix backend"
+  }
+}

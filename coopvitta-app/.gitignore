@@ -1,0 +1,76 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+dist/
+build/
+
+# Capacitor — artefactos locais (versionar ios/android é recomendado; ignorar builds)
+frontend/ios/App/Pods/
+frontend/ios/App/build/
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+
+# Gerado a partir de .env (ver scripts/write-capacitor-config.mjs)
+frontend/capacitor.config.json
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Docker
+docker-compose.override.yml
+
+# Database
+*.sql
+# Versionar migrations Prisma (regra acima ignoraria *.sql)
+!backend/prisma/migrations/**/*.sql
+*.db
+*.sqlite
+
+# SSL certificates (não commitar)
+ssl/
+*.pem
+*.key
+*.crt
+
+# Backup files
+backup/
+*.backup
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Uploads locais (check-in de ponto etc.)
+backend/uploads/
+
+# Obsidian — config local do PC (caminhos do vault no Windows)
+.obsidian-vault.json
+
+# Obsidian — layout de janelas (opcional por máquina; workspace.json versionado no vault)
+contexto/.obsidian/workspace-mobile.json

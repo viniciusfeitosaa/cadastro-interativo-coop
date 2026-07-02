@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Área editorial | Viva Saúde</title>
+  <link rel="stylesheet" href="../css/style.css?v=56" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body class="blog-admin-page blog-admin-page--login">
+  <header class="header blog-admin-header">
+    <div class="header-inner">
+      <a href="/" class="logo"><img src="../assets/logo.png" alt="Viva Saúde" class="logo-img" /></a>
+      <div class="header-actions">
+        <a href="/blog/" class="blog-admin-back-link">← Voltar ao blog</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="blog-admin-main">
+    <div class="blog-admin-login-shell" id="blog-admin-login-shell">
+      <section id="blog-admin-login" class="blog-admin-login-card" aria-labelledby="blog-admin-login-title">
+        <div class="blog-admin-login-brand">
+          <span class="blog-admin-login-kicker">Painel editorial</span>
+          <h1 id="blog-admin-login-title">Área editorial</h1>
+          <p class="blog-admin-login-lead">Publique artigos e modere comentários do blog Viva Saúde.</p>
+        </div>
+        <form id="blog-admin-login-form" class="blog-admin-form blog-admin-login-form">
+          <label>
+            E-mail
+            <input type="email" name="email" required autocomplete="username" placeholder="admin@empresa.com" />
+          </label>
+          <label>
+            Senha
+            <input type="password" name="password" required minlength="8" autocomplete="current-password" placeholder="••••••••" />
+          </label>
+          <button type="submit" class="btn btn-primary blog-admin-login-submit">Entrar</button>
+          <p id="blog-admin-login-error" class="blog-admin-feedback is-error" hidden role="alert"></p>
+        </form>
+      </section>
+    </div>
+
+    <section id="blog-admin-panel" class="blog-admin-dashboard" hidden>
+      <div class="blog-admin-workspace">
+        <header class="blog-admin-topbar">
+          <div class="blog-admin-topbar-brand">
+            <p class="blog-admin-dashboard-kicker">Painel editorial</p>
+            <h1 class="blog-admin-title">Gerenciar blog</h1>
+            <p id="blog-admin-user" class="blog-admin-lead"></p>
+          </div>
+          <div class="blog-admin-topbar-nav" role="tablist" aria-label="Seções do painel">
+            <button type="button" id="blog-admin-tab-posts-btn" class="blog-admin-tab is-active" data-tab="posts" role="tab" aria-selected="true" aria-controls="blog-admin-view-posts">Artigos</button>
+            <button type="button" id="blog-admin-tab-comments-btn" class="blog-admin-tab" data-tab="comments" role="tab" aria-selected="false" aria-controls="blog-admin-view-comments">
+              Comentários <span id="blog-admin-pending-badge" class="blog-admin-badge" hidden></span>
+            </button>
+          </div>
+          <div class="blog-admin-topbar-actions">
+            <a href="/blog/" class="btn btn-ghost btn-sm" target="_blank" rel="noopener">Ver blog</a>
+            <button type="button" id="blog-admin-logout" class="btn btn-ghost btn-sm">Sair</button>
+          </div>
+        </header>
+
+        <div id="blog-admin-workspace" class="blog-admin-workspace-body">
+          <aside id="blog-admin-sidebar" class="blog-admin-sidebar" aria-label="Lista de artigos">
+            <div class="blog-admin-sidebar-head">
+              <h2 class="blog-admin-sidebar-title">Artigos</h2>
+              <button type="button" id="blog-admin-new-post" class="btn btn-primary btn-sm">+ Novo</button>
+            </div>
+            <div id="blog-admin-posts-list" class="blog-admin-list" aria-live="polite"></div>
+          </aside>
+
+          <div class="blog-admin-main-panel">
+            <div id="blog-admin-view-posts" class="blog-admin-editor-panel" role="tabpanel" aria-labelledby="blog-admin-tab-posts-btn">
+              <div class="blog-admin-editor-card">
+                <header class="blog-admin-editor-head">
+                  <div>
+                    <h2 class="blog-admin-section-title" id="blog-admin-form-title">Novo artigo</h2>
+                    <p class="blog-admin-editor-hint">Use Markdown: <code>## Seção</code> e parágrafos separados por linha em branco.</p>
+                  </div>
+                </header>
+                <form id="blog-admin-post-form" class="blog-admin-form blog-admin-editor-form">
+                  <input type="hidden" name="id" value="" />
+                  <div class="blog-admin-form-grid-2">
+                    <label>Título<input type="text" name="titulo" required maxlength="255" placeholder="Título do artigo" /></label>
+                    <label>Slug (URL)<input type="text" name="slug" placeholder="gerado-automaticamente" maxlength="120" /></label>
+                  </div>
+                  <div class="blog-admin-category-field blog-admin-field-block">
+                    <span class="blog-admin-field-label">Categoria</span>
+                    <div class="blog-admin-category-row">
+                      <select name="categoryId" required aria-label="Categoria do artigo"></select>
+                      <button type="button" id="blog-admin-category-toggle" class="btn btn-ghost btn-sm" aria-expanded="false" aria-controls="blog-admin-category-manage">Gerenciar</button>
+                    </div>
+                    <div id="blog-admin-category-manage" class="blog-admin-category-manage" hidden>
+                      <ul id="blog-admin-category-list" class="blog-admin-category-list" aria-label="Categorias existentes"></ul>
+                      <div id="blog-admin-category-form" class="blog-admin-category-add">
+                        <input type="text" name="nome" maxlength="120" required placeholder="Nova categoria" aria-label="Nome da nova categoria" />
+                        <button type="button" id="blog-admin-category-add-btn" class="btn btn-primary btn-sm">Adicionar</button>
+                      </div>
+                      <p id="blog-admin-category-feedback" class="blog-admin-feedback" hidden aria-live="polite"></p>
+                    </div>
+                  </div>
+                  <label class="blog-admin-field-block">URL da capa (opcional)<input type="url" name="capaUrl" placeholder="https://…" /></label>
+                  <label class="blog-admin-field-block">Resumo<textarea name="resumo" required maxlength="320" rows="3" placeholder="Breve descrição para a listagem (até 320 caracteres)"></textarea></label>
+                  <label class="blog-admin-field-block">Conteúdo<textarea name="conteudo" class="blog-admin-content-field" required rows="14" placeholder="## Primeira seção&#10;&#10;Parágrafo do artigo…"></textarea></label>
+                  <footer class="blog-admin-editor-footer">
+                    <button type="button" class="btn btn-ghost" id="blog-admin-post-cancel" hidden>Cancelar</button>
+                    <div class="blog-admin-editor-footer-main">
+                      <button type="submit" class="btn btn-ghost">Salvar rascunho</button>
+                      <button type="button" class="btn btn-primary" data-action="publish">Publicar</button>
+                    </div>
+                  </footer>
+                  <p id="blog-admin-post-feedback" class="blog-admin-feedback" hidden aria-live="polite"></p>
+                </form>
+              </div>
+            </div>
+
+            <div id="blog-admin-view-comments" class="blog-admin-editor-panel" hidden role="tabpanel" aria-labelledby="blog-admin-tab-comments-btn">
+              <div class="blog-admin-editor-card blog-admin-comments-panel">
+                <header class="blog-admin-comments-head">
+                  <h2 class="blog-admin-section-title">Moderação de comentários</h2>
+                  <div class="blog-admin-comment-filters">
+                    <button type="button" class="blog-admin-filter is-active" data-status="PENDENTE">Pendentes</button>
+                    <button type="button" class="blog-admin-filter" data-status="APROVADO">Aprovados</button>
+                    <button type="button" class="blog-admin-filter" data-status="REJEITADO">Rejeitados</button>
+                  </div>
+                </header>
+                <div id="blog-admin-comments-list" class="blog-admin-comments" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="blog-admin-footer-minimal">
+    <p>© 2025 Viva Saúde · <a href="/blog/">Blog</a></p>
+  </footer>
+  <script src="../js/landing-ui.js?v=3"></script>
+  <script src="../js/blog-admin.js?v=8"></script>
+</body>
+</html>

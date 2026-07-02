@@ -1,0 +1,14 @@
+{
+  "legacyEditor": false,
+  "livePreview": true,
+  "defaultViewMode": "source",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "journal",
+  "attachmentFolderPath": "assets",
+  "alwaysUpdateLinks": true,
+  "showLineNumber": true,
+  "readableLineLength": true,
+  "strictLineBreaks": false,
+  "showIndentGuide": true,
+  "promptDelete": true
+}

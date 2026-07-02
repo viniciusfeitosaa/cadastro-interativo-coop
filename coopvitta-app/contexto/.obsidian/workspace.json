@@ -1,0 +1,27 @@
+{
+  "main": {
+    "id": "main",
+    "type": "split",
+    "children": [
+      {
+        "id": "leaf-home",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Home.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "active": "leaf-home",
+  "lastOpenFiles": [
+    "Home.md",
+    "15-estado-atual-e-pendencias.md",
+    "SETUP-OBSIDIAN.md",
+    "00-indice.md"
+  ]
+}

@@ -1,0 +1,302 @@
+[
+  {
+    "id": "8c-0408010100-vs-0408010150",
+    "instrumento": "8C",
+    "codigo1": "04.08.01.010-0",
+    "nome1": "OSTECTOMIA DA CLAVÍCULA OU DA ESCÁPULA",
+    "valor1": 1201.89,
+    "codigo2": "04.08.01.015-0",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURA DA CLAVÍCULA",
+    "valor2": 360.57
+  },
+  {
+    "id": "8c-0408010118-vs-0408010185",
+    "instrumento": "8C",
+    "codigo1": "04.08.01.011-8",
+    "nome1": "OSTEOTOMIA DA CLAVÍCULA OU DA ESCÁPULA",
+    "valor1": 1208.11,
+    "codigo2": "04.08.01.018-5",
+    "nome2": "TRAT. CIRURGICO LUXACAO ACROMIO-CLAVICULAR",
+    "valor2": 362.43
+  },
+  {
+    "id": "8a-0408060190-vs-0408020393",
+    "instrumento": "8A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1292.68,
+    "codigo2": "04.08.02.039-3",
+    "nome2": "TRAT. CIRÚGICO DE FRATURA DA DIÁFISE DO ÚMERO",
+    "valor2": 387.8
+  },
+  {
+    "id": "8a-0408060190-vs-0408020350",
+    "instrumento": "8A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1162.95,
+    "codigo2": "04.08.02.035-0",
+    "nome2": "TRAT. CIRÚRGICO FRATURA DE EPICÔNDILO",
+    "valor2": 348.88
+  },
+  {
+    "id": "9a-0408020393-vs-0408060190",
+    "instrumento": "9A",
+    "codigo1": "04.08.02.039-3",
+    "nome1": "TRAT. CIRÚGICO DE FRATURA DA DIÁFISE DO ÚMERO",
+    "valor1": 1245.79,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 373.74
+  },
+  {
+    "id": "8a-0408060190-vs-0408020423",
+    "instrumento": "8A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1138.85,
+    "codigo2": "04.08.02.042-3",
+    "nome2": "TRAT. CIRÚRGICO FRATURA AMBOS OSSOS ANTEBRAÇO",
+    "valor2": 341.66
+  },
+  {
+    "id": "6c-0408060182-vs-0408020466",
+    "instrumento": "6C",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 760.07,
+    "codigo2": "04.08.02.046-6",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURAS DOS OSSOS DO CARPO",
+    "valor2": 228.02
+  },
+  {
+    "id": "6a-0408060182-vs-0408020407",
+    "instrumento": "6A",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 616.3,
+    "codigo2": "04.08.02.040-7",
+    "nome2": "TRAT. CIRÚRGICO FRATURA DISTAL ANTEBRAÇO",
+    "valor2": 184.89
+  },
+  {
+    "id": "4c-0408060182-vs-0408020377",
+    "instrumento": "4C",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 490.71,
+    "codigo2": "04.08.02.037-7",
+    "nome2": "TRAT. CIRÚRGICO FRATURA METACARPIANOS",
+    "valor2": 147.21
+  },
+  {
+    "id": "4c-0408020342-vs-0408060182",
+    "instrumento": "4C",
+    "codigo1": "04.08.02.034-2",
+    "nome1": "TRAT. CIRÚRGICO FRATURA FALANGES DA MÃO",
+    "valor1": 515.52,
+    "codigo2": "04.08.06.018-2",
+    "nome2": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor2": 154.66
+  },
+  {
+    "id": "12a-0408040092-vs-0408060190",
+    "instrumento": "12A",
+    "codigo1": "04.08.04.009-2",
+    "nome1": "ARTROPLASTIA TOTAL PRIMARIA DO QUADRIL",
+    "valor1": 2145.51,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 643.65
+  },
+  {
+    "id": "12a-0408040050-vs-0408060190",
+    "instrumento": "12A",
+    "codigo1": "04.08.04.005-0",
+    "nome1": "ARTROPLASTIA PARCIAL DE QUADRIL",
+    "valor1": 1909.13,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 572.74
+  },
+  {
+    "id": "9a-0408060190-vs-0408050632",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1372.73,
+    "codigo2": "04.08.05.063-2",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURA TRANSTROCANTERIANA",
+    "valor2": 411.82
+  },
+  {
+    "id": "9a-0408060190-vs-0408050489",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1251.87,
+    "codigo2": "04.08.05.048-9",
+    "nome2": "TRAT. CIRURGICO FRATURA COLO DO FEMUR",
+    "valor2": 375.68
+  },
+  {
+    "id": "9a-0408060190-vs-0408050519",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1253.91,
+    "codigo2": "04.08.05.051-9",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURA DA DIÁFISE DO FÊMUR",
+    "valor2": 376.17
+  },
+  {
+    "id": "9a-0408050624-vs-0408060190",
+    "instrumento": "9A",
+    "codigo1": "04.08.05.062-4",
+    "nome1": "TRAT. CIRÚRGICO FRATURA SUPRACONDILEANA FÊMUR",
+    "valor1": 1384.98,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 415.49
+  },
+  {
+    "id": "9a-0408050594-vs-0408060190",
+    "instrumento": "9A",
+    "codigo1": "04.08.05.059-4",
+    "nome1": "TRAT. CIRÚRGICO FRATURA AO NÍVEL DO JOELHO",
+    "valor1": 1367.44,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 410.23
+  },
+  {
+    "id": "10c-0408050586-vs-0408050500",
+    "instrumento": "10C",
+    "codigo1": "04.08.05.058-6",
+    "nome1": "TRAT. CIRÚRGICO FRATURA CÔNDILOS DO FÊMUR",
+    "valor1": 1448.04,
+    "codigo2": "04.08.05.050-0",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURA DA DIÁFISE DA TÍBIA",
+    "valor2": 434.41
+  },
+  {
+    "id": "9a-0408060190-vs-0408060190",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1356.96,
+    "codigo2": "04.08.06.019-0",
+    "nome2": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor2": 407.09
+  },
+  {
+    "id": "9a-0408060190-vs-0408050543",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1333.19,
+    "codigo2": "04.08.05.054-3",
+    "nome2": "TRAT. CIRÚRGICO DE FRATURA DO PILÃO TIBIAL",
+    "valor2": 399.96
+  },
+  {
+    "id": "9a-0408060190-vs-0408050497",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1449.22,
+    "codigo2": "04.08.05.049-7",
+    "nome2": "TRAT. CIRÚRGICO FRATURA TORNOZELO",
+    "valor2": 434.77
+  },
+  {
+    "id": "9a-0408060190-vs-0408050578",
+    "instrumento": "9A",
+    "codigo1": "04.08.06.019-0",
+    "nome1": "OSTEOTOMIA DE OSSOS LONGOS",
+    "valor1": 1341.1,
+    "codigo2": "04.08.05.057-8",
+    "nome2": "TRAT. CIRÚRGICO FRATURA TORNOZELO UNIMALEOLAR",
+    "valor2": 402.33
+  },
+  {
+    "id": "6a-0408060182-vs-0408050713",
+    "instrumento": "6A",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 617.98,
+    "codigo2": "04.08.05.071-3",
+    "nome2": "TRAT. CIRÚRGICO LUXAÇÃO TARSO-METATARSICA",
+    "valor2": 185.39
+  },
+  {
+    "id": "6a-0408060182-vs-0408050691",
+    "instrumento": "6A",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 617.98,
+    "codigo2": "04.08.05.069-1",
+    "nome2": "TRAT. CIRÚRGICO LUXAÇÃO METATARSO-FALANGIANA",
+    "valor2": 185.39
+  },
+  {
+    "id": "6c-0408060182-vs-0408020520",
+    "instrumento": "6C",
+    "codigo1": "04.08.06.018-2",
+    "nome1": "OSTEOTOMIA DE OSSOS DA MÃO E/OU DO PÉ",
+    "valor1": 945.38,
+    "codigo2": "04.08.02.052-0",
+    "nome2": "TRAT. CIRÚRGICO LUXAÇÃO OSSOS DO CARPO",
+    "valor2": 283.61
+  },
+  {
+    "id": "3b-0408060212-vs-0408020326",
+    "instrumento": "3B",
+    "codigo1": "04.08.06.021-2",
+    "nome1": "RESSECCAO DE CISTO SINOVIAL",
+    "valor1": 620.62,
+    "codigo2": "04.08.02.032-6",
+    "nome2": "TRATAMENTO CIRÚRGICO DE DEDO EM GATILHO",
+    "valor2": 186.19
+  },
+  {
+    "id": "10c-408050570-vs-408050147",
+    "instrumento": "10C",
+    "codigo1": "40.80.50.570",
+    "nome1": "TRAT. CIRÚRGICO DE LESÃO DE TENDÃO (JOELHO)",
+    "valor1": 1888.09,
+    "codigo2": "40.80.50.147",
+    "nome2": "MENISCECTOMIA ARTROSCÓPICA",
+    "valor2": 566.43
+  },
+  {
+    "id": "10c-408050163-vs-408050147",
+    "instrumento": "10C",
+    "codigo1": "40.80.50.163",
+    "nome1": "RECONSTRUÇÃO LIGAMENTAR INTRA-ARTICULAR",
+    "valor1": 1888.08,
+    "codigo2": "40.80.50.147",
+    "nome2": "MENISCECTOMIA ARTROSCÓPICA",
+    "valor2": 566.42
+  },
+  {
+    "id": "10b-408050066-vs-408050082",
+    "instrumento": "10B",
+    "codigo1": "40.80.50.066",
+    "nome1": "ARTOPLASTIA TOTAL DO JOELHO",
+    "valor1": 1867.47,
+    "codigo2": "40.80.50.082",
+    "nome2": "SINOVECTOMIA DE JOELHO",
+    "valor2": 560.24
+  },
+  {
+    "id": "pl-plantao-06h-ambulatorial",
+    "instrumento": "-",
+    "codigo1": "-",
+    "nome1": "PLANTÃO 06 HORAS AMBULATORIAL",
+    "valor1": 1350,
+    "codigo2": "-",
+    "nome2": "-",
+    "valor2": 0
+  }
+]

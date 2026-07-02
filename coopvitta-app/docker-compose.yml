@@ -1,0 +1,123 @@
+services:
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    container_name: app-medico-backend
+    ports:
+      - "${BACKEND_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      # Cap do heap V8 (ajusta NODE_MAX_OLD_SPACE_SIZE_MB no .env se precisares de mais sob carga)
+      - NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE_MB:-256}
+      - PORT=3001
+      - DATABASE_URL=${DATABASE_URL}
+      - DB_HOST=${DB_HOST:-}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_NAME=${DB_NAME:-}
+      - DB_USER=${DB_USER:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-24h}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_REFRESH_EXPIRES_IN=${JWT_REFRESH_EXPIRES_IN:-7d}
+      - BCRYPT_ROUNDS=${BCRYPT_ROUNDS:-12}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - FRONTEND_APP_URL=${FRONTEND_APP_URL:-}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+    networks:
+      - app-network
+      - proxy-network
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3001/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          memory: 384M
+        reservations:
+          memory: 128M
+
+  # Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: app-medico-frontend
+    ports:
+      - "${FRONTEND_PORT:-8082}:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+      - proxy-network
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 16M
+
+  # Nginx Reverse Proxy (opcional - para produção com SSL)
+  nginx:
+    image: nginx:alpine
+    container_name: app-medico-nginx
+    ports:
+      - "${NGINX_HTTP_PORT:-8080}:80"
+      - "${NGINX_HTTPS_PORT:-8443}:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - production
+    # Use: docker-compose --profile production up
+
+networks:
+  app-network:
+    driver: bridge
+    name: app-medico-network
+  proxy-network:
+    external: true
+
+# Volumes (se necessário no futuro)
+# volumes:
+#   postgres_data:

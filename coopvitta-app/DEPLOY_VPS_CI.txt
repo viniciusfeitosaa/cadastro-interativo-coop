@@ -1,0 +1,60 @@
+================================================================================
+DEPLOY AUTOMÁTICO: GitHub → VPS (AppVS)
+================================================================================
+
+Ficheiros adicionados:
+  .github/workflows/deploy-vps.yml  — corre em cada push na branch "main"
+  scripts/deploy-vps.sh             — faz git pull + docker compose up --build
+
+O que acontece no push para "main":
+  1. GitHub Actions liga-se à VPS por SSH
+  2. Entra na pasta do projeto (VPS_APP_PATH)
+  3. Executa scripts/deploy-vps.sh (pull + rebuild dos containers)
+
+--------------------------------------------------------------------------------
+PRIMEIRA VEZ NA VPS (antes de o workflow funcionar)
+--------------------------------------------------------------------------------
+
+1) Clonar o repositório (mesmo caminho que vais usar em VPS_APP_PATH), exemplo:
+   cd ~
+   git clone https://github.com/viniciusfeitosaa/AppVS.git /home/SEU_USER/AppVS
+
+2) Criar .env na raiz do projeto com DATABASE_URL, JWT, etc. (ver .env.example).
+   O .env NÃO vai no Git — mantém-se só na VPS.
+
+3) Testar manualmente:
+   cd /home/SEU_USER/AppVS
+   chmod +x scripts/deploy-vps.sh
+   ./scripts/deploy-vps.sh
+
+4) Chave SSH só para deploy (recomendado):
+   - Na tua máquina ou na VPS: ssh-keygen -t ed25519 -f deploy_appvs -N ""
+   - Colocar a chave PÚBLICA em ~/.ssh/authorized_keys do utilizador
+     que o GitHub vai usar (VPS_USER)
+   - No GitHub: Settings → Secrets → Actions → VPS_SSH_KEY = conteúdo da
+     chave PRIVADA deploy_appvs
+
+5) Secrets no GitHub (repositório AppVS → Settings → Secrets and variables → Actions):
+   VPS_HOST      — IP ou hostname da VPS
+   VPS_USER      — utilizador Linux (ex.: vivasaude)
+   VPS_SSH_KEY   — chave privada PEM (texto completo)
+   VPS_APP_PATH  — caminho absoluto do clone (ex.: /home/vivasaude/AppVS)
+
+6) Dar push destes ficheiros para o GitHub (branch main) e fazer merge
+   para que o workflow exista no repositório remoto.
+
+--------------------------------------------------------------------------------
+NOTAS
+--------------------------------------------------------------------------------
+
+- SSH na porta diferente de 22: edita .github/workflows/deploy-vps.yml e
+  acrescenta "port: NUMERO" no passo appleboy/ssh-action (ver documentação
+  da action).
+
+- Firewall na VPS: os runners do GitHub têm IPs dinâmicos; pode ser preciso
+  abrir SSH de forma ampla ou usar runner self-hosted.
+
+- O workflow também pode ser disparado manualmente: Actions → Deploy VPS →
+  Run workflow.
+
+================================================================================

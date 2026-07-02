@@ -1,0 +1,31 @@
+# Override VPS COOPVITTA: nomes de containers, rede e sem portas publicadas no host.
+#
+# Uso:
+#   docker compose -f docker-compose.yml -f docker-compose.postgres.yml -f docker-compose.vps.yml up -d --build
+#
+# NPM alcança frontend/backend pela rede proxy-network — não expor 3001/8082/5432.
+
+services:
+  backend:
+    container_name: coopvitta-backend
+    ports: !reset []
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    container_name: coopvitta-frontend
+    ports: !reset []
+
+  postgres:
+    container_name: coopvitta-postgres
+
+  redis:
+    container_name: coopvitta-redis
+
+networks:
+  app-network:
+    name: coopvitta-network
+    driver: bridge

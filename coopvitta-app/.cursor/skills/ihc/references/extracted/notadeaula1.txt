@@ -1,0 +1,1773 @@
+P348i   Paz, Mônica.
+
+          Interação humano – computador [recurso eletrônico] : usuário como agente principal
+do produto interativo / Mônica Paz. -- Fortaleza : Universidade de Fortaleza, [2021].
+
+           39 p. -- ( Percurso de Aprendizagem ; 1)
+
+
+
+              1. Tecnologia da informação e da comunicação. 2. Interação Humano – Computa-
+dor. I. Título. II. Série.
+
+
+
+                                                                                         CDU 681.5
+
+
+
+
+                        Este trabalho está licenciado com uma Licença Creative Commons
+                           Atribuição-NãoComercial-SemDerivações 4.0 Internacional.
+USUÁRIO COMO AGENTE PRINCIPAL
+    DO PRODUTO INTERATIVO
+
+
+
+
+               Sumário
+
+1.   Aspectos da experiência do usuário e fatores
+     humanos
+
+
+
+
+2.   Fundamentos da usabilidade
+
+
+
+
+3.   Modelos mental, conceitual e de implementação
+
+
+
+
+4.   Processo do projeto da interação e critérios de
+     avaliação de interfaces
+
+
+
+
+                    Sumário clicável
+                                                                                                  Voltar ao sumário
+      Em um mundo no qual as atividades
+      humanas são cada vez mais digitalizadas e
+      inúmeros dispositivos são controlados por
+      softwares, os quais possibilitam a interação
+      com o usuário, é imprescindível que seus
+      projetistas invistam esforços no sentido de
+      tornar tais produtos interativos intuitivos
+      e agradáveis para a melhor experiência
+      do usuário. Portanto, nesta unidade,
+      você estudará os aspectos humanos                                  Olá
+      envolvidos na interação entre homem e
+      computador e compreenderá o papel central
+      dos usuários no projeto de interfaces digitais.
+
+
+
+
+    1.         Aspectos da experiência do usuário e fatores
+               humanos
+
+
+       Você já percebeu como as tecnologias da informação e comunicação (TIC)
+impactam nas mais diversas esferas da vida humana? Elas estão na educação, na
+indústria, no mundo do trabalho, no comércio, no entretenimento, no exercício da cidadania,
+nas artes, na saúde, no transporte, nas telecomunicações, além de estarem presentes,
+individualmente, na vida das pessoas. A relação entre TIC e sociedade é incontestável
+e abre espaço para inúmeros temas e estudos, sejam relativos a impactos e resultados
+positivos ou negativos.
+
+      Diante da importância das TIC na nossa vida, faz-se necessário que tais
+tecnologias sejam desenvolvidas para serem usadas para o seu propósito, mas tendo
+em mente a diversidade de perfis humanos, suas subjetividades e necessidades, além
+de suas diferentes formas de pensar e agir.
+
+
+
+
+                                                                                              4
+                                                                                                        Voltar ao sumário
+      1.1 Interação Humano-Computador
+
+       As TIC também podem ser abordadas a partir da Ciência da Computação com os
+seus inúmeros objetos de estudo, como o desenvolvimento de sistemas computacionais.
+Em relação ao modo como as TIC são usadas pelas pessoas, tem-se uma das suas subáreas
+ou disciplinas da Computação, que é a chamada Interação Humano-Computador (IHC).
+
+                          Interação Humano-Computador (IHC) está interessada na qualidade de
+                          uso desses sistemas e no seu impacto na vida dos seus usuários. Apesar
+                          de fortemente relacionados, a construção e o uso de um artefato ocorrem
+                          em contextos distintos e seguem lógicas diferentes, envolvendo pessoas
+                          diversas (BARBOSA; SILVA, 2010, p. 8).
+
+     Segundo a Sociedade Brasileira de Computação (SBC), a IHC faz parte da área
+denominada “Técnicas e Tecnologias de Computação” e
+
+                          [...] se dedica a estudar os fenômenos de comunicação entre pessoas
+                          e sistemas computacionais que está na interseção das ciências da
+                          computação e informação e ciências sociais e comportamentais e
+                          envolve todos os aspectos relacionados com a interação entre usuários
+                          e sistemas. A pesquisa em IHC tem por objetivo fornecer explicações
+                          e previsões para fenômenos de interação usuário-sistema e resultados
+                          práticos para o projeto da interação (SBC, 2020).
+
+      Sendo assim, a IHC é uma área multidisciplinar, podendo ter suas equipes formadas
+por desenvolvedores, designers, comunicadores, psicólogos, sociólogos, artistas e
+engenheiros. Da mesma forma, trata de diversos aspectos relacionados com a interação
+de usuário com sistemas interativos. Logo, segundo Barbosa e Silva (2010), a IHC ocupa-
+se com estudos que podem ser divididos nos seguintes tópicos:
+
+      1. Natureza da interação: estudos sobre os fenômenos que acontecem durante o
+         uso dos produtos interativos pelos usuários e suas consequências.
+
+      2. Contexto de uso: estudos sobre como o contexto de uso impacta na interação
+         humano-computador, o que pode incluir diferenças de cultura, linguagens,
+         concepções, costumes, condições locais, etc.
+
+      3. Características humanas: estuda como aproveitar as capacidades e superar as
+         limitações das pessoas durante a interação no que se refere à sua capacidade
+         cognitiva de percepção (visão, audição, movimentação, tato).
+
+      4. Arquitetura de sistemas computacionais: estuda meios e técnicas de como
+         o usuário deverá interagir com os artefatos por meio de seus dispositivos de
+         entrada e saída, que atuam como mediadores da interação.
+
+      5. Processo de desenvolvimento: estuda o processo de desenvolvimento de
+         sistemas, suas ferramentas, métodos e técnicas e como impactam na qualidade
+         dos produtos interativos.
+
+
+                                                                                                    5
+                                                                                                     Voltar ao sumário
+          São vários os benefícios provenientes do investimento e do estudo em IHC,
+          segundo Barbosa e Silva (2010):
+
+          •    Melhorar o dia a dia das pessoas e auxiliar em suas atividades e produtividade,
+
+                »    aumentando a eficiência dos sistemas interativos;
+
+                »    diminuindo a incidência e a gravidade dos erros dos usuários durante a
+                     interação.
+
+          •    Considerar as limitações das pessoas e da própria tecnologia no desenvolvimento
+               mais eficaz de produtos interativos.
+
+          •    Redução de custos com treinamento e suporte técnico devido à facilidade de
+               uso dos sistemas.
+
+          •    Aumento da competitividade do produto interativo no mercado, alavancando as
+               vendas e fidelizando os clientes.
+
+          Como visto, a IHC tem assim um olhar apurado e atencioso no que se refere à
+          experiência do usuário frente às tecnologias digitais.
+
+
+
+    Refletindo…
+
+    A denominação Interação Humano-Computador (IHC) pode ser considerada, por
+    alguns, imprecisa ou datada por se referir a “computador”, quando sabemos que
+    inúmeras são as tecnologias que podem ser objeto de estudo dessa área. Portanto,
+    pode haver adaptações para interação humano-máquina ou humano-tecnologia, mas
+    o termo IHC, talvez por tradição, ainda é utilizado, mantendo-se o entendimento que,
+    neste caso, “computador” pode ser encarado como uma representação geral de toda
+    tecnologia passível de interação humana.
+
+
+
+          1.2 Teorias cognitivas aplicadas à IHC
+
+       Entender como os seres humanos pensam e reagem é um importante
+conhecimento a ser aplicado no projeto e desenvolvimento de interfaces interativas.
+Conheça, a seguir, alguns conceitos das teorias cognitivas que são aplicáveis na
+IHC, como modelos mentais1 , percepção, atenção, vigilância, memórias, emoções e
+diferenças interindividuais (CYBIS, BETIOL, FAUST, 2015).
+
+
+
+
+1. Serão vistos mais adiante neste capítulo.
+
+
+
+
+                                                                                                 6
+                                                                                                          Voltar ao sumário
+      1.2.1 Percepção
+
+       Para o melhor entendimento desta definição de percepção, faz necessário entender,
+inicialmente, os seguintes conceitos:
+
+      •   Estímulo: fenômeno natural que provoca uma reação nos órgãos sensitivos
+          das pessoas. Exemplo: estímulos sonoros ou luminescência.
+
+      •   Sensação: é a resposta sensorial das pessoas a um estímulo. Exemplo: irritação
+          a sons agudos e intermitentes.
+
+      •   Percepção: é o mecanismo com o qual as sensações são organizadas
+
+      •   Cognição: é o processo pelo qual as pessoas organizam as suas sensações.
+
+       Isso pode suscitar algumas perguntas: será que esses profissionais, com diferentes
+níveis de formação, poderão concorrer às mesmas vagas de emprego? Ou, para dar
+uma visão mais moderna: será que esses profissionais terão as mesmas chances de
+empreender com sucesso?
+
+      •   Interpretando e dando significado a elas. Exemplo: entendimento de uma
+          conversação ou diferenciação de sons emitidos pelos animais.
+
+      Logo, sobre percepção, temos a seguinte definição:
+                           A percepção humana é delimitada por um conjunto de estruturas
+                           e tratamentos cognitivos pelos quais as pessoas organizam e dão
+                           significado às sensações produzidas por seus órgãos perceptivos a partir
+                           dos eventos que lhes estimulam (CYBIS, BETIOL, FAUST, 2015, p. 453).
+
+       A percepção humana se vale da memória, de forma que nem sempre é necessário ter
+uma informação completa para entendê-la, pois o contexto pode ajudar. Por exemplo, em um
+ambiente escolar barulhento a escuta da única palavra “provas” remeterá a um significado
+diferente do que se a mesma palavra fosse escutada em uma delegacia de polícia.
+
+      Sendo assim, as percepções podem ser divididas como:
+
+      •   Percepção visual: ajuda as pessoas a entenderem a relação entre itens diferentes,
+          associando-os ou dissociando-os, por meio dos princípios da similaridade,
+          proximidade, fechamento, continuidade, destino comum, conectividade e região
+          comum (Leis Gestalt). De forma geral, a percepção visual é a diferenciação de
+          figuras e fundos (Ver Figura 1).
+
+      •   Percepção auditiva: é feita por meio da organização dos elementos sonoros
+          em fluxos sonoros, ou seja, diferenciando localização, momento, amplitude,
+          frequência e forma.
+
+      •   Percepção da linguagem: na linguagem falada, percebem-se unidades silábicas
+
+
+                                                                                                      7
+                                                                                                  Voltar ao sumário
+         (ou fonemas) que serão agrupadas e identificadas, segundo um idioma; na
+         linguagem escrita, ocorre a identificação lexical (vocabulário), sintática (regras
+         de articulação de palavras e outras partículas) e semântica (significado). As
+         pessoas tendem a: i) inferir o conteúdo da mensagem a partir do seu início,
+         sendo sujeitas a entender mais o que esperam ouvir do que realmente ouvem;
+         ii) entender melhor as palavras do final das frases; iii) compreender melhor
+         frases na ordem direta.
+
+      Figura 1: Princípios gestálticos e percepção visual
+
+          Proximidade                Continuidade                            Simetria
+
+
+
+
+          Similaridade                 Destino Comum                              Fecho
+
+
+
+
+                     Região Comum                            Conectividade
+
+
+
+
+                                Fonte: Barbosa e Silva (2010, p. 51)
+
+
+       O projeto e a criação de interfaces interativas devem levar em consideração as
+limitações da percepção humana para favorecer o melhor entendimento e levar em
+consideração a qualidade da interface e a rapidez na utilização.
+
+
+
+
+                                                                                              8
+      1.2.2 Atenção
+
+
+
+
+                                                                                                        Voltar ao sumário
+      Focar a cognição para um objeto ou pensamento é o que podemos chamar de
+atenção. Ela pode ser prejudicada pelo excesso de estímulos.
+
+      Focar em estímulos paralelos é possível se estes forem de naturezas diferentes,
+por exemplo:
+
+      •   Falar ao telefone (estímulo verbal falado) e ver fotos em uma rede social
+          (estímulo visual);
+
+      •   Escutar música (estímulo sonoro) e escrever um e-mail (estímulo verbal escrito).
+
+      A atenção é menos solicitada quando uma pessoa está realizando uma tarefa para
+a qual ela treinou bastante, podendo então realizar tarefas de baixa complexidade em
+paralelo. Mas, caso algo saia do contexto, o processo deixa de ser automático e passa a
+ser controlado, ou seja, necessitará de mais atenção. Por exemplo, motoristas experientes
+podem dirigir, escutar música e conversar ao mesmo tempo.
+
+
+
+  Usuários avançados de uma interface interativa tendem a realizar tarefas de forma
+  mais automática, contanto que tudo esteja dentro do contexto de uso normal, enquanto
+  a atenção dos usuários iniciantes precisa ser mais conduzida à tarefa em questão.
+
+
+
+      1.2.3 Vigilância
+
+       Uma pessoa em vigilância está monitorando o ambiente e sua situação de forma a
+antecipar o que pode ocorrer. Para tanto, entra em ação a experiência e os conhecimentos
+pessoais e profissionais e, ainda, a atenção a eventos e questões (estímulos) pré-
+selecionados ou esperados, além dos estímulos eventualmente oferecidos pelo ambiente.
+Dessa forma, a vigilância influencia na percepção da pessoa, que pode acabar não
+prestando atenção e não perceber eventos importantes ou pode até mesmo interpretar
+eventos de forma tendenciosa e equivocada.
+
+       Por exemplo, em um aeroporto, um viajante tenderá a prestar mais atenção às
+suas malas e aos painéis de voos, para evitar roubos e perda do voo, mas poderá deixar
+passar outras situações, como cruzar com pessoas conhecidas ou considerar que outros
+viajantes estão com atitudes suspeitas contra ela, mesmo sendo inocentes.
+
+
+
+  Em uma interface gráfica, um usuário pode ficar esperando que um aviso apareça ao centro
+  da tela e não perceber eventos que ocorram nos cantos da tela. Para evitar isto, os projetistas
+  devem manter os mesmos esquemas de apresentação de mensagens e usar estímulos
+  que chamem a atenção do usuário para o evento correto e a sua localização na tela.
+
+
+                                                                                                    9
+      1.2.4 Memória
+
+
+
+
+                                                                                               Voltar ao sumário
+       Para os humanos, a informação é percebida, processada cognitivamente de forma
+a ser identificada e compreendida e, por fim, armazenada na memória. Sendo assim,
+temos a memória dividida como o que vemos na Figura 2, a seguir:
+
+                        Figura 2: estruturas gerais da memória humana.
+
+
+
+
+                               Fonte: Cybis, Betiol e Faust (2015, p. 461).
+
+
+       O ser humano está preparado para tratar de forma rápida e superficial os estímulos
+percebidos ao seu redor, usando para isso a memória sensorial, que tratará estímulos
+sonoros, verbais, visuais, táteis etc., principalmente, no que se refere a cor, tamanho e
+localização. Esta memória é bastante volátil e as informações são descartadas (decantação).
+
+      A depender dos objetivos e do andamento das ações dessa pessoa, ela passará
+a prestar mais atenção a alguns desses estímulos e esta informação passará a ser
+armazenada na memória de trabalho. Esta memória tem uma recuperação rápida, fácil
+e mais duradoura a depender de ser constantemente acessada, caso contrário, tende a
+passar por substituição. A memória de trabalho tem uma capacidade limitada, por isso,
+em interfaces gráficas, os elementos devem ser agrupados em conjunto entre 5 e 9.
+
+       Quando uma informação é relembrada ou reativada muitas vezes da memória de
+trabalho ela passa a ser armazenada na memória permanente, a qual as informações
+formam conhecimentos em modelos mentais sobre conceitos, estruturas e procedimentos.
+
+     A recuperação da memória pode se dar por meio da lembrança (quando elementos
+do evento não estão presentes) ou do reconhecimento (quando são encontrados
+elementos anteriormente memorizados).
+
+       Já o esquecimento pode se dar pelo excesso de informação armazenada ou pela
+falta de distinção entre as características dos conhecimentos. Por isso, em interfaces
+interativas, “[...] os projetistas de IHC devem investir na organização, categorização,
+diferenciação e discriminação das informações apresentadas nas interfaces” (CYBIS,
+BETIOL, FAUST, 2015, p. 463), favorecendo o reconhecimento, uma vez que este processo
+é menos custoso do que a lembrança.
+
+                                                                                          10
+                                                                                          Voltar ao sumário
+      1.2.5 Emoções, humor, sentimentos e cognição
+
+      Conheça, a seguir, os conceitos de emoções, humor e sentimento, bem como as
+relações entre eles e seu impacto na cognição humana.
+
+      •   Emoções:
+
+          »   As emoções têm como objeto um objeto ou evento;
+
+          »   Emoções são mais efêmeras;
+
+          »   As emoções afetam a atenção, como no caso de sentir-se exaltado frente
+              a uma ameaça;
+
+          »   As emoções ajudam na instalação de um certo humor.
+
+      •   Humor:
+
+          »   O humor pode estar relacionado a um objeto, mas não o tem como alvo;
+
+          »   O humor pode levar um certo tempo até acabar;
+
+          »   O humor afeta a cognição das pessoas, sua forma de agir e pensar;
+
+          »   O humor de uma pessoa limita as suas emoções, por exemplo, estando de
+              mau humor a pessoa tende a ter mais emoções negativas;
+
+          »   O humor afeta a memória, pois a recuperação de eventos se dá mais
+              facilmente se estes estiverem de acordo com o humor da ocasião;
+
+          »   As pessoas buscam experiências que estejam de acordo com o seu humor
+              e pode evitar sistemas que não sejam compatíveis com o seu momento;
+
+          »   Quando estão de bom humor, as pessoas estão mais propensas a avaliar
+              positivamente produtos e serviços;
+
+          »   Quando estão de mau humor, as pessoas se arriscam mais na tomada de
+              decisão.
+
+      •   Sentimentos:
+
+          »   Sentimentos são instalados após avaliação da experiência com um dado
+              objeto ou evento.
+
+          »   Sentimentos podem ser generalizados a outros objetos semelhantes.
+
+          »   Eventos com conteúdo emocional são facilmente recuperados, sendo os
+              negativos mais facilmente lembrados.
+
+          »   Os sentimentos podem ser formados pela influência do humor.
+
+
+
+                                                                                     11
+                                                                                                      Voltar ao sumário
+       No que se refere ao uso de interfaces, podemos falar que estas devem ser
+projetadas para criar emoções positivas, para ajudar a manter o humor dos usuários e
+gerar avaliações positivas. Pois experiências e avaliações ruins são mais dificilmente
+modificadas, o que pode impactar negativamente no desempenho do usuário ao usar a
+interface e tomar decisões e, ainda, na sua percepção da marca.
+
+      1.2.6 Diferenças individuais
+
+      Além de entender como normalmente funciona a cognição humana, é importante
+entender que existem diferenças individuais (ver Quadro 1) que também precisam ser
+levadas em consideração, uma vez que se espera criar interfaces tendo o usuário como
+centro do projeto.
+
+                   Quadro 1: Diferenças psicológicas entre os indivíduos.
+
+
+  Múltiplas inteligências            Estilos Cognitivos                    Personalidades
+
+
+Linguística                 É a forma de processar a
+Espacial                    informação:
+                            Verbal + visual + sinestésico              Psicótica ou controlada
+Lógica e matemática
+                            (informação em movimento) ou               Extrovertida ou
+Musical                     Tátil (escrever, desenhar, tocar)          introvertida
+Interpessoal                Dependente (de contexto) ou                Neurótica ou estável
+Intrapessoal                Independente (de contexto)
+
+Corpóreo-sinestésica        Holístico ou Analítico
+
+
+                                Fonte: Cybis, Betiol e Faust (2015).
+
+
+
+      Uma vez que você já sabe como funciona a cognição dos seres humanos, no
+próximo capítulo, você conhecerá o impacto disso na interação humano-computador.
+
+
+
+
+                                                                                                 12
+    2.
+
+
+
+
+                                                                                               Voltar ao sumário
+               Fundamentos da usabilidade
+
+
+
+       Uma vez que o nosso cotidiano está repleto dos mais diversos tipos de TIC que
+auxiliam as pessoas nas mais diversas atividades, é normal que já estejamos acostumados
+a ouvir diferentes termos do campo da Interação Humano-Computador (IHC), como
+interfaces, interação, experiência do usuário, usabilidade, acessibilidade, dentre outros.
+Contudo, para um uso técnico, faz-se necessário conhecer os conceitos mais a fundo,
+para, posteriormente, poder aplicá-los, por exemplo, no processo de ideação, projeto e
+avaliação de interfaces ou produtos interativos, como você verá nas próximas unidades.
+
+      Logo, é importante entender, inicialmente, quais são os atributos e requisitos
+necessários a uma interface de um produto interativo, seja ele um software para notebook,
+smartphone, caixa eletrônico, pulseira de monitoramento de saúde ou console para jogos,
+dentre outros. Para isso, você estudará conceitos em Interação Humano-Computador,
+como interação, interface, usabilidade, experiência do usuário, usabilidade etc.
+
+      2.1 Interação
+
+       Interação pode ser definida por “influência recíproca entre uma coisa e outra, entre
+uma pessoa e outra: a interação da teoria e da prática” ou por “quaisquer processos em
+que o resultado do estado de suas partículas é influenciado pela ação de outra partícula”,
+segundo o dicionário on-line Dicio (2018). Na área da IHC, o processo de interação são as
+trocas de informações e controles entre o usuário e o restante do sistema computacional.
+
+      Ao longo dos estudos sobre IHC, a interação foi abordada a partir de diferentes
+perspectivas ou paradigmas de interação que ainda hoje coexistem, como: Sistema;
+Parceiro de discurso; Ferramenta; e Mídia (Quadro 2):
+
+
+
+
+                                                                                          13
+                                                                                                                 Voltar ao sumário
+                      Quadro 2: comparação das perspectiva de interação
+
+                       Significado de                                              Fatores de qualidade
+  Perspectiva                                              Exemplos
+                         interação                                                    mais evidentes
+
+                                                   Linha de comandos
+                  Transmissão de dados             em um terminal
+                  entre o sistema e o              Linux;
+                  usuário (também visto                                            Eficiência (tal como
+                  como um sistema que              Janelas de                      indicado pelo tempo
+    Sistema
+                  deve responder como              diálogo (respostas              de uso e número de
+                  esperado). Requer                preestabelecidas);              erros cometidos)
+                  usuários treinados /
+                  avançados.                       Uso de teclas de
+                                                   atalho, como Ctrl+Z
+
+                  Surgiu na área da
+                  Inteligência artificial.
+                                                   Uso de linguagem
+                  A interação é vista              natural para
+                  como uma conversa                interação com                   Adequação da
+   Parceiro de
+                  usuário-sistema.                 assistentes como o              interpretação e
+    discurso
+                                                   Alexa.                          geração de textos
+                  O sistema visa
+                  se aproximar do                  Tradutores de textos.
+                  comportamento
+                  humano.
+
+                                        Sistemas de
+                  Manipulação de                                                   Funcionalidades
+                                        propósito geral e
+                  ferramenta que                                                   relevantes ao
+   Ferramenta                           Suítes de escritório,
+                  desencadeia uma série                                            usuário, facilidade de
+                                        como o Microsoft
+                  de ações e resultados                                            uso
+                                        Office
+
+                  O sistema interativo é
+                  visto como uma mídia             Sistemas de e-mail,
+                  que permite:                     fóruns, chats,       Qualidade da
+                                                   mensageiros          comunicação
+      Mídia       (i) Comunicação entre
+                                                   instantâneos e       mediada e
+                  usuários;
+                                                   plataformas de redes entendimento mútuo
+                  (ii) Comunicação                 sociais.
+                  designer-usuário.
+
+                  Fonte: adaptado de Kammersgaard (1988 apud BARBOSA; SILVA, 2010, p. 25)
+
+
+
+       Em um único sistema interativo, é possível encontrar diferentes paradigmas de
+interação, afinal, a escolha deve ser feita com base nos objetivos do sistema e no perfil
+de seus usuários.
+
+
+
+                                                                                                            14
+                                                                                                   Voltar ao sumário
+      São inúmeras as formas de interagir com os dispositivos, seja de forma explícita
+ou automática, o que pode incluir telas de visualização e sensíveis ao toque, sensores de
+proximidade, de movimento e de luminosidade, botões.
+
+      2.2 Sistemas interativos
+
+       Todo usuário, seja avançado ou iniciante, tem seus objetivos e a sua opinião
+em relação aos produtos interativos que utiliza. Mas o que talvez não seja muito claro
+para ele é que tais produtos interativos formam um sistema composto por elementos
+que se relacionam e se comunicam. Em caso de problemas ao utilizar um sistema
+computacional, nem sempre fica claro se as dificuldades encontradas pelo usuário é uma
+falha de desenvolvimento, de rede, de segurança ou de interface, ficando tudo atribuído
+ao sistema como um todo.
+
+      Então, no intuito de entender e diferenciar alguns conceitos relativos aos sistemas,
+surgem as perguntas:
+
+      1. Afinal, o que é um sistema? Segundo o Dicio, é a “Reunião dos elementos que,
+         concretos ou abstratos, se interligam de modo a formar um todo organizado”.
+
+      2. Então o que é um sistema computacional? É um sistema composto por
+         hardware (sistema central e periféricos), softwares (sistema operacional,
+         aplicativos, etc.), dados a serem manipulados e os usuários.
+
+      3. E, por fim, o que é um sistema de informação? Segundo Laudon e Laudon
+         (2014, p. 13),
+                           [...] pode ser definido tecnicamente como um conjunto de componentes
+                           inter-relacionados que coletam (ou recuperam), processam, armazenam
+                           e distribuem informações destinadas a apoiar a tomada de decisão, a
+                           coordenação e o controle em uma organização. Além disso, os sistemas
+                           de informação também auxiliam os gerentes e trabalhadores a analisar
+                           problemas, visualizar assuntos complexos e criar novos produtos.
+
+       Os sistemas computacionais, os quais têm como objetivo principal proporcionar
+trocas de informações e receber comandos ou instruções diretamente dos seus usuários,
+também podem ser chamados de sistemas interativos, sendo assim, o objeto de estudo
+da IHC. Seus componentes estão representados na Figura 3:
+
+
+
+
+                                                                                              15
+                                                                                             Voltar ao sumário
+   Figura 3: os elementos que compõem o processo de interação humano-máquina.
+
+
+
+
+                                  Fonte: Barbosa e Silva (2010)
+
+
+
+        Perceba o importante elemento desse sistema, o usuário, que possui um objetivo ou
+uma tarefa a realizar (o que), em um determinado tempo (quando) e em um determinado
+local físico com seus aspectos sociais e culturais (onde). Mas o mais importante é sempre
+lembrar que se tratam de pessoas, logo, também estamos falando de subjetividades,
+limitações, necessidades, inseguranças e outras tantas emoções.
+
+       Se nem sempre está claro para o usuário se as dificuldades encontradas são
+relativas à interface ou às outras camadas do sistema, cabe aos estudantes de IHC a
+tarefa de diferenciá-los e aos profissionais da IHC evitar que os mesmos ocorram. Por
+outro lado, é certo que falhas e erros em outras camadas também afetam a experiência
+de uso do usuário, sendo igualmente desagradáveis. Mesmo assim, estudaremos mais a
+fundo a camada na qual ocorre a interação.
+
+       Os sistemas interativos podem ser analisados e desenvolvidos segundo duas
+diferentes abordagens, como você pode ver na Figura 4:
+
+Figura 4: Abordagens de desenvolvimento de sistemas interativos de “dentro para fora” e
+de “fora para dentro”.
+
+
+
+
+                                  Fonte: Barbosa e Silva (2010).
+
+
+                                                                                        16
+                                                                                                        Voltar ao sumário
+       A abordagem de “dentro para fora” também pode ser considerada como bottom-up,
+e é representada pelas camadas mais internas do computador, prestando serviços aos
+usuários. O seu desenvolvimento está mais interessado em criar algoritmos, estruturas
+de dados e arquiteturas de sistemas corretos, não focando nos elementos externos a
+este sistema computacional.
+
+       A abordagem de “fora para dentro” ou a perspectiva top-down dos sistemas
+computacionais, os representa como um sistema sendo manipulado pelo usuário,
+realizando as tarefas por ele solicitadas. Segundo Barbosa e Silva (2010, p. 9):
+                          Nesta abordagem, o projeto de um sistema interativo começa
+                          investigando os atores envolvidos, seus interesses, objetivos, atividades,
+                          responsabilidades, motivações, os artefatos utilizados, o domínio, o
+                          contexto de uso, dentre outros, para depois identificar oportunidades
+                          de intervenção na situação atual, a forma que a intervenção tomará na
+                          interface com o usuário e, finalmente, como o sistema viabiliza essa
+                          forma de intervenção.
+
+      Segundo os autores, é esta abordagem com foco no usuário a mais adequada a criar
+sistemas interativos os quais sejam mais apropriados ao uso pelo mundo que o cerca.
+
+
+
+  Refletindo…
+
+  Segundo Barbosa e Silva (2010), a dualidade entre a *construção* e o *uso*
+  que ocorre em relação ao desenvolvimento de sistemas interativos e design
+  de interação é análogo ao que acontece na área da construção civil, na qual
+  a Engenharia se preocupa com a construção do ambiente físico (estrutura,
+  durabilidade, segurança, custos, etc.) e a Arquitetura se preocupa com a interação
+  das pessoas com este ambiente, ou seja, o seu uso.
+
+  Logo, um prédio pode ser bem construído e seguro, mas não fornece um ambiente
+  confortável para os moradores. Ou pode ser muito confortável e bonito, mas não
+  seguir os padrões estruturais, materiais e de segurança adequados.
+
+  Os sistemas interativos podem ter a sua parte lógica bem desenvolvida e não
+  apresentar uma interface fácil de usar. Ou podem ter uma interface confortável
+  e com bom design, mas apresentar erros de programação, segurança, difícil
+  manutenção, etc.
+
+
+
+      2.3 Interface
+
+       A interface do sistema interativo é a única parte do sistema com a qual o usuário
+entra em contato, podendo ser este do tipo físico ou conceitual. Segundo Barbosa e Silva
+(2010):
+
+
+
+                                                                                                   17
+                                                                                                        Voltar ao sumário
+      •   Contato físico: o contato é feito por meio do i) hardware em associação com o
+          ii) software, que representa a interação feita pelo hardware (interfaces gráficas).
+          Estão envolvidos:
+
+           »   Dispositivos de entrada: para controlar e passar dados ao sistema
+
+           »   (interação ativa);
+
+           »   Dispositivos de saída: para perceber as informações e respostas do
+               sistema (interação passiva).
+
+      •   Contato conceitual: é a interpretação do que o usuário faz do contato físico que
+          teve com o sistema, o que inclui entender o seu passo a passo, organização,
+          esquemas, cores, etc., o que pode ser influenciado pelo contexto no qual o
+          usuário está inserido.
+
+      Um dispositivo possui uma ou um conjunto de funcionalidades que foram pensadas
+para ser usadas com um determinado objetivo e em uma determinada situação, mesmo
+que apresente possibilidades de personalização e extensão de funções e características.
+
+      O usuário precisa das funcionalidades desenvolvidas para serem executadas pelo
+dispositivo ou máquina e estas precisam ser razoavelmente eficientes, eficazes e seguras.
+
+       Contudo, para ter acesso a tais funcionalidades, o usuário precisa usar e,
+portanto, saber usar este dispositivo, por outro lado, ele não precisa saber nada sobre
+o funcionamento técnico do equipamento e o desenvolvimento do seu software. Ou
+seja, o usuário interage com a camada de interface, para acessar funcionalidades da
+camada lógica e a camada formada pelos dados. A interface é uma abstração do sistema
+computacional.
+
+       Uma vez que a interface atua com o importante papel de intermediadora da
+interação, o projeto e desenvolvimento de interfaces deve levar em consideração os
+objetivos, necessidades e limitações dos usuários, potencializando a sua experiência,
+como já mencionado.
+
+      2.4 Affordances
+
+      Affordances é um conceito originado, em 1977, na Psicologia, por James
+Gibson e que foi adotada em muitas outras áreas, como o design, para explicar como
+as características dos objetos (material, forma, transparência, cores, etc.) ajudam no
+entendimento do seu uso:
+                            As affordances fornecem fortes indicações para a operação de objetos.
+                            Chapas são para empurrar. Maçanetas são para girar. Ranhuras são
+                            para inserir coisas. Bolas são para atirar ou quicar. Quando se tira
+                            proveito das affordances, o usuário sabe o que fazer apenas ao olhar:
+                            não são necessárias imagens ilustrativas, rótulos ou instruções. Objetos
+
+
+
+                                                                                                   18
+                                                                                                    Voltar ao sumário
+                          complexos podem exigir explicações, mas objetos simples não devem
+                          precisar delas. Quando objetos simples precisam de imagens, rótulos ou
+                          instruções, o design fracassou (NORMAN, 2002, s.p.).
+
+      O termo também foi adotado pela área da IHC para explicar como as interfaces
+dos sistemas interativos apresentam indícios de como devem ser usadas, auxiliando o
+usuário a saber o que fazer:
+                          Em IHC, a affordance de um objeto corresponde ao conjunto das
+                          características de um objeto capazes de revelar aos seus usuários as
+                          operações e manipulações que eles podem fazer com ele (Norman,
+                          1988). Em uma interface gráfica, por exemplo, a affordance de um botão
+                          de comando diz respeito à possibilidade de pressioná-lo usando o mouse
+                          ou o teclado e, assim, acionar uma operação do sistema (BARBOSA;
+                          SILVA, 2010, p. 27).
+
+      As affordances podem aparecer nas interfaces gráficas de diferentes formas:
+
+      •   Explícita: quando os elementos apresentam algum tipo de sinalização ou texto
+          que indique o que deve ser feito. Exemplo: botões de desbloqueio ao deslizar
+          que apresentem animação ou texto “deslize para desbloquear”.
+
+      •   Padrão: quando há o uso de elementos que já são do conhecimento comum.
+          Exemplo: textos sublinhados em azul para indicar hiperlinks e botões “enviar”
+          desenhados em alto relevo.
+
+      •   Oculta: quando os elementos que possibilitam ações ficam escondidos até que
+          alguma ação é feita. Exemplo: a tela de login do Windows que aparece quando
+          mouse ou teclas são acionadas.
+
+      •   Metafórica: quando são usados símbolos e ícones que remetem a uma ação,
+          ideia ou local. As metáforas visuais são estratégias muito utilizadas nas
+          interfaces gráficas. Exemplo: o desktop do PC, que remete à mesa de trabalho;
+          o HD representado como uma estante arquivo com suas pastas e documentos;
+          a lixeira, que representa o local para onde são enviados itens descartados; os
+          ícones de salvar (os antigos disquetes) e de imprimir (as impressoras); e os
+          símbolos de energia (ligar e desligar) e de play (tocar).
+
+       Sendo assim, as affordances são estratégias utilizadas por designers de interface
+para facilitar o entendimento do seu funcionamento e organização.
+
+      2.5 Qualidade em IHC
+
+       Você já reparou que durante uma semana, ou mesmo durante um só dia, uma
+pessoa entra em contato com inúmeros dispositivos eletrônicos e digitais, que facilitam
+a vida e, até mesmo, são essenciais para a realização de determinadas tarefas?
+
+
+
+
+                                                                                               19
+                                                                                                                   Voltar ao sumário
+       Por exemplo, ao acordar, precisamos lidar com o despertador, seja para colocá-lo
+em modo soneca, seja para desligá-lo e precisamos fazer isso ainda sonolentos. Neste
+exemplo, em outras palavras, há a presença de um usuário que delegou a tarefa de
+despertar a um aplicativo que é executado pelo sistema operacional de um dispositivo
+móvel, no caso, um smartphone. Uma vez despertado, o usuário precisa passar um novo
+comando ao seu despertador. Ele precisa tomar uma decisão: continuar dormindo ou
+levantar-se e isso deve ser indicado ao aplicativo. Logo, espera-se que este aplicativo seja
+planejado para ser utilizado pelo usuário que pode estar em uma situação de sonolência,
+talvez com mau humor e sem condições de realizar atividades complexas.
+
+      É para resolver problemas como este, de adequar interfaces e a interação às
+funcionalidades e ao usuário, que se faz necessário entender os conceitos iniciais vistos
+até aqui. E quando falamos na importância da interação e da interface de sistemas
+focados no usuário, estamos falando sobre qualidade em IHC.
+
+       Segundo Barbosa e Silva (2010), a qualidade em IHC tem como principais critérios:
+usabilidade, comunicabilidade, acessibilidade e experiência do usuário.
+
+        2.5.1 Experiência do usuário
+
+       Apesar de não haver um consenso sobre como definir a experiência do usuário como
+um conceito, é certo que surgiu na área de estudos da interação humano-tecnologia com
+um intuito de ser mais abrangente do que os estudos sobre usabilidade (que será estudada
+mais adiante). Sendo assim, inúmeras áreas podem fazer pesquisas para observarem se
+seus produtos estão proporcionando a melhor experiência aos seus usuários, como a
+indústria automobilística, a eletroeletrônica, a informática, a de utilidades para o lar, etc.
+
+       Experiência do usuário pode ser definida de várias formas da abordagem do autor, mas,
+de forma geral, as definições devem conter certos elementos, como mostrado no Quadro 3:
+
+                   Quadro 3: Elementos que definem a experiência do usuário.
+
+Quem        O sujeito da ação ou da experiência                           Usuário, cliente, consumidor
+
+O quê       O objeto da interação ou da experiência                       Produto ou serviço
+                                                                          Uso e interação com um produto
+Objetivo    O motivo do uso do objeto da experiência
+                                                                          ou serviço
+
+            Nível no qual a experiência do usuário desenvolve Físico, cognitivo,                 social   e
+Escopo
+            em relação ao produto                             ideológico
+
+                                                                          Antes, durante     e   depois   a
+Quando      Momento no qual ocorre a experiência
+                                                                          experiência
+
+Onde        Contexto de uso no qual ocorre a experiência                  Físico, tecnológico, social
+
+                                   Fonte: Cybis, Betiol e Faust (2015).
+
+
+
+                                                                                                              20
+                                                                                                      Voltar ao sumário
+      Tais elementos, os quais definem a experiência do usuário, também podem ser
+resumidos da seguinte forma:
+                          A experiência do usuário pode ser descrita como o conjunto de todos os
+                          processos (físicos, cognitivos, emocionais) desencadeados no usuário
+                          a partir da interação com um produto ou serviço em diversos momentos
+                          (que incluem a expectativa da interação, a interação propriamente dita e
+                          a reflexão após a interação) em um determinado contexto de uso (físico,
+                          social, tecnológico) (CYBIS, BETIOL, FAUST, 2015, p. 438).
+
+     Pode-se assumir também que a experiência do usuário possui diferentes
+dimensões:
+
+      •   Em relação ao produto:
+
+          »   Características físicas do produto;
+
+          »   Segurança que o produto proporciona ao usuário etc.;
+
+          »   Informações e instruções sobre o produto e suas funcionalidades;
+
+          »   Utilidade das funcionalidades do produto para atender os objetivos do
+              usuário;
+
+          »   Desempenho do produto ao realizar tarefas e fornecer resultados;
+
+          »   Confiabilidade do produto em termos de se apresentar disponível para uso
+              e livre de falhas;
+
+          »   Durabilidade do produto em termos de vida útil;
+
+          »   Características externas relativas ao ecossistema do produto, o que inclui
+              preço, marca, serviço de atendimento, informações complementares, ou
+              seja, o valor agregado;
+
+          »   Usabilidade do produto no sentido de facilitar o seu uso e entendimento,
+              além da satisfação do usuário.
+
+      •   Em relação ao usuário:
+
+          »   Sensorial, elementos e demais características que estimulam os sentidos
+              humanos (aparência, cor, cheiro, som, textura etc.);
+
+          »   Emocional, elementos e características que estimulam emoções (prazer,
+              motivação, surpresa, frustração, irritação, raiva, medo, etc.);
+
+          »   Social, características relativas às relações e interações sociais
+              (comunicação, participação, colaboração, visibilidade, etc.) (CYBIS,
+              BETIOL, FAUST, 2015).
+
+
+
+
+                                                                                                 21
+                                                                                              Voltar ao sumário
+       Apesar das experiências serem subjetivas, ou seja, serem individuais, sendo
+influenciadas por fatores humanos e por fatores externos, como já vimos, elas podem ser
+projetadas por meio do design de experiência do usuário ou UX design (User eXperience
+Design). Portanto, esta é a parte da IHC que se preocupa em definir e resolver problemas,
+visando um público-alvo, através de uma interface. Sendo assim, pode-se elencar as
+seguintes subáreas da UX:
+
+      •   Estratégia de design, que são as definições dos objetivos do produto, seus
+          requisitos, métricas de qualidade, forma e ferramentas de desenvolvimento e
+          evolução.
+
+      •   Arquitetura da informação, que é originada da ciência da informação ou
+          biblioteconomia, indica como as informações de um sistema serão organizadas,
+          rotuladas, interligadas e recuperadas.
+
+      •   Usabilidade, que é a qualidade de que a interface do produto será fácil de usar,
+          aprender e memorizar de forma satisfatória pelo usuário.
+
+      •   Design de interação, que define como a interface se comporta a cada interação
+          do usuário para que este atinja o seu objetivo.
+
+      •   Taxonomia, que é a nomeação e classificação das informações e elementos de
+          uma interface de forma que façam sentido para os seus usuários.
+
+      •   Pesquisa com usuários, que é a busca por entender como, porquê, quando
+          e quanto o usuário está interagindo e qual a sua opinião sobre a interface
+          (TEIXEIRA, 2014).
+
+       O UX design pode ser definido a partir de etapas, nas quais se pode aplicar
+diferentes métodos, como exemplificado no Quadro 4:
+
+                          Quadro 4: Etapas e métodos do UX Design.
+
+
+
+
+                                                                                         22
+                                                                                            Voltar ao sumário
+                                    Fonte: Teixeira (2014).
+
+
+
+
+  Saiba mais…
+
+  Conheça as ferramentas citadas nos exemplos do Quadro 4, e muitas outras,
+  no site Service Design Tools, que tem como propósito ajudar designer em seus
+  projetos, por meio de métodos e tutoriais. Acesse: https://servicedesigntools.org/
+  tools.
+
+
+
+      2.5.2 Usabilidade
+
+      Segundo a ISO 9241-11 (1998), a usabilidade é a qualidade de um produto de ser
+usado, em um contexto específico, para que o usuário atinja:
+
+      •   Eficácia: realizar a tarefa correta para resolver um determinado problema. O
+          sistema deve conduzir o usuário a realizar suas tarefas de acordo com os seus
+          objetivos.
+
+      •   Eficiência: a relação entre realizar uma tarefa em função do tempo e
+          demais recursos necessários. O sistema deve ajudar o usuário em termos
+          de produtividade, poupando tempo, mão-de-obra de suporte, pesquisas de
+          tutoriais, etc.
+
+      •   Satisfação: relativo ao estado emocional do usuário ao usar o sistema
+          (BARBOSA; SILVA, 2010).
+
+
+
+
+                                                                                       23
+                                                                                               Voltar ao sumário
+       A Figura 5 apresenta um esquema que relaciona os conceitos utilizados na
+definição de usabilidade da ISO 9241.
+
+          Figura 5: Modelo conceitual da usabilidade, segundo a norma ISO 9142:11
+
+
+
+
+                              Fonte: Cybis, Betiol e Faust (2015, p. 191).
+
+
+
+      Usabilidade também pode ser definido levando-se em conta a capacidade cognitiva,
+perceptiva e motora dos usuários, a partir dos seguintes fatores:
+
+      •   Facilidade de aprendizado (learnability) - tempo e esforços aplicados para
+          aprender a usar o sistema com desenvoltura razoável, principalmente, no
+          primeiro contato do usuário.
+
+      •   Facilidade de recordação (memorability) - esforço cognitivo que o usuário deve
+          desprender para lembrar como funciona um sistema que ele já havia utilizado
+          antes.
+
+      •   Eficiência (efficiency) - é relativo ao tempo necessário para realizar as tarefas
+          como a ajuda do sistema, o que deve ser minimizado para usuários experientes.
+
+      •   Segurança no uso (safety) - são as formas que o sistema assume para proteger
+          o usuário de cometer erros e de recuperar tais erros durante o uso do sistema.
+
+      •   Satisfação do usuário (satisfaction) - é a opinião avaliativa geral do usuário
+          em relação ao uso do sistema, levando em consideração as suas emoções e
+          sentimentos (BARBOSA; SILVA, 2010).
+
+                                                                                          24
+                                                                                                          Voltar ao sumário
+      2.5.3 Outras qualidades em IHC
+
+    Outras duas propriedades importantes que definem a qualidade da Interação
+Humano-Computador são a comunicabilidade e a acessibilidade.
+
+       Ao projetar um sistema, seus projetistas devem ter em mente um modelo
+conceitual sobre a tarefa a ser executada, as necessidades e características do usuário e
+seu contexto de uso. Sendo assim, é importante que esta lógica esteja implementada na
+interface de forma que o usuário consiga entendê-la e tirar o melhor proveito, ou seja, que
+tenha bom nível de comunicabilidade. Sendo assim,
+                           A comunicabilidade diz respeito à capacidade da interface de comunicar
+                           ao usuário a lógica do design: as intenções do designer e os princípios de
+                           interação resultantes das decisões tomadas durante todo o processo de
+                           design [...]. Acreditamos que, se um usuário for capaz de compreender a
+                           lógica utilizada na concepção do sistema interativo, terá maiores chances
+                           de fazer um uso criativo, eficiente e produtivo dele [...] (BARBOSA; SILVA,
+                           2010, p. 38).
+
+        Por exemplo, sites de comércio eletrônico costumam apresentar uma espécie de
+linha do tempo com o passo a passo do processo de compras, com etapas como escolha de
+itens, informações de entrega, informações de pagamento e confirmação. A apresentação
+dos itens usam as metáforas da categorização por seções ou departamentos e a escolha
+dos itens usa a metáfora da adição do item em um carrinho de compras, no qual os itens
+são selecionados para possível finalização da compra.
+
+      Já a acessibilidade é relativa à capacidade dos usuários de acessar a interface de
+um sistema informacional sem barreiras ou obstáculos de natureza:
+
+      •   Perceptiva: capacidade de ver, ouvir e tatear para trocar informações e controles
+          com a interface, principalmente, as suas saídas.
+
+      •   Motora: capacidade de interagir com os dispositivos de entrada do dispositivo
+          que dá suporte ao sistema e sua interface.
+
+      •   Cognitiva: capacidade de entender e memorizar a lógica do sistema apresentada
+          pela interface, tomando decisões no sentido de seus objetivos de uso do
+          sistema (BARBOSA; SILVA, 2010).
+
+
+
+
+                                                                                                     25
+    3.
+
+
+
+
+                                                                                             Voltar ao sumário
+               Modelos mental, conceitual e de implementação
+
+
+
+       Segundo as teorias cognitivas, os seres humanos criam modelos mentais que
+ajudam na representação da realidade na qual vivem, criando redes com conhecimentos
+e experiência anteriores e novas. O mesmo ocorre em relação ao funcionamento e
+estrutura dos sistemas e dispositivos que utilizam.
+
+      Os modelos mentais são dinâmicos, mudam de pessoa para pessoa e também ao
+longo do tempo a depender do grau de experiência e conhecimento, do cargo ou função,
+de crenças ou da situação de normalidade ou de excepcionalidade. Ou seja, podem ser
+mais ou menos detalhados a depender da experiência da pessoa e da quantidade de
+vezes que foi acessado em sua mente.
+
+       Um modelo mental pode ser, em relação à sua natureza, um modelo conceitual,
+ou um modelo procedimental ou de implementação. O modelo conceitual é quando um
+modelo representa os significados e relações entre objetos, sentimentos, fenômenos,
+ideias, etc. E também pode ser do tipo modelo procedimental ou de implementação,
+quando explicam como devem ocorrer o uso e o emprego de conceitos na prática (CYBIS,
+BETIOL, FAUST, 2015).
+
+       Logo, tanto os projetistas aplicam seus modelos mentais em seus projetos, quanto
+os usuários criam seus modelos mentais sobre o que estão entendendo do sistema
+interativo. Sendo que ambos misturam conhecimentos novos aos modelos mentais que
+já possuíam. Ao desenvolver o projeto, o projetista cria um modelo conceitual sobre o
+sistema, conceitos tais que serão implementados pelos desenvolvedores.
+
+       Se a interface deste sistema estiver bem construída, for organizada e intuitiva, o
+usuário também criará um modelo conceitual bem estruturado e detalhado. Dessa forma,
+existe uma comunicação de conceitos e esquemas (Figura 6).
+
+
+
+
+                                                                                        26
+                                                                                            Voltar ao sumário
+       Figura 6: modelos conceituais dos projetistas e dos usuários acerca de um sistema
+interativo.
+
+
+
+
+                              Fonte: Cybis, Betiol e Faust (2015, p. 450).
+
+
+
+       Para melhorar esta transferência de conceitos e esquemas de interação, os
+projetistas podem utilizar de pesquisas junto aos usuários, entendendo seus modelos
+mentais sobre a interação com um sistema, para fazer com que este sistema e sua
+interface sejam ainda mais intuitivas e agradáveis para o maior número de pessoas.
+
+
+
+
+                                                                                       27
+    4.
+
+
+
+
+                                                                                             Voltar ao sumário
+               Processo do projeto da interação e critérios de
+               avaliação de interfaces
+
+
+       Uma vez que você já entendeu a centralidade das TIC na vida humana e social, bem
+como já conheceu os principais conceitos e teorias da Interação Humano-Computador,
+neste subcapítulo, você estudará os diferentes processos de design de interfaces e suas
+etapas. Também será abordada a vantagem do uso de padrões no design de interfaces.
+Por fim, serão apresentados os critérios ergonômicos que orientam a criação e a avaliação
+de interfaces de produtos interativos.
+
+       Como criar interfaces intuitivas e adequadas às necessidades do usuário? Como
+fazer com que os usuários sejam o centro do design de IHC?
+
+      4.1 Processo do projeto da interação
+
+      O processo de design em IHC pode ser resumido nas seguintes etapas:
+
+      •   Análise da situação atual: pesquisa sobre requisitos e oportunidades de
+          melhoria da situação;
+
+      •   Síntese da solução ou intervenção: referente à criação ou melhoria de uma
+          solução existente;
+
+      •   Avaliação da solução ou intervenção: após a síntese da solução, esta é testada
+          para ver se atende aos requisitos e necessidades levantadas.
+
+                           Figura 7: O processo de design em IHC.
+
+
+
+
+                               Fonte: Barbosa e Silva (2010, p. 100).
+
+
+
+
+                                                                                        28
+                                                                                              Voltar ao sumário
+       Conheça, a seguir, algumas características do design em IHC, segundo Barbosa e
+Silva (2010):
+
+      Processo iterativo: é feito em ciclos sucessivos que melhoram a qualidade e
+refinamento do processo.
+
+       Design dirigido pelo problema: quando o projetista dedica mais tempo e recursos
+analisando a situação atual.
+
+       Design dirigido pela solução: quando o projetista dedica-se mais em elaborar uma
+intervenção.
+
+       Design centrado no usuário: é um projeto iterativo com foco no usuário e na
+descoberta de suas necessidades e seus objetivos, portanto deve ser capaz de definir
+métricas com as quais possa realizar experimentos para verificar a qualidade dos
+protótipos (versões parciais e interativas do produto final).
+
+       Ciclo de Vida em Estrela: processo de design de interface iterativo composto por
+seis processos, sendo a etapa da avaliação a fase central que se comunica com os demais:
+análise de tarefas, usuários e funções; especificação de requisitos; projeto conceitual
+e especificação do design; prototipação; e implementação (Figura 8). O projetista pode
+escolher por qual processo começar o trabalho a depender da sua necessidade, por
+exemplo, um novo projeto pode requerer que se faça, inicialmente, uma pesquisa sobre
+as tarefas, usuários e funcionalidades. Já um projeto que pode ser aproveitado a partir de
+um já realizado pode iniciar a partir da implementação ou da prototipação.
+
+                        Figura 8: Esquema do ciclo de vida em estrela.
+
+
+
+
+                                Fonte: Barbosa e Silva (2010, p. 103).
+
+
+
+                                                                                         29
+                                                                                              Voltar ao sumário
+       Design Contextual ou Design baseado no Contexto: processo de design que
+investe no entendimento sobre qual é o contexto de uso do produto interativo, por meio
+das seguintes atividades:
+
+      •   investigação do contexto (usuários, necessidades, objetivos, trabalho ou
+          atividades realizadas);
+
+      •   modelagem do trabalho (fluxos e etapas da atividade);
+
+      •   consolidação das informações coletadas em um modelo;
+
+      •   reprojeto do modelo conceitual do sistema;
+
+      •   prototipação da interface; e
+
+      •   validação.
+
+       Design Baseado em Cenários: a criação de cenários ajuda na concepção de
+interfaces pois apresenta, em linguagem natural, diversas narrativas sobre os possíveis
+usos do produto interativo. Por exemplo, “o usuário encontra-se na fila do banco e precisa
+verificar o seu tempo de permanência ali, sem se ausentar”. Este processo é iterativo
+e composto por análise do problema; projeto da solução; prototipação e validação. Os
+cenários criados podem ser do tipo:
+
+      •   cenário de problemas: narrativa que descreve o usuário, as atividades básicas
+          e as críticas, artefatos envolvidos na atividade e contexto de uso;
+
+      •   cenário de atividade: narrativa sobre as tarefas a serem realizadas pelos
+          usuários com a ajuda do sistema e que podem ser típicas ou críticas;
+
+      •   cenário de informação: narrativa sobre as informações fornecidas ao usuário
+          pelo sistema;
+
+      •   cenário de interação: narrativa que apresenta as ações e as reações do contato
+          do usuário com o sistema.
+
+      Design Dirigido por Objetivos: processo de design que busca métodos e tecnologias
+inovadoras que ajudem o usuário a realizar seus objetivos do cotidiano.
+
+      Design Centrado na Comunicação: processo de design que entende que o sistema
+deve funcionar como um meio de comunicação entre o designer e o usuário, tendo como
+base a engenharia semiótica, ou seja, é um processo de design que visa criar sistemas
+com boa comunicabilidade.
+
+       Design Participativo: processo no qual a equipe de design tem contato frequente
+com usuários que representem bem o conjunto total do público-alvo do sistema para
+validação do trabalho desenvolvido.
+
+
+
+                                                                                         30
+                                                                                             Voltar ao sumário
+      4.2 Padrões de projeto de interação
+
+       Para agilizar e tornar mais produtivo o processo de projeto de interfaces, pode-se
+fazer uso de padrões conhecidos e já testados ao longo e em outros projetos. Os padrões
+podem ser classificados como:
+
+      •   Padrões de domínio: apresentam as entidades envolvidas e as regras do
+          negócio em questão.
+
+      •   Padrões de tarefas: indicam como devem ser alcançados os objetivos e cada
+          etapa das atividades a serem realizadas pelo usuário.
+
+      •   Padrões de interface: abordam as estruturas de organização, navegação e de
+          apresentação dos conteúdos (CYBIS, BETIOAL, FAUST, 2015).
+
+      Os padrões de interface costumam tratar de elementos relativos às interfaces
+tipo WIMP: Windows/Janelas - Icons/Ícones - Mouse - Pointers/Apontador, mas também
+podem ser aplicados à interação mobile. Sendo assim, pode-se ter padrões para:
+
+      •   Navegação:
+
+           »   Padrões de menus: megamenu, menu vertical retrátil, menus em abas,
+               menu acordeão.
+
+           »   Padrões para navegação em diferentes formatos de informações: slide
+               show, rolagem contínua, nuvem de tag, mapa, galeria.
+
+      •   Apresentação de informações:
+
+           »   Padrões de janelas multiquadros: cena central e cenas secundárias; painéis
+               sobrepostos e deslocáveis.
+
+           »   Padrões para dashboards: medidores, gráficos de evolução, gráficos pizza,
+               etc.
+
+      •   Edição
+
+           »   Padrões para caixas de ferramentas: megacaixa de ferramentas
+               (ferramentas de uso global), caixas de ferramentas sensíveis ao contexto
+               (aparece apenas quando certos objetos estão sendo editados).
+
+           »   Padrões para entrada de dados: seletores múltiplos, apresentação
+               progressiva, habilitação progressiva, opções avançadas (CYBIS, BETIOAL,
+               FAUST, 2015).
+
+
+
+
+                                                                                        31
+      4.3. Critérios ergonômicos
+
+
+
+
+                                                                                                  Voltar ao sumário
+       Os princípios ergonômicos apresentados por Cybis, Betiol e Faust (2015) (Quadro
+5) foram feitos com base em diretrizes populares, como: as heurísticas de usabilidade de
+Nielsen; a norma ISO 9241:110; os critérios ergonômicos de Bastien e Scapin; princípios
+de design do sistema Android e as regras de ouro de Sheiderman. Tais princípios estão de
+acordo com a máxima que alerta que a interface de um sistema precisa estar compatível
+com os usuários e com as atividades a serem realizadas.
+
+      Quadro 5: Conjunto integralizador de critérios, princípios, regras e heurísticas para
+a ergonomia das interfaces e para a experiência do usuário.
+
+                             Poder de marcar a experiência
+
+                        Criação de interface estética bela e agradável com o
+                        uso adequado de animações, imagens, paletas de cores,
+  Poder de encantar     diagramação, combinação de fontes, ilustrações, etc, como
+                        o que se pode ver no acervo de template do site www.
+                        csszengarden.com
+
+                        Superar as expectativas do usuário com funcionalidades
+      Poder de          úteis e bem apresentadas na interface, como a plataforma de
+     surpreender        streaming Amazon Prime e seu sistema de apresentação de
+                        atores presentes na cena.
+
+                      Apresentar ao usuário uma interface simples e útil, que ajude
+ Poder de simplificar na sua produtividade, como o oferecido pelo popular WhatsApp
+       a vida         e suas funcionalidades de compartilhamento de diversos
+                      formatos.
+
+
+                                   Qualidade da ajuda
+
+                        Um sistema deve apresentar várias formas de ajuda, seja ele do
+                        tipo conceitual, contextual (diretrizes para a tarefa em questão),
+    Qualidade da        tutoriais de passo a passo para determinadas tarefas.
+  documentação de       Ao abrir o app e-Título, o cidadão deve fornecer dados em um
+       ajuda            formulário, que explica o formato de cada entrada e, ainda, há
+                        um botão de “?” com ajuda conceitual, que dá acesso a uma
+                        lista de perguntas e respostas sobre o sistema.
+
+                        Uso de modelos conceituais, metáforas, ícones, diálogos que se
+                        adequam aos modelos mentais já adquiridos pelos usuários, ou
+    Adequação ao        seja, usa seu conhecimento prévio de mundo no novo sistema.
+     aprendizado        O editor de texto Word usa ícones, em sua barra de ferramentas,
+                        que remetem a objetos de escritório para representar operações
+                        como salvar, imprimir, copiar, colar, aumentar o zoom, etc.
+
+
+
+                                                                                             32
+                                                                                              Voltar ao sumário
+                       Condução às ações dos usuários
+
+                    O sistema informa ao usuário o que está acontecendo em cada
+                    passo da atividade, bem como o que outros agentes estão
+ Apresentação do    falando.
+estado do sistema   Por exemplo, em uma videoconferência no Google Meets, na
+                    qual há as notificações sobre se a reunião está sendo iniciada,
+                    em curso ou finalizada e, ainda, quem está falando no momento.
+
+
+                    O sistema deve informar ao usuário o que ele pode fazer,
+                    solicitando que realize escolhas e outras decisões, além de
+                    indicar títulos das janelas ativas e quais são os formatos de
+     Convite        arquivos aceitos.
+                    No Zoom, o usuário é solicitado a dar permissão ao sistema
+                    para uso do vídeo, do microfone e com qual nome quer ser
+                    apresentado na reunião.
+
+                    O sistema deve informar o resultado das ações tomadas pelo
+                    usuário, o que é importante para lhe dar um senso de segurança,
+                    principalmente, os principiantes.
+Feedback imediato
+                    Ao enviar uma postagem de Instagram para um dos contatos da
+                    lista, o botão, que antes era “enviar”, passa a ser “enviado” para
+                    confirmar o sucesso da ação.
+
+
+                         Qualidade das apresentações
+
+                    Os textos de botões de comandos, legendas, etiquetas, textos
+                    de suporte, abreviações e códigos devem ser fáceis de entender.
+ Significado dos    O app da Uber, o “Para onde?” solicita que o usuário informe
+  códigos e das     o seu destino. Na tela seguinte, o endereço atual da pessoa já
+ denominações       aparece automaticamente e há um campo para indicar o destino
+                    com esta mesma frase. Também há um botão “+” para caso o
+                    usuário queira adicionar mais um ponto de parada à viagem.
+
+                    Deve-se pensar no emprego de fontes que facilitem a leitura,
+                    pensando em seu tamanho e contraste, além do espaçamento,
+                    alinhamento e comprimento das frases.
+
+   Legibilidade     O site da Revista Época utiliza títulos em tamanho e peso
+                    diferentes do restante do texto. As fontes são usadas em
+                    tamanho grande e os parágrafos possuem afastamento entre
+                    si, tudo pensado para tornar a leitura mais rápida e menos
+                    cansativa.
+
+
+
+
+                                                                                         33
+                                                                                                 Voltar ao sumário
+                       Posicionar elementos com alguma relação lógica e separar dos
+                       diferentes. Destacar itens mais usados e os mais importantes e
+  Agrupamento          colocá-los em sequência lógica.
+  e distinção por
+    localização        O site da Caixa Econômica agrupa no seu menu lateral esquerdo
+                       as principais categorias buscadas e, no direito, as últimas
+                       notícias postadas.
+
+                       Uso de recursos visuais (formatos, cores, texturas, peso) para
+                       distinção de funcionalidades, títulos, conteúdo, rótulos de
+  Agrupamento          formulários, etc.
+  e distinção por      O App Magalu apresenta os locais (início, conta, sacola) como
+      formato          ícones em cinza; os principais departamentos estão em formato
+                       circular, enquanto o conteúdo dos banners com promoções são
+                       grandes e coloridos.
+
+
+                                  Carga de trabalho
+
+                       O sistema deve facilitar a entrada de dados, indicando
+                       opções selecionáveis, autocompletar, formatação automática,
+                       possibilidade de cópia de dados repetitivos, etc.
+   Brevidade das
+entradas individuais O app Ame Digital possibilita acesso via impressão digital; no caso
+                     de transferências, formata o CPF e os valores automaticamente;
+                     e usa QR code para facilitar o envio e recebimento de dados dos
+                     contatos.
+
+                       Serve para reduzir a quantidade de informação que precisa ser
+                       percebida e processada pelo usuário, tornando mais breves
+                       as apresentações de títulos, rótulos, botões, além de fornecer
+   Concisão das        valores padrões e listas de seleção para agilizar as entradas e
+  apresentações        saídas de dados.
+    individuais        O aplicativo 99, em sua tela inicial já apresenta um mapa no qual
+                       são apresentados de forma gráfica o local de origem, localização
+                       do carro e percurso previsto. Para facilitar a escolha do destino,
+                       são apresentados os locais mais visitados pelo usuário.
+
+                       Consiste em diminuir a quantidade de ações a serem
+                       realizadas pelo usuário com a ajuda de atalhos, ferramentas de
+                       produtividade e de manipulação de recursos gráficos.
+  Ações mínimas        O site de e-commerce Amazon tem como uma de suas marcas
+                       a compra com um clique, que é possível com o pré-cadastro
+                       do endereço de entrega e forma de pagamento preferenciais do
+                       usuário.
+
+
+
+
+                                                                                            34
+                                                                                               Voltar ao sumário
+                      Como uma grande quantidade de informações pode reduzir a
+                      eficiência do usuário, deve-se organizar a informação para
+                      que ela apareça apenas quando necessária e no nível de
+    Densidade
+                      detalhamento desejado pelo usuário.
+  informacional
+                      O navegador web Chrome organiza, em menus, as suas outras
+                      funcionalidades que dão suporte à funcionalidade principal, que
+                      é a de busca e navegação em sites.
+
+
+                                Controle do usuário
+
+                      O usuário deve comandar e confirmar as ações a serem
+                      processadas pelo sistema.
+ Ações explícitas
+                      No sistema operacional Ubuntu, toda deleção de arquivos e
+                      programas deve ser autorizada e confirmada pelo usuário.
+
+
+                      Para ações demoradas ou em sequência, o usuário deve ter o
+                      poder de determinar o curso da ação (voltar, cancelar, reiniciar,
+Controle do usuário   fechar, etc.).
+                      No sistema operacional MS Windows, a cópia em massa de
+                      arquivos pode ser cancelada a qualquer momento pelo usuário.
+
+
+
+                                  Adaptabilidade
+
+                      Capacidade da interface de se adequar ao nível de desempenho
+                      do usuário, através da criação de atalhos, diferentes formas
+                      de entrada de dados, multiplicidade de caminhos até uma
+                      funcionalidade ou conteúdo, diversificação de formatos e
+   Flexibilidade      unidades para os dados.
+                      O editor de imagens GIMP oferece diferentes possibilidades
+                      para escolha de cores, através de codificação HTML e RGBH,
+                      seletor de cor e histórico de cores usadas.
+
+                      Possibilidade de personalizar aparência e organização das telas,
+                      criação de atalhos, configuração de comandos para sequências
+                      de ações, além de determinar valores padrões de acordo com
+                      as escolhas do usuário.
+  Personalização      O sistema Android fornece várias opções de configurações
+                      para que o usuário personalize a sua experiência, como se logar
+                      automaticamente a uma rede Wi-fi cadastrada, rotacionar a tela
+                      a depender da orientação do dispositivo, organizar ícones em
+                      grupos por categorias, etc.
+
+
+
+
+                                                                                          35
+                                                                                            Voltar ao sumário
+                     O sistema deve poder se adequar ao nível do usuário, que
+                     pode ser experiente (atalhos e macros), intermitente (dicas
+ Consideração da     contextuais) ou iniciante (tutoriais de primeiros passos).
+  experiência do     Jogos para celulares, computadores ou consoles costumam ter
+     usuário         uma fase de tutorial, no qual o usuário se habitualiza com as
+                     funcionalidades e os objetivos do jogo, como o que acontece
+                     com o FIFA.
+
+
+                                Gestão de erros
+
+                     Medidas que evitam erros de passagem de comando ou de
+                     entrada de dados, como avisar que há dados sem serem salvos,
+                     entradas a serem preenchidas e camada de confirmação para
+    Proteção         operações irrecuperáveis.
+   contra erros      Questionários criados com o Google Forms que sinalizam
+                     que um determinado campo é de preenchimento obrigatório e
+                     não deixa o usuário enviar suas respostas até que o erro seja
+                     corrigido.
+
+                     Capacidade do sistema de continuar operando mesmo que
+                     alguns erros sejam cometidos pelo usuário.
+Tolerância a erros   A ferramenta de pesquisa da Google fornece a opção “você quis
+                     dizer” que realiza as buscas realizando correções ortográficas
+                     caso o usuário tenha errado as grafias das palavras-chave.
+
+                     Deve ser respeitosa, curta e útil para informar o erro cometido
+                     pelo usuário, indicando possíveis soluções para o fato.
+ Qualidade das
+mensagens de erro    Mensagens que indicam que o nome do usuário e senhas
+                     fornecidos não foram encontrados pelo sistema e fornecimento
+                     de opção de recuperação de senha.
+
+                     O sistema deve permitir que o usuário corrija os seus erros e
+                     que tenha acesso a logs de sistemas.
+
+Correção de erros    O editor de fotografias Adobe Photoshop fornece a opção de
+                     desfazer seleções, edições, alterações de camadas, etc., para
+                     que o usuário retorne para uma versão anterior e não perca o
+                     seu trabalho.
+
+
+
+
+                                                                                       36
+                                                                                                 Voltar ao sumário
+                              Homogeneidade / coerência
+
+                       Quando todo o projeto da interface de um sistema apresenta
+                       os mesmos esquemas e aparência ao longo de suas
+ Coerência interna a   funcionalidades e telas.
+   uma aplicação
+                       O Facebook apresenta o mesmo design e funcionalidades ao
+                       longo de diferentes módulos de grupos, amigos, páginas, etc.
+
+                       Uso de padrões comumente utilizados por outros aplicativos e
+                       adequação às diferentes plataformas.
+ Coerência externa a
+  uma plataforma       O aplicativo Twitter usa o padrão de menu sanduíche no canto
+                       superior e barra inferior com as principais funcionalidades, além
+                       do conteúdo em rolamento contínuo na parte central.
+
+
+                                       Compatibilidade
+
+                       A interface deve apresentar-se de acordo com as necessidades
+                       do seu público-alvo, seja ele o de crianças, idosos, possibilidade
+                       de daltônicos (que são mais frequentes no grupo dos homens),
+   Compatibilidade     público geral, etc.
+    com o usuário
+                       O Facebook, que é uma plataforma de propósito geral, possui
+                       design em cor azul, que é bem interpretada por todos, inclusive,
+                       daltônicos como o seu criador.
+
+                      A interface está de acordo com as tarefas a serem realizadas
+                      em termos de vocabulário, sistema de medidas, simplicidade,
+Compatibilidade com processo, etc.
+as tarefas do usuário O Calendar da Google é muito semelhante à agenda expressa,
+                       podendo mostrar dias com atividades no formato de folhinha e
+                       em lista de tarefas.
+
+                         Fonte: Adaptado de Cybis, Betiol e Faust (2015, p. 23).
+
+
+
+       Tais princípios são úteis tanto para guiar o projeto de interfaces quanto para a
+realização de avaliação de usabilidade e ergonomia. Com isso, espera-se que os produtos
+interativos apresentem uma interface intuitiva e agradável, que ajudem na produtividade
+de seus usuários proporcionando uma experiência marcante.
+
+
+
+
+                                                                                            37
+                                                                                               Voltar ao sumário
+      Resumo:
+
+       A Interação Humano-Computador é uma área multidisciplinar que estuda, em
+relação aos produtos interativos, a natureza da interação, o contexto de uso, os fatores
+humanos, a arquitetura dos sistemas computacionais e o processo de desenvolvimento
+das interfaces. Sendo assim, é importante conhecer, a partir das teorias cognitivas, o
+funcionamento da percepção, da memória, das emoções, da atenção e da vigilância e
+suas influências sobre a experiência de interação com as interfaces.
+
+      Uma vez conhecendo tais fatores humanos, o estudo sobre IHC perpassa por
+conceitos como interação, interface e metáforas visuais. Das interfaces informacionais
+espera-se que apresentem qualidades como usabilidade (eficiência, eficácia e satisfação),
+acessibilidade e comunicabilidade, além de uma rica e agradável experiência do usuário.
+
+       O processo de projeto de interfaces, de forma geral, é composto por análise da
+situação atual, síntese da solução e avaliação. Outras características e atividades desse
+processo é que ele costuma ser do tipo iterativo, ou seja, as etapas são repetidas enquanto
+for necessário para se atingir os requisitos do sistema. O design de interfaces pode ser
+do tipo estrela, baseado em contexto, em comunicação, em cenários e em objetivos.
+Contudo, o mais importante é que o usuário seja o centro desse processo para a garantia
+da concepção mais satisfatória das interfaces. Também nesse sentindo, os padrões de
+projeto e critérios ergonômicos são ferramentas úteis aos projetistas.
+
+      Fatores humanos afetam a experiência do usuário, logo devem ser levados em
+consideração no processo de projeto e concepção de interfaces de produtos interativos.
+
+
+
+
+                                                                                          38
+                                                                                           Voltar ao sumário
+Referências:
+
+BARBOSA, Simone Diniz Junqueira; SILVA, Bruno Santana. Interação Humano-Computador.
+Rio de Janeiro: Elsevier, 2010.
+
+CYBIS, Walter; BETIOL, Adriana Holtz; FAUST, Richard. Ergonomia e Usabilidade:
+conhecimentos, métodos e aplicações. 3ª edição. São Paulo: Novatec, 2015.
+
+DICIO, Dicionário Online de Português. Sistema. Disponível em: https://www.dicio.com.
+br/sistema. Acesso em 22 jan. 2020.
+
+LAUDON, Jane; LAUDON, Kenneth. Sistemas de Informações Gerenciais. São Paulo:
+Pearson Education Brasil, 2014.
+
+NORMAN, Donald A. O design do dia a dia. Anfiteatro, 2002.
+
+SBC, Sociedade Brasileira de Computação. Interação Humano-Computador. 2020.
+Disponível    em:       https://www.sbc.org.br/14-comissoes/390-interacao-humano-
+computador. Acesso em: 15 abr. 2020.
+
+TEIXEIRA, Fabricio. Introdução e boas práticas em UX Design. São Paulo: Caso do Código,
+2014.
+
+
+
+
+                                                                                      39
+                                                                                                                                   Voltar ao sumário
+ UNIVERSIDADE DE FORTALEZA (UNIFOR)
+
+ Presidência
+ Lenise Queiroz Rocha
+
+ Vice-Presidência
+ Manoela Queiroz Bacelar
+
+ Reitoria
+ Fátima Maria Fernandes Veras
+
+ Vice-Reitoria de Ensino de Graduação e Pós-Graduação                AUTORA
+ Maria Clara Cavalcante Bugarim                                      MÔNICA PAZ
+ Vice-Reitoria de Pesquisa
+ José Milton de Sousa Filho                                          É graduada em Ciência da Computação pela Universi-
+ Vice-Reitoria de Extensão
+                                                                     dade Federal da Bahia (UFBA) e em Marketing pela Uni-
+ Randal Martins Pompeu                                               versidade Estácio de Sá (Unesa). É doutora e mestre em
+                                                                     Comunicação pela UFBA e especialista em Segurança da
+ Vice-Reitoria de Administração                                      Informação pela Unesa. Tem experiência em docência na
+ José Maria Gondim Felismino Júnior
+                                                                     graduação e na pós-graduação nas áreas de TI e de Comu-
+ Diretoria de Comunicação e Marketing                                nicação. É pesquisadora do GIG@ - Grupo de Pesquisa em
+ Ana Leopoldina M. Quezado V. Vale                                   Gênero, Tecnologias Digitais e Cultura e do Onda Digital -
+ Diretoria de Planejamento
+                                                                     Grupo de Pesquisa e Extensão em Informática, Educação
+ Marcelo Nogueira Magalhães                                          e Sociedade, ambos da UFBA.
+
+ Diretoria de Tecnologia
+ José Eurico de Vasconcelos Filho
+
+ Diretoria do Centro de Ciências da Comunicação e Gestão
+ Danielle Batista Coimbra
+
+ Diretoria do Centro de Ciências da Saúde
+ Lia Maria Brasil de Souza Barroso
+
+ Diretoria do Centro de Ciências Jurídicas
+ Katherinne de Macêdo Maciel Mihaliuc
+
+ Diretoria do Centro de Ciências Tecnológicas
+ Jackson Sávio de Vasconcelos Silva
+
+
+                                                  RESPONSABILIDADE TÉCNICA
+
+
+
+
+NÚCLEO DE TECNOLOGIAS EDUCACIONAIS (NTE)                         Projeto Instrucional
+                                                                 Silviane da Silva Rocha
+Gerência                                                         Revisão Gramatical
+Douglas Royer                                                    José Ferreira Silva Bastos
+Coordenação                                                      Identidade Visual / Arte
+Andrea Chagas Alves de Almeida                                   Emanoel Alves Cavalcante
+                                                                 Francisco Cristiano Lopes de Sousa
+Supervisão de Ensino e Aprendizagem
+Carla Dolores Menezes de Oliveira                                Editoração / Diagramação
+                                                                 Rafael Oliveira de Souza
+Supervisão de Planejamento Educacional
+                                                                 Régis da Silva Pereira
+Ana Flávia Beviláqua Melo
+                                                                 Produção de Áudio e Vídeo
+Supervisão de Recursos Educacionais
+                                                                 José Moreira de Sousa
+Josefa Braga Cavalcante Sales
+                                                                 Pedro Henrique de Moura Mendes
+Assessoria Administrativa                                        Kauê Nogueira da Silva
+Mírian Cristina de Lima
+                                                                 Programação / Implementação
+Assessoria Pedagógica de Polo                                    Francisca Natasha Q. Fernandes de Souza
+Jéssica de Castro Barbosa                                        Márcio Gurgel Pinto Dias
+                                                                 Francisco Weslley Lima
+
+
+
+                                                                                                                              40
+

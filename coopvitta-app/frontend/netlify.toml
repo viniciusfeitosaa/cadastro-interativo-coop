@@ -1,0 +1,79 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+  # Garante que o build use a API do Render (a UI do Netlify às vezes não injeta env no build)
+  [build.environment]
+    VITE_API_URL = "https://appvs.onrender.com/api"
+
+# Proxy API → Render (landing estática usa fetch('/api/...'))
+[[redirects]]
+  from = "/api/*"
+  to = "https://appvs.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# Antes do catch-all /app/*: ficheiros estáticos com nome conflituoso com o prefixo
+[[redirects]]
+  from = "/app/vite.svg"
+  to = "/vite.svg"
+  status = 200
+
+# Raiz (/) serve a landing estática (dist/index.html). Só o app React precisa de rewrite:
+[[redirects]]
+  from = "/app"
+  to = "/app/index.html"
+  status = 200
+[[redirects]]
+  from = "/app/*"
+  to = "/app/index.html"
+  status = 200
+
+# URLs sem /app: redirecionar para o app (evita 404 ao acessar /login ou ao receber redirect 401)
+[[redirects]]
+  from = "/login"
+  to = "/app/login"
+  status = 302
+[[redirects]]
+  from = "/login/*"
+  to = "/app/login"
+  status = 302
+
+# Legado: URLs antigas do blog → /blog/#slug
+[[redirects]]
+  from = "/blog/artigo/*"
+  to = "/blog/#:splat"
+  status = 301
+[[redirects]]
+  from = "/blog/artigos/*"
+  to = "/blog/"
+  status = 301
+
+# Ícone na raiz do publish (public/vite.svg → /vite.svg)
+[[redirects]]
+  from = "/favicon.ico"
+  to = "/vite.svg"
+  status = 302
+
+# Configurações de headers para segurança e performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/app/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/app/index.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"

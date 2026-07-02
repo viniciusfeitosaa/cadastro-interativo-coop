@@ -1,0 +1,69 @@
+# Postgres na VPS — segurança por defeito
+# - Sem "ports:": porta 5432 NÃO é publicada; só containers na rede app-network (ex.: backend).
+# - Não coloques este serviço na proxy-network (NPM): a API não precisa de expor a BD.
+# - .env na VPS: chmod 600; password longa e aleatória (openssl rand -base64 32).
+# - Backups: ver scripts/backup-postgres.sh + cron + cópia para fora da VPS.
+#
+# Uso: docker compose -f docker-compose.yml -f docker-compose.postgres.yml up -d
+#
+# No .env:
+#   POSTGRES_USER=appmedico
+#   POSTGRES_PASSWORD=<forte>
+#   POSTGRES_DB=appmedico
+#   DATABASE_URL=postgresql://appmedico:SENHA@postgres:5432/appmedico?schema=public
+#
+# Migração Supabase → aqui: pg_dump (conexão direta ao Postgres do projeto) + restore; prisma migrate deploy.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: app-medico-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appmedico}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
+      POSTGRES_DB: ${POSTGRES_DB:-appmedico}
+      # Autenticação por password com SCRAM (melhor que md5 legado) em clusters novos.
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    volumes:
+      - app_medico_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appmedico} -d ${POSTGRES_DB:-appmedico}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+        reservations:
+          memory: 256M
+
+  backend:
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  redis:
+    image: redis:7-alpine
+    container_name: app-medico-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 128mb --maxmemory-policy noeviction --appendonly yes
+    volumes:
+      - app_medico_redis:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  app_medico_pgdata:
+  app_medico_redis:

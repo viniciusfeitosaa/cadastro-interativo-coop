@@ -1,0 +1,3 @@
+# SPA do app (landing está na raiz)
+/app     /app/index.html   200
+/app/*   /app/index.html   200

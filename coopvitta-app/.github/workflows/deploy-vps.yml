@@ -1,0 +1,51 @@
+# Deploy automático na VPS quando há push na branch principal.
+#
+# Secrets (escolhe UM dos sítios no GitHub):
+#   A) Repository secrets: Settings → Secrets → Actions → Repository secrets
+#   B) Environment secrets: Settings → Environments → ambiente (ex.: "vps") → Environment secrets
+#      Se usares (B), o job abaixo precisa de: environment: <nome-exato-do-ambiente>
+#
+#   VPS_HOST, VPS_USER, VPS_SSH_KEY (privada), VPS_APP_PATH
+#
+name: Deploy VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    # Usa os secrets do Environment com este nome. Renomeia no GitHub para "vps"
+    # ou altera aqui para o nome exato do teu ambiente (ex.: production).
+    environment: vps
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 40m
+          script: |
+            set -euo pipefail
+            APP_PATH="${{ secrets.VPS_APP_PATH }}"
+            BRANCH="main"
+            cd "$APP_PATH"
+            # Antes do script no disco: força alinhar com origin (evita deploy preso em `git pull` com working tree sujo).
+            if [ -d .git ]; then
+              echo "[deploy] Git: fetch + reset --hard origin/${BRANCH}"
+              git fetch origin "$BRANCH"
+              git checkout "$BRANCH"
+              git reset --hard "origin/${BRANCH}"
+            fi
+            chmod +x scripts/deploy-vps.sh 2>/dev/null || true
+            ./scripts/deploy-vps.sh

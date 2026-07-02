@@ -21,13 +21,14 @@ Itens concluídos (mais recentes no topo):
 - [x] **2026-06-29** — **Governança e resiliência**: Helmet+CSP+HSTS, log scrubbing, circuit breaker (APIs externas), shutdown gracioso, BCrypt≥12, util AES-256-GCM opcional, auditoria sanitizada.
 - [x] **2026-06-29** — **SPA na raiz**: sem landing; login em `https://app.coopvitta.cloud/`; API em `/api`; redirects legado `/app/*`.
 - [x] **2026-06-30** — **OpenObserve**: stack em `/opt/coopvitta/infra/openobserve` — logs Docker, métricas host/containers, rotas NPM.
+- [x] **2026-07-02** — **Repositório único**: plataforma `coopvitta-app/` versionada em `cadastro-interativo-coop` (fonte de verdade COOPVITTA na VPS).
 
 ## 🗺️ Mapa de Bordo (Backlog Técnico e Próximos Passos)
 
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
 - [ ] 🟥 **Alta Prioridade**: Rebrand completo da landing (`landing/*.html`) — **obsoleto** (landing removida; app na raiz)
-- [ ] 🟥 **Alta Prioridade**: Push dos commits locais do `coopvitta-app` (rebrand + auditoria) para repositório remoto correto
+- [x] **2026-07-02** — Push do `coopvitta-app` (rebrand + segurança + auditoria) para `cadastro-interativo-coop`
 - [ ] 🟨 **Média Prioridade**: DNS opcional `obs.coopvitta.cloud` — monitor já em `https://app.coopvitta.cloud/obs/`
 - [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/cadastro`
 - [ ] 🟨 **Média Prioridade**: JWT em produção ainda `JWT_EXPIRES_IN=24h` no `.env` — validar refresh token no frontend antes de reduzir para 15m
@@ -36,6 +37,6 @@ Esta seção lista o que está planejado ou pendente. À medida que os itens sã
 - [ ] 🟨 **Média Prioridade**: Restringir painel NPM (porta 81) ao IP do administrador — `NPM_ADMIN_IP=seu.ip sudo bash scripts/apply-server-rules.sh`
 - [ ] 🟩 **Baixa Prioridade**: Otimizar imagens estáticas da landing (hero, ícones PWA)
 - [ ] 🟩 **Baixa Prioridade**: Proxy NPM para `coopvitta.cloud` / `www` se domínio raiz for usado
-- [ ] ⚠️ **Débito Técnico Mapeado**: `coopvitta-app` (AppVS fork) e `cadastro-interativo-coop` com código divergente — definir fonte única de verdade e fluxo de deploy
+- [ ] ⚠️ **Débito Técnico Mapeado**: `web/`+`server/` (cadastro legado) vs cadastro integrado em `coopvitta-app/frontend` — desativar stack legada quando não houver uso
 - [ ] ⚠️ **Débito Técnico Mapeado**: `express.json` limitado a 10mb enquanto multer aceita 25 MiB/arquivo — documentar ou alinhar limites
 - [ ] ⚠️ **Débito Técnico Mapeado**: Magic bytes ausentes em upload de documentos de perfil (ver `docs/SECURITY-AUDIT-PLAYBOOK.md`)

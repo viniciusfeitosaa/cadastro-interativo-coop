@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Blog Viva Saúde — gestão de escalas, gestão hospitalar, legislação e carreira médica." />
+  <title>Blog | Viva Saúde</title>
+  <link rel="stylesheet" href="../css/style.css?v=48" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo"><img src="../assets/logo.png" alt="COOPVITTA" class="logo-img" /></a>
+      <nav class="nav" id="mainNav" aria-label="Menu principal">
+        <ul class="nav-links">
+          <li><a href="/para-instituicoes/"><span class="nav-t-long">Para Instituições</span><span class="nav-t-short">Instituições</span></a></li>
+          <li><a href="/para-medicos/"><span class="nav-t-long">Para Médicos</span><span class="nav-t-short">Médicos</span></a></li>
+          <li><a href="/como-funciona/"><span class="nav-t-long">Como Funciona</span><span class="nav-t-short">Como funciona</span></a></li>
+          <li><a href="/quem-somos/"><span class="nav-t-long">Quem Somos</span><span class="nav-t-short">Quem somos</span></a></li>
+          <li><a href="/blog/" class="is-active" aria-current="page">Blog</a></li>
+        </ul>
+        <div class="header-actions">
+          <a href="/app/login" class="nav-link-login"><span class="nav-t-long">Área do Associado</span><span class="nav-t-short">Associado</span></a>
+          <a href="/#cta-final" class="btn btn-cta-nav"><span class="nav-t-long">Falar com a Equipe</span><span class="nav-t-short">Contato</span></a>
+        </div>
+      </nav>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <section class="page-hero" id="blog-hero">
+    <div class="container">
+      <h1>Blog e Conteúdo</h1>
+      <p>Expertise em gestão médica, sem jargão desnecessário. Cada artigo responde a uma dúvida real do setor.</p>
+    </div>
+  </section>
+
+  <main class="page-content"><div class="container">
+    <div id="blog-list-view">
+      <div id="blog-root" aria-live="polite"></div>
+    </div>
+
+    <div id="blog-article-view" hidden>
+      <div class="blog-article-wrap">
+        <div id="blog-article-root" aria-live="polite"></div>
+        <section class="blog-comments-section" aria-labelledby="blog-comments-title">
+          <div class="blog-comments-inner">
+            <header class="blog-comments-header">
+              <h2 id="blog-comments-title">Comentários</h2>
+              <p class="blog-comments-lead">Participe da conversa. Seu comentário será revisado pela equipe antes de aparecer aqui.</p>
+            </header>
+            <div id="blog-comments-list" class="blog-comments-list" aria-live="polite"></div>
+            <div class="blog-comment-form-card">
+              <h3 class="blog-comment-form-title">Deixe seu comentário</h3>
+              <form id="blog-comment-form" class="blog-comment-form" novalidate>
+                <div class="blog-comment-form-row">
+                  <label>
+                    Nome
+                    <input type="text" name="autorNome" required minlength="2" maxlength="120" autocomplete="name" placeholder="Seu nome" />
+                  </label>
+                  <label>
+                    E-mail
+                    <input type="email" name="autorEmail" required autocomplete="email" placeholder="seu@email.com" />
+                  </label>
+                </div>
+                <label>
+                  Comentário
+                  <textarea name="conteudo" required minlength="3" maxlength="2000" placeholder="Sua dúvida ou opinião sobre o artigo"></textarea>
+                </label>
+                <label class="blog-comment-lgpd">
+                  <input type="checkbox" name="consentimentoLgpd" required value="true" />
+                  <span>Li e concordo com a <a href="/politica-privacidade/" target="_blank" rel="noopener">Política de Privacidade</a>. Meu e-mail não será exibido publicamente.</span>
+                </label>
+                <div class="blog-comment-form-actions">
+                  <button type="submit" class="btn btn-primary">Enviar comentário</button>
+                </div>
+                <p id="blog-comment-feedback" class="blog-comment-feedback" hidden aria-live="polite"></p>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section id="blog-cta" class="cta-final content-block" style="border-radius:16px;padding:2rem;text-align:center;margin-top:2rem">
+      <p style="margin-bottom:1rem">Receba novos artigos no seu e-mail.</p>
+      <a href="/#cta-final" class="btn btn-gold">Inscrever na newsletter</a>
+      <p style="margin-top:1.5rem;font-size:0.9rem">
+        <a href="/para-instituicoes/" style="color:#fff;margin-right:1rem">Gestores: fale com a Viva Saúde</a>
+        <a href="/para-medicos/" style="color:#fff">Médicos: cadastre-se no banco de talentos</a>
+      </p>
+    </section>
+  </div></main>
+  <footer class="footer footer-v2">
+    <div class="container footer-columns">
+      <div class="footer-col">
+        <img src="../assets/logo-rodape.png" alt="Viva Saúde" class="footer-logo" />
+        <p class="footer-tagline">Gestão integral de escalas médicas em todo o Brasil.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="/quem-somos/">Quem Somos</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="/para-instituicoes/">Para Instituições</a></li>
+          <li><a href="/para-medicos/">Para Médicos</a></li>
+          <li><a href="/app-viva-saude/">App Viva Saúde</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Informações</h4>
+        <ul>
+          <li><a href="/politica-privacidade/">Política de Privacidade</a></li>
+          <li><a href="/termos-de-uso/">Termos de Uso</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul class="footer-contact">
+          <li><a href="mailto:contato@sejavivasaude.com.br">contato@sejavivasaude.com.br</a></li>
+          <li><a href="tel:+551140402345">+55 11 4040-2345</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 Viva Saúde. Todos os direitos reservados.</p>
+  </footer>
+  <script src="../js/landing-ui.js?v=3"></script>
+  <script src="../js/blog-public.js?v=5"></script>
+</body>
+</html>
