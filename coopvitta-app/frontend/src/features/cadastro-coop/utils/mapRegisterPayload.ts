@@ -112,14 +112,23 @@ function resolveRegistroConselho(dados: FormData, profissao: string): string | u
   return raw;
 }
 
+export function mapCadastroToDadosGcoopJson(dados: FormData): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  const fileSet = new Set<string>(FILE_FIELDS);
+  for (const [key, value] of Object.entries(dados)) {
+    if (fileSet.has(key)) continue;
+    if (value instanceof FileList || value instanceof File) continue;
+    out[key] = value;
+  }
+  return out;
+}
+
 export function mapCadastroToRegisterPayload(dados: FormData): RegisterPayload {
   const profissao = mapProfissao(dados.categoriaProfissional, dados.categoriaProfissionalDetalhe);
   const payload: RegisterPayload = {
     nomeCompleto: String(dados.nomeCompleto || '').trim(),
     email: String(dados.email || '').trim().toLowerCase(),
     cpf: String(dados.cpf || '').trim(),
-    password: String(dados.password || ''),
-    confirmPassword: String(dados.confirmPassword || ''),
     profissao,
     telefone: montarTelefone(dados),
     estadoCivil: mapEstadoCivil(dados.estadoCivil),
@@ -127,6 +136,7 @@ export function mapCadastroToRegisterPayload(dados: FormData): RegisterPayload {
     dadosBancarios: montarDadosBancarios(dados),
     chavePix: String(dados.pix || '').trim(),
     aceitouTermos: dados.termoConsentimento === true,
+    dadosGcoop: JSON.stringify(mapCadastroToDadosGcoopJson(dados)),
   };
 
   const crm = resolveRegistroConselho(dados, profissao);

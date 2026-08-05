@@ -1324,7 +1324,7 @@ const Escalas = () => {
     return (
       <div className="card border-l-4 border-red-400 stagger-1">
         <h2 className="text-lg font-bold text-coop-900 mb-2 font-display">Acesso restrito</h2>
-        <p className="text-sm text-coop-700 font-serif">Somente o perfil Master pode gerenciar escalas.</p>
+        <p className="text-sm text-coop-700 font-serif">Somente o administrador pode gerenciar escalas.</p>
       </div>
     );
   }
@@ -2742,7 +2742,7 @@ const Escalas = () => {
       {/* Hero */}
       <div className="card dashboard-hero col-span-full stagger-1 py-8 md:py-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-coop-600 mb-2 font-display">
-          Área Master
+          Área administrativa
         </p>
         <h1 className="text-xl md:text-2xl font-bold text-coop-900 font-display leading-tight mb-2">
           Escalas

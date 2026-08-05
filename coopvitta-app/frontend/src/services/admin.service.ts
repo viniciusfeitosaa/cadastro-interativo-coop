@@ -40,6 +40,17 @@ export interface CadastroPendenteDetalhe {
   documentos: CadastroPendenteDocumento[];
 }
 
+export interface MedicoCadastroDetalhe extends CadastroPendenteDetalhe {
+  statusCadastro: string;
+  ativo: boolean;
+  dadosGcoopJson: Record<string, unknown> | null;
+  gcoopSyncStatus: string | null;
+  gcoopSyncErro: string | null;
+  gcoopSincronizadoEm: string | null;
+  termosCadastroAceitosEm: string | null;
+  termosCadastroVersao: string | null;
+}
+
 /** Equipes do profissional (listagem em `/admin/medicos`). */
 export interface MedicoEquipeResumo {
   id: string;
@@ -456,6 +467,21 @@ export const adminService = {
       `/admin/medicos/${medicoId}/docuseal/documentos`
     );
     return response.data;
+  },
+
+  getMedicoCadastroDetalhe: async (medicoId: string) => {
+    const response = await api.get<{ success: boolean; data: MedicoCadastroDetalhe }>(
+      `/admin/medicos/${medicoId}/cadastro`
+    );
+    return response.data;
+  },
+
+  downloadMedicoCadastroDocumento: async (medicoId: string, documentoId: string): Promise<Blob> => {
+    const response = await api.get(
+      `/admin/medicos/${medicoId}/cadastro/documentos/${documentoId}/download`,
+      { responseType: 'blob' }
+    );
+    return response.data as Blob;
   },
 
   enviarDocusealTemplateMedico: async (
@@ -951,10 +977,55 @@ export const adminService = {
     return response.data;
   },
 
-  listCadastrosPendentes: async () => {
+  listCadastrosPendentes: async (params?: { nome?: string; profissao?: string; especialidade?: string }) => {
     const response = await api.get<{ success: boolean; data: CadastroPendenteListItem[] }>(
-      '/admin/cadastros-pendentes'
+      '/admin/cadastros-pendentes',
+      {
+        params: {
+          nome: params?.nome?.trim() ? params.nome.trim() : undefined,
+          profissao: params?.profissao?.trim() ? params.profissao.trim() : undefined,
+          especialidade: params?.especialidade?.trim() ? params.especialidade.trim() : undefined,
+        },
+      }
     );
+    return response.data;
+  },
+
+  importCadastrosPendentesLote: async (
+    rows: Array<{
+      nomeCompleto: string;
+      email: string;
+      cpf: string;
+      profissao: string;
+      telefone?: string;
+      estadoCivil?: string;
+      enderecoResidencial?: string;
+      dadosBancarios?: string;
+      chavePix?: string;
+      crm?: string;
+      especialidades?: string[];
+      aceitouTermos?: boolean;
+      dadosGcoop: Record<string, unknown>;
+    }>
+  ) => {
+    const response = await api.post<{
+      success: boolean;
+      message?: string;
+      data: {
+        total: number;
+        criados: number;
+        falhas: number;
+        resultados: Array<{
+          index: number;
+          ok: boolean;
+          nomeCompleto?: string;
+          email?: string;
+          cpf?: string;
+          medicoId?: string;
+          error?: string;
+        }>;
+      };
+    }>('/admin/cadastros-pendentes/import-lote', { rows });
     return response.data;
   },
 
@@ -974,15 +1045,49 @@ export const adminService = {
   },
 
   aprovarCadastroPendente: async (medicoId: string) => {
-    const response = await api.post<{ success: boolean; message?: string }>(
-      `/admin/cadastros-pendentes/${medicoId}/aprovar`
-    );
+    const response = await api.post<{
+      success: boolean;
+      message?: string;
+      data?: { gcoopSync?: { ok?: boolean; status?: string; error?: string } };
+    }>(`/admin/cadastros-pendentes/${medicoId}/aprovar`);
     return response.data;
   },
 
   rejeitarCadastroPendente: async (medicoId: string) => {
     const response = await api.post<{ success: boolean; message?: string }>(
       `/admin/cadastros-pendentes/${medicoId}/rejeitar`
+    );
+    return response.data;
+  },
+
+  listGcoopSyncPendentes: async () => {
+    const response = await api.get<{
+      success: boolean;
+      data: Array<{
+        id: string;
+        nomeCompleto: string;
+        email: string | null;
+        cpf: string;
+        profissao: string;
+        gcoopSyncStatus: 'PENDENTE_SYNC' | 'ERRO_SYNC';
+        gcoopSyncErro: string | null;
+        gcoopSincronizadoEm: string | null;
+        updatedAt: string;
+      }>;
+    }>('/admin/gcoop/sync-pendentes');
+    return response.data;
+  },
+
+  retryGcoopSync: async (medicoId: string) => {
+    const response = await api.post<{ success: boolean; data: unknown; message?: string }>(
+      `/admin/gcoop/sync-pendentes/${medicoId}/retry`
+    );
+    return response.data;
+  },
+
+  retryAllGcoopSync: async () => {
+    const response = await api.post<{ success: boolean; data: unknown; message?: string }>(
+      '/admin/gcoop/sync-pendentes/retry-all'
     );
     return response.data;
   },

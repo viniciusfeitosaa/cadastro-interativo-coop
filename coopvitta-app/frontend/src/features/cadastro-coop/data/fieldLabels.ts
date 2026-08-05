@@ -58,8 +58,6 @@ export const FIELD_LABELS: Record<string, string> = {
   agencia: 'Agência',
   conta: 'Conta',
   digitoConta: 'Dígito da conta',
-  password: 'Senha de acesso',
-  confirmPassword: 'Confirmar senha',
   termoConsentimento: 'Termo de consentimento LGPD',
   certidaoNegativaConselho: 'Certidão negativa do conselho',
   carteiraConselho: 'Carteira do conselho',
@@ -113,6 +111,6 @@ export const FIELD_GROUPS = [
   },
   {
     title: 'Consentimento',
-    fields: ['password', 'confirmPassword', 'termoConsentimento'],
+    fields: ['termoConsentimento'],
   },
 ]

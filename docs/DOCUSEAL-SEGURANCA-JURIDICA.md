@@ -42,7 +42,7 @@ O signatário recebe um **código OTP por e-mail** antes de abrir o documento �
 | `noreply@coopvitta.cloud` | Cadastro / notificações app |
 
 Remetente configurado: `COOPVITTA Assinaturas <assinaturas@coopvitta.cloud>`  
-Reply-To: `contato@coopvitta.org`
+Reply-To: `rtenfermagem@coopvitta.org`
 
 ### 4. HTTPS e instância isolada
 

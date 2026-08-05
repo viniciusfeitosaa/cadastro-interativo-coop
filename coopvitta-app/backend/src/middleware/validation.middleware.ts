@@ -157,12 +157,18 @@ export const validateRegisterMedico = [
     .withMessage('E-mail inválido')
     .normalizeEmail(),
   body('password')
+    .optional({ values: 'falsy' })
     .isString()
     .isLength({ min: 8 })
     .withMessage('Senha deve ter no mínimo 8 caracteres'),
   body('confirmPassword')
+    .optional({ values: 'falsy' })
     .isString()
-    .custom((value, { req }) => value === req.body.password)
+    .custom((value, { req }) => {
+      const password = req.body?.password;
+      if (!password) return true;
+      return value === password;
+    })
     .withMessage('As senhas não coincidem'),
   body('cpf')
     .isString()
@@ -278,6 +284,22 @@ export const validateRegisterMedico = [
     }
     throw new Error('É necessário aceitar a declaração e os termos de cadastro para concluir o pedido');
   }),
+  body('dadosGcoop')
+    .optional({ values: 'falsy' })
+    .custom((value) => {
+      if (value === undefined || value === null || value === '') return true;
+      if (typeof value === 'object') return true;
+      if (typeof value === 'string') {
+        try {
+          const parsed = JSON.parse(value);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return true;
+        } catch {
+          throw new Error('dadosGcoop deve ser um JSON válido');
+        }
+        throw new Error('dadosGcoop deve ser um objeto JSON');
+      }
+      throw new Error('dadosGcoop inválido');
+    }),
   handleValidationErrors,
 ];
 

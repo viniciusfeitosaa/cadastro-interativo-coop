@@ -371,7 +371,7 @@ const SubgruposEquipes = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Somente o perfil Master pode gerenciar subgrupos e equipes.</p>
+        <p className="text-gray-600">Somente o administrador pode gerenciar subgrupos e equipes.</p>
       </div>
     );
   }
@@ -558,7 +558,7 @@ const SubgruposEquipes = () => {
                   >
                     <div className="min-w-0">
                       <p className="font-semibold text-coop-900">{equipe.nome}</p>
-                      <p className="text-xs text-gray-600">Médicos: {equipe._count?.equipeMedicos ?? 0} | Escalas: {equipe._count?.escalaEquipes ?? 0}</p>
+                      <p className="text-xs text-gray-600">Associados: {equipe._count?.equipeMedicos ?? 0} | Escalas: {equipe._count?.escalaEquipes ?? 0}</p>
                     </div>
                     <button type="button" className="btn btn-secondary shrink-0" onClick={(e) => openConfirmExcluirEquipe(e, equipe.id, equipe.nome)} disabled={loadingAction}>Excluir</button>
                   </div>
@@ -567,7 +567,7 @@ const SubgruposEquipes = () => {
             </div>
             {selectedEquipeId && (
               <div className="mt-4 pt-4 border-t border-coop-100">
-                <p className="text-sm font-medium text-coop-800 mb-3">Médicos da equipe</p>
+                <p className="text-sm font-medium text-coop-800 mb-3">Associados da equipe</p>
                 <div className="mb-4 pb-4 border-b border-coop-100">
                   <p className="text-xs font-semibold uppercase tracking-wide text-coop-600 mb-2">Adicionar profissionais</p>
                   <input

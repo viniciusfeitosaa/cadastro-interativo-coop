@@ -39,6 +39,8 @@ import {
   docusealResumoPorEmailsController,
   docusealResendSubmitterController,
   getMedicoDocusealDocumentosController,
+  getMedicoCadastroDetalheController,
+  downloadMedicoCadastroDocumentoController,
   postMedicoDocusealEnviarTemplateController,
   listDocumentosEnviadosController,
   uploadDocumentoEnviadoController,
@@ -47,7 +49,11 @@ import {
   getCadastroPendenteDetalheController,
   downloadCadastroPendenteDocumentoController,
   aprovarCadastroPendenteController,
+  importCadastrosPendentesLoteController,
   rejeitarCadastroPendenteController,
+  listGcoopSyncPendentesController,
+  retryGcoopSyncController,
+  retryAllGcoopSyncController,
   removerEscalaPlantaoController,
   removerMedicoEscalaController,
   removeContratoEquipeController,
@@ -119,6 +125,19 @@ router.post('/medicos', requireModuleAccess(ModuloSistema.MEDICOS), createMedico
 router.put('/medicos/:id', requireModuleAccess(ModuloSistema.MEDICOS), updateMedicoController);
 router.patch('/medicos/:id/ativo', requireModuleAccess(ModuloSistema.MEDICOS), toggleMedicoAtivoController);
 router.post('/medicos/:id/invite', requireModuleAccess(ModuloSistema.MEDICOS), validateUUIDParam('id'), inviteMedicoController);
+router.get(
+  '/medicos/:id/cadastro',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  getMedicoCadastroDetalheController
+);
+router.get(
+  '/medicos/:id/cadastro/documentos/:documentoId/download',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  validateUUIDParam('documentoId'),
+  downloadMedicoCadastroDocumentoController
+);
 router.get(
   '/medicos/:id/docuseal/documentos',
   requireModuleAccess(ModuloSistema.MEDICOS),
@@ -228,6 +247,11 @@ router.get(
   requireModuleAccess(ModuloSistema.AVALIACAO),
   listCadastrosPendentesController
 );
+router.post(
+  '/cadastros-pendentes/import-lote',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  importCadastrosPendentesLoteController
+);
 router.get(
   '/cadastros-pendentes/:medicoId',
   requireModuleAccess(ModuloSistema.AVALIACAO),
@@ -252,6 +276,22 @@ router.post(
   requireModuleAccess(ModuloSistema.AVALIACAO),
   validateUUIDParam('medicoId'),
   rejeitarCadastroPendenteController
+);
+router.get(
+  '/gcoop/sync-pendentes',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  listGcoopSyncPendentesController
+);
+router.post(
+  '/gcoop/sync-pendentes/retry-all',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  retryAllGcoopSyncController
+);
+router.post(
+  '/gcoop/sync-pendentes/:medicoId/retry',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  validateUUIDParam('medicoId'),
+  retryGcoopSyncController
 );
 
 router.get('/documentos-enviados', requireModuleAccess(ModuloSistema.ENVIO_DOCUMENTOS), listDocumentosEnviadosController);

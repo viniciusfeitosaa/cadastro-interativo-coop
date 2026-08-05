@@ -39,6 +39,13 @@ enum StatusCadastroMedico {
   REJEITADO
 }
 
+/// Sincronização do pré-cadastro com o webservice Gcoop (após aprovação no módulo Avaliação).
+enum GcoopSyncStatus {
+  PENDENTE_SYNC
+  SINCRONIZADO
+  ERRO_SYNC
+}
+
 enum ModuloSistema {
   DASHBOARD
   MEDICOS
@@ -199,6 +206,12 @@ model Medico {
   termosCadastroAceitosEm DateTime? @map("termos_cadastro_aceitos_em")
   /// Identificador da versão dos textos legais aceites (ex.: 2026.1).
   termosCadastroVersao   String?   @map("termos_cadastro_versao") @db.VarChar(24)
+  /// Snapshot JSON do wizard de cadastro (campos para integração Gcoop).
+  dadosGcoopJson         Json?     @map("dados_gcoop_json")
+  /// Estado da sincronização com o Gcoop após aprovação (null = ainda não tentou).
+  gcoopSyncStatus        GcoopSyncStatus? @map("gcoop_sync_status")
+  gcoopSyncErro          String?   @map("gcoop_sync_erro") @db.Text
+  gcoopSincronizadoEm    DateTime? @map("gcoop_sincronizado_em")
   ativo         Boolean  @default(true)
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")

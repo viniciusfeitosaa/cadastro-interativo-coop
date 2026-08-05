@@ -9,6 +9,7 @@ import { ModuloSistema } from '../../constants/modulos';
 import NotificationBell from './NotificationBell';
 import GlobalToasts from './GlobalToasts';
 import { BrandLogo } from '../brand/BrandLogo';
+import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, LABEL_PROFISSIONAL, displayNomeUsuario } from '../../constants/branding';
 
 type MenuItem = { to: string; label: string };
 type MenuGroup = { title: string; items: MenuItem[] };
@@ -23,7 +24,7 @@ const getMobileIcon = (label: string) => {
           <path d="M10 21v-6h4v6" />
         </svg>
       );
-    case 'Médicos':
+    case 'Associados':
       return (
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="8" r="3.5" />
@@ -164,31 +165,11 @@ const AppShell = () => {
   ];
   const menuGroupsBase: MenuGroup[] = isMaster
     ? [
-        { title: 'Escalas', items: [{ to: '/escalas', label: 'Escalas' }, { to: '/subgrupos-equipes', label: 'Subgrupos e Equipes' }] },
         {
           title: 'Corpo Clínico',
           items: [
-            { to: '/medicos', label: 'Médicos' },
+            { to: '/medicos', label: LABEL_ASSOCIADOS },
             { to: '/avaliacao', label: 'Avaliação' },
-          ],
-        },
-        {
-          title: 'Relatórios',
-          items: [
-            { to: '/relatorios', label: 'Relatório financeiro' },
-            { to: '/relatorios-ponto-eletronico', label: 'Relatórios de ponto eletrônico' },
-            { to: '/relatorios-procedimentos', label: 'Relatório de procedimentos' },
-          ],
-        },
-        {
-          title: 'Administração',
-          items: [
-            { to: '/contratos-ativos', label: 'Contratos Ativos' },
-            { to: '/valores-plantao', label: 'Valores Hora/Plantão' },
-            { to: '/valores-ponto', label: 'Horas/Valor Ponto Eletrônico' },
-            { to: '/modulo-escala-master', label: 'Somente escala' },
-            { to: '/envio-documentos', label: 'Envio de Documentos' },
-            { to: '/perfil', label: 'Minha Conta' },
           ],
         },
       ]
@@ -240,9 +221,9 @@ const AppShell = () => {
     }))
     .filter((group) => group.items.length > 0);
 
-  /** No mobile: só Dashboard, Ponto (ou Escalas no master) e o menu "Mais" com o resto. */
+  /** No mobile: só Dashboard no master; demais itens no menu "Mais". */
   const mobileTabsBase: MenuItem[] = isMaster
-    ? [dashboardItem, { to: '/escalas', label: 'Escalas' }]
+    ? [dashboardItem]
     : [dashboardItem, { to: '/ponto-eletronico', label: 'Ponto' }, vagasNavItem];
   const mobileTabs = mobileTabsBase.filter((item) => hasAccess(moduloByRoute[item.to]));
 
@@ -393,9 +374,9 @@ const AppShell = () => {
 
             <div className="flex-1 overflow-y-auto p-5">
               <div className="rounded-2xl border border-coop-200/60 bg-gradient-to-br from-coop-50/80 to-coop-100/40 px-4 py-3">
-                <p className="text-sm font-semibold text-coop-900 truncate font-display">{user?.nomeCompleto || 'Usuário'}</p>
+                <p className="text-sm font-semibold text-coop-900 truncate font-display">{displayNomeUsuario(user?.nomeCompleto) || 'Usuário'}</p>
                 <p className="text-xs text-coop-600 mt-0.5 font-serif">
-                  {isMaster ? 'Perfil Master' : 'Perfil Profissional'}
+                  {isMaster ? LABEL_ADMINISTRADOR : LABEL_PROFISSIONAL}
                 </p>
               </div>
 

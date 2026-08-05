@@ -12,6 +12,7 @@ import {
   DocumentoPerfilField,
 } from '../constants/documentosPerfil';
 import { MODULO_LABEL, ModuloSistema } from '../constants/modulos';
+import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, displayNomeUsuario } from '../constants/branding';
 import { ESPECIALIDADES_MEDICAS } from '../constants/profissoesEspecialidades';
 
 type TabPerfil = 'pessoais' | 'bancarios' | 'documentos' | 'conta';
@@ -278,7 +279,7 @@ const Perfil = () => {
               <div className="rounded-xl bg-coop-50/80 border border-coop-200/50 p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-coop-600">Nome completo</p>
                 <p className="text-sm font-semibold text-coop-900 mt-1 font-display">
-                  {fixMojibake(perfil?.nomeCompleto || '-')}
+                  {fixMojibake(displayNomeUsuario(perfil?.nomeCompleto) || '-')}
                 </p>
               </div>
               <div className="rounded-xl bg-coop-50/80 border border-coop-200/50 p-4">
@@ -395,7 +396,7 @@ const Perfil = () => {
               <div className="flex items-center justify-between rounded-xl bg-coop-50/60 border border-coop-200/50 px-4 py-3">
                 <span className="text-xs font-medium text-coop-700">Perfil</span>
                 <span className="text-xs font-semibold text-coop-900 font-display">
-                  {isMaster ? 'Master' : 'Profissional'}
+                  {isMaster ? LABEL_ADMINISTRADOR : 'Profissional'}
                 </span>
               </div>
               <div className="flex items-center justify-between rounded-xl bg-coop-50/60 border border-coop-200/50 px-4 py-3">
@@ -408,8 +409,8 @@ const Perfil = () => {
             <div className="mt-4 rounded-xl bg-coop-50/80 border border-coop-200/50 p-4">
               <p className="text-xs text-coop-700 font-serif">
                 {isMaster
-                  ? 'Como usuário Master, você pode gerenciar médicos, contratos, escalas e relatórios.'
-                  : 'Se precisar atualizar dados cadastrais, solicite ao administrador Master.'}
+                  ? `Como ${LABEL_ADMINISTRADOR.toLowerCase()}, você pode gerenciar ${LABEL_ASSOCIADOS.toLowerCase()}, contratos, escalas e relatórios.`
+                  : `Se precisar atualizar dados cadastrais, solicite ao ${LABEL_ADMINISTRADOR.toLowerCase()}.`}
               </p>
             </div>
           </div>
@@ -549,8 +550,8 @@ const Perfil = () => {
                 <thead>
                   <tr className="text-left text-coop-700 bg-coop-50/80 border-b border-coop-200/60">
                     <th className="py-2.5 px-4 font-semibold text-xs">Módulo</th>
-                    <th className="py-2.5 px-4 font-semibold text-xs">Master</th>
-                    <th className="py-2.5 px-4 font-semibold text-xs">Médico</th>
+                    <th className="py-2.5 px-4 font-semibold text-xs">{LABEL_ADMINISTRADOR}</th>
+                    <th className="py-2.5 px-4 font-semibold text-xs">Associado</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -51,14 +51,17 @@ export interface RegisterPayload {
   crm?: string;
   especialidades?: string[];
   telefone: string;
-  password: string;
-  confirmPassword: string;
+  /** Opcional no cadastro público — o servidor gera senha provisória se omitida. */
+  password?: string;
+  confirmPassword?: string;
   estadoCivil?: string;
   enderecoResidencial?: string;
   dadosBancarios?: string;
   chavePix?: string;
   /** Obrigatório no cadastro público (aceite de termos e declaração). */
   aceitouTermos: boolean;
+  /** Snapshot JSON do wizard para integração Gcoop. */
+  dadosGcoop?: string;
 }
 
 export type RegisterDocumentFiles = Partial<Record<DocumentoPerfilField, File>>;
@@ -89,8 +92,8 @@ export const authService = {
     appendScalar('cpf', payload.cpf);
     appendScalar('telefone', payload.telefone);
     appendScalar('profissao', payload.profissao);
-    appendScalar('password', payload.password);
-    appendScalar('confirmPassword', payload.confirmPassword);
+    if (payload.password) appendScalar('password', payload.password);
+    if (payload.confirmPassword) appendScalar('confirmPassword', payload.confirmPassword);
     if (payload.crm !== undefined && payload.crm !== null) {
       fd.append('crm', String(payload.crm).trim());
     }
@@ -98,6 +101,7 @@ export const authService = {
     if (payload.enderecoResidencial) appendScalar('enderecoResidencial', payload.enderecoResidencial);
     if (payload.dadosBancarios) appendScalar('dadosBancarios', payload.dadosBancarios);
     if (payload.chavePix) appendScalar('chavePix', payload.chavePix);
+    if (payload.dadosGcoop) fd.append('dadosGcoop', payload.dadosGcoop);
     fd.append('aceitouTermos', payload.aceitouTermos ? 'true' : 'false');
     (payload.especialidades || []).forEach((e) => fd.append('especialidades', e));
     Object.entries(files || {}).forEach(([k, file]) => {

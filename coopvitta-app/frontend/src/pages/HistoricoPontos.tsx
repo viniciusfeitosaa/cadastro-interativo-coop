@@ -93,7 +93,7 @@ const HistoricoPontos = () => {
         <div className="mb-4">
           <h2 className="text-lg font-bold text-coop-900">Registros do mês</h2>
           <p className="text-xs text-coop-600 mt-1">
-            O valor considera a mesma base de cálculo exibida ao Master.
+            O valor considera a mesma base de cálculo exibida ao administrador.
           </p>
         </div>
 

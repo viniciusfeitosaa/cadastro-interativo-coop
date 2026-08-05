@@ -129,7 +129,7 @@ const EnvioDocumentos = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Esta área é exclusiva para o perfil Master.</p>
+        <p className="text-gray-600">Esta área é exclusiva para o administrador.</p>
       </div>
     );
   }

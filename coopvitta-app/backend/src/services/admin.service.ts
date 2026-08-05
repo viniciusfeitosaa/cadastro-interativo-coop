@@ -25,6 +25,7 @@ import {
   createDocusealSubmissionsForMedicoInvite,
   docusealDocumentosPainelPorMedicoService,
 } from './docuseal.service';
+import { getMedicoDocumentoPerfilForDownload } from './medico.service';
 import crypto from 'crypto';
 import { Prisma, StatusCadastroMedico } from '@prisma/client';
 
@@ -469,6 +470,70 @@ export async function getMedicoDocusealDocumentosService(tenantId: string, medic
   }
 
   return docusealDocumentosPainelPorMedicoService(medico.email || '', medico.nomeCompleto);
+}
+
+/** Dados completos do cadastro do associado (inclui snapshot do wizard e documentos de perfil). */
+export async function getMedicoCadastroDetalheService(tenantId: string, medicoId: string) {
+  const m = await prisma.medico.findFirst({
+    where: { id: medicoId, tenantId },
+    select: {
+      id: true,
+      nomeCompleto: true,
+      email: true,
+      profissao: true,
+      crm: true,
+      cpf: true,
+      telefone: true,
+      especialidades: true,
+      vinculo: true,
+      estadoCivil: true,
+      enderecoResidencial: true,
+      dadosBancarios: true,
+      chavePix: true,
+      statusCadastro: true,
+      ativo: true,
+      dadosGcoopJson: true,
+      gcoopSyncStatus: true,
+      gcoopSyncErro: true,
+      gcoopSincronizadoEm: true,
+      termosCadastroAceitosEm: true,
+      termosCadastroVersao: true,
+      createdAt: true,
+      updatedAt: true,
+      documentos: {
+        select: {
+          id: true,
+          tipo: true,
+          nomeArquivo: true,
+          mimeType: true,
+          tamanhoBytes: true,
+          createdAt: true,
+        },
+        orderBy: { updatedAt: 'desc' },
+      },
+    },
+  });
+
+  if (!m) {
+    throw { statusCode: 404, message: 'Profissional não encontrado' };
+  }
+
+  return m;
+}
+
+export async function downloadMedicoCadastroDocumentoService(
+  tenantId: string,
+  medicoId: string,
+  documentoId: string
+) {
+  const m = await prisma.medico.findFirst({
+    where: { id: medicoId, tenantId },
+    select: { id: true },
+  });
+  if (!m) {
+    throw { statusCode: 404, message: 'Profissional não encontrado' };
+  }
+  return getMedicoDocumentoPerfilForDownload(medicoId, tenantId, documentoId);
 }
 
 /** DocuSeal: criar e enviar um modelo (POST API) a partir da app. */

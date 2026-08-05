@@ -1,7 +1,8 @@
 import tls from 'tls';
 import nodemailer from 'nodemailer';
 import { Resend } from 'resend';
-import { escapeHtmlAttr, getEmailLogoUrl, getOrgDisplayName, getEmailTagline, getFrontendAppBaseUrl } from '../utils/email-branding.util';
+import { escapeHtmlAttr, getEmailLogoUrl, getOrgDisplayName, getEmailTagline } from '../utils/email-branding.util';
+import { getGcoopAreaCooperadoUrl } from './gcoop/gcoop.config';
 
 function escapeHtmlText(s: string): string {
   return s
@@ -15,8 +16,8 @@ function org(): string {
   return getOrgDisplayName();
 }
 
-function getAppBaseUrl(): string {
-  return getFrontendAppBaseUrl();
+function getGcoopPortalUrl(): string {
+  return getGcoopAreaCooperadoUrl();
 }
 
 function hasResendConfig(): boolean {
@@ -87,16 +88,15 @@ function subjectConfirmacao(): string {
   return `Cadastro recebido — ${org()}`;
 }
 
-function subjectBoasVindas(): string {
-  return `Bem-vindo à ${org()} — o seu pedido de associação`;
-}
+// (Removido) E-mail de boas-vindas — não é mais enviado após o pré-cadastro.
 
 function subjectCadastroAprovado(): string {
-  return `Cadastro aprovado — análise concluída | ${org()}`;
+  return `Pré-cadastro enviado ao Gcoop — aguardando validação | ${org()}`;
 }
 
 function buildConfirmacaoHtml(primeiroNome: string, versaoTermos: string): string {
-  const loginHref = escapeHtmlAttr(`${getAppBaseUrl()}/login`);
+  const portalHref = escapeHtmlAttr(getGcoopPortalUrl());
+  const portalLabel = escapeHtmlText(getGcoopPortalUrl());
   const orgName = escapeHtmlText(org());
   return buildEmailShell({
     preheader: `Confirmámos a receção do seu pedido de cadastro na ${org()}.`,
@@ -104,10 +104,10 @@ function buildConfirmacaoHtml(primeiroNome: string, versaoTermos: string): strin
     bodyParagraphsHtml: [
       p(`Olá, <strong style="color:#0f172a;">${escapeHtmlText(primeiroNome)}</strong>,`),
       p(
-        `Este e-mail confirma que o <strong style="color:#0f172a;">pedido de cadastro</strong> que você enviou na plataforma <strong style="color:#0f172a;">${orgName}</strong> foi <strong style="color:#0f172a;">recebido com sucesso</strong> pelos nossos sistemas, incluindo os dados e documentos enviados nessa sessão.`
+        `Este e-mail confirma que o <strong style="color:#0f172a;">pedido de pré-cadastro</strong> que você enviou na <strong style="color:#0f172a;">${orgName}</strong> foi <strong style="color:#0f172a;">recebido com sucesso</strong>, incluindo os dados e documentos enviados nessa sessão.`
       ),
       p(
-        'Seu pedido segue agora para <strong style="color:#0f172a;">análise pela equipe competente</strong>. Enquanto a análise não for concluída, o acesso à plataforma permanece inativo. Você será notificado por e-mail ou pelos canais da sua instituição quando houver decisão.'
+        'Seu pedido segue agora para <strong style="color:#0f172a;">análise pela equipe COOPVITTA</strong>. Após a aprovação, seus dados serão integrados ao sistema Gcoop e você poderá acessar a <strong style="color:#0f172a;">área do cooperado</strong>.'
       ),
       p(
         `Para sua segurança e conformidade legal, registramos o aceite da declaração e dos termos de cadastro na <strong style="color:#0f172a;">versão ${escapeHtmlText(
@@ -115,16 +115,14 @@ function buildConfirmacaoHtml(primeiroNome: string, versaoTermos: string): strin
         )}</strong>, no momento do envio do formulário.`
       ),
       p(
-        `Quando seu acesso for aprovado, você poderá entrar em <a href="${loginHref}" style="color:#0d9488;font-weight:600;">${escapeHtmlText(
-          `${getAppBaseUrl()}/login`
-        )}</a> com o e-mail e a senha que cadastrou.`
+        `Portal do cooperado (Gcoop): <a href="${portalHref}" style="color:#0d9488;font-weight:600;">${portalLabel}</a>. O acesso será liberado após a conclusão da análise — a senha de entrada no Gcoop é definida diretamente nesse portal, não neste formulário.`
       ),
     ],
   });
 }
 
 function buildConfirmacaoText(primeiroNome: string, versaoTermos: string): string {
-  const login = `${getAppBaseUrl()}/login`;
+  const portal = getGcoopPortalUrl();
   const orgName = org();
   return [
     `${orgName.toUpperCase()} — Cadastro recebido`,
@@ -132,112 +130,71 @@ function buildConfirmacaoText(primeiroNome: string, versaoTermos: string): strin
     '',
     `Olá, ${primeiroNome},`,
     '',
-    `Confirmamos o recebimento do seu pedido de cadastro na plataforma ${orgName}, incluindo os dados e documentos enviados.`,
-    'O pedido segue para análise; o acesso permanece inativo até a aprovação.',
+    `Confirmamos o recebimento do seu pedido de pré-cadastro na ${orgName}, incluindo os dados e documentos enviados.`,
+    'O pedido segue para análise; após aprovação, seus dados serão integrados ao Gcoop.',
     '',
     `Versão dos termos e da declaração aceitos: ${versaoTermos}.`,
     '',
-    `Após a aprovação, acesse: ${login}`,
+    `Área do cooperado (Gcoop): ${portal}`,
+    'A senha de acesso ao Gcoop é definida diretamente nesse portal, não neste formulário.',
     '',
     'Com os melhores cumprimentos,',
     `Equipe ${orgName}`,
   ].join('\n');
 }
 
-function buildBoasVindasHtml(primeiroNome: string): string {
-  const loginHref = escapeHtmlAttr(`${getAppBaseUrl()}/login`);
-  const orgName = escapeHtmlText(org());
-  return buildEmailShell({
-    preheader: `Obrigado por confiar na ${org()} — estamos com você nesta etapa.`,
-    headline: `Bem-vindo à ${org()}`,
-    bodyParagraphsHtml: [
-      p(`Olá, <strong style="color:#0f172a;">${escapeHtmlText(primeiroNome)}</strong>,`),
-      p(
-        `É com satisfação que damos as <strong style="color:#0f172a;">boas-vindas</strong> à comunidade de profissionais e parceiros que utilizam a <strong style="color:#0f172a;">${orgName}</strong> para simplificar rotinas de trabalho, escalas, documentação e comunicação com sua instituição.`
-      ),
-      p(
-        'Seu pedido de associação foi registrado e está sendo tratado com o rigor que merece. Nossa equipe e a instituição com a qual você se associa trabalham para concluir a análise o mais breve possível.'
-      ),
-      p(
-        'Assim que sua conta for <strong style="color:#0f172a;">aprovada</strong>, você poderá acessar a plataforma e explorar os módulos para os quais tiver permissão (conforme definido pela instituição).'
-      ),
-      p(
-        `Guarde este e-mail para referência. Link de acesso: <a href="${loginHref}" style="color:#0d9488;font-weight:600;">${escapeHtmlText(
-          `${getAppBaseUrl()}/login`
-        )}</a>`
-      ),
-    ],
-  });
-}
-
-function buildBoasVindasText(primeiroNome: string): string {
-  const login = `${getAppBaseUrl()}/login`;
-  const orgName = org();
-  return [
-    `${orgName.toUpperCase()} — Boas-vindas`,
-    '─'.repeat(44),
-    '',
-    `Olá, ${primeiroNome},`,
-    '',
-    `Bem-vindo à ${orgName}.`,
-    '',
-    'Seu pedido de associação foi recebido e está em análise. Quando for aprovado, você poderá acessar a plataforma com o e-mail e a senha que cadastrou.',
-    '',
-    `Página de login: ${login}`,
-    '',
-    'Com os melhores cumprimentos,',
-    `Equipe ${orgName}`,
-  ].join('\n');
-}
+// (Removido) Template HTML/Text do e-mail de boas-vindas — não é mais enviado.
 
 function buildCadastroAprovadoHtml(primeiroNome: string, nomeInstituicao?: string): string {
-  const loginHref = escapeHtmlAttr(`${getAppBaseUrl()}/login`);
+  const portalHref = escapeHtmlAttr(getGcoopPortalUrl());
+  const portalLabel = escapeHtmlText(getGcoopPortalUrl());
   const inst = (nomeInstituicao || '').trim();
   const blocoInstituicao = inst
     ? p(
         `A <strong style="color:#0f172a;">análise do seu cadastro</strong> pela equipe da instituição <strong style="color:#0f172a;">${escapeHtmlText(
           inst
-        )}</strong> foi <strong style="color:#0d9488;">concluída</strong> e o seu perfil profissional foi <strong style="color:#0d9488;">aprovado</strong>.`
+        )}</strong> foi <strong style="color:#0d9488;">concluída</strong> e o seu perfil profissional foi <strong style="color:#0d9488;">aprovado</strong>. Seus dados foram integrados ao Gcoop.`
       )
     : p(
-        'A <strong style="color:#0f172a;">análise do seu cadastro</strong> foi <strong style="color:#0d9488;">concluída</strong> e o seu perfil profissional foi <strong style="color:#0d9488;">aprovado</strong>.'
+        'A <strong style="color:#0f172a;">análise do seu cadastro</strong> foi <strong style="color:#0d9488;">concluída</strong>, seu perfil profissional foi <strong style="color:#0d9488;">aprovado</strong> e seus dados foram integrados ao Gcoop.'
       );
   return buildEmailShell({
-    preheader: 'A análise do seu cadastro foi concluída e o seu acesso está ativo.',
-    headline: 'Cadastro aprovado',
+    preheader: 'Seu pré-cadastro foi enviado ao Gcoop e está aguardando validação.',
+    headline: 'Aguardando validação no Gcoop',
     bodyParagraphsHtml: [
       p(`Olá, <strong style="color:#0f172a;">${escapeHtmlText(primeiroNome)}</strong>,`),
       blocoInstituicao,
       p(
-        'Já pode entrar na plataforma com o <strong style="color:#0f172a;">e-mail</strong> e a <strong style="color:#0f172a;">senha</strong> que definiu no pedido de associação.'
+        'O seu pré-cadastro já foi integrado ao Gcoop. Neste momento, ele ainda está aguardando o aceite/validação da equipe do Gcoop para que o acesso seja liberado na plataforma.'
       ),
       p(
-        `Acesse o painel: <a href="${loginHref}" style="color:#0d9488;font-weight:600;">${escapeHtmlText(
-          `${getAppBaseUrl()}/login`
-        )}</a>`
+        `Portal do cooperado: <a href="${portalHref}" style="color:#0d9488;font-weight:600;">${portalLabel}</a>`
+      ),
+      p(
+        'Assim que o Gcoop concluir o aceite e liberar o acesso, você poderá entrar na plataforma e definir sua senha diretamente no portal (se necessário).'
       ),
     ],
   });
 }
 
 function buildCadastroAprovadoText(primeiroNome: string, nomeInstituicao?: string): string {
-  const login = `${getAppBaseUrl()}/login`;
+  const portal = getGcoopPortalUrl();
   const orgName = org();
   const inst = (nomeInstituicao || '').trim();
   const linhaAnalise = inst
-    ? `A análise do seu cadastro pela instituição "${inst}" foi concluída e o seu perfil profissional foi aprovado.`
-    : 'A análise do seu cadastro foi concluída e o seu perfil profissional foi aprovado.';
+    ? `A análise do seu cadastro pela instituição "${inst}" foi concluída, seu perfil foi aprovado e os dados foram integrados ao Gcoop.`
+    : 'A análise do seu cadastro foi concluída, seu perfil foi aprovado e os dados foram integrados ao Gcoop.';
   return [
-    `${orgName.toUpperCase()} — Cadastro aprovado`,
+    `${orgName.toUpperCase()} — Pré-cadastro enviado ao Gcoop`,
     '─'.repeat(44),
     '',
     `Olá, ${primeiroNome},`,
     '',
     linhaAnalise,
     '',
-    'Já pode entrar na plataforma com o e-mail e a senha que definiu no pedido de associação.',
-    '',
-    `Página de login: ${login}`,
+    'O seu pré-cadastro foi integrado ao Gcoop, mas ainda aguarda o aceite/validação da equipe do Gcoop para liberação do acesso.',
+    `Portal do cooperado: ${portal}`,
+    'Quando o Gcoop concluir o aceite e liberar o acesso, você poderá entrar na plataforma e definir sua senha diretamente no portal (se necessário).',
     '',
     'Com os melhores cumprimentos,',
     `Equipe ${orgName}`,
@@ -313,12 +270,6 @@ export async function enviarEmailsPosCadastroPublico(params: {
     );
   } catch (err) {
     console.error('[cadastro-publico-email] Falha no e-mail de confirmação de cadastro:', err);
-  }
-
-  try {
-    await sendEmailHtml(to, subjectBoasVindas(), buildBoasVindasHtml(primeiro), buildBoasVindasText(primeiro));
-  } catch (err) {
-    console.error('[cadastro-publico-email] Falha no e-mail de boas-vindas:', err);
   }
 }
 

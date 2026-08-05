@@ -128,11 +128,13 @@ export function FileField({
   label,
   accept = '.pdf,.jpg,.jpeg,.png',
   hint = 'PDF, JPG ou PNG — máx. 10 MB',
+  required = true,
 }: {
   name: keyof FormData
   label: string
   accept?: string
   hint?: string
+  required?: boolean
 }) {
   const {
     register,
@@ -147,7 +149,7 @@ export function FileField({
     <div className="field file-field">
       <label htmlFor={name}>
         {label}
-        <span className="required">*</span>
+        {required ? <span className="required">*</span> : <span className="optional"> (opcional)</span>}
       </label>
       <div className="file-drop">
         <input

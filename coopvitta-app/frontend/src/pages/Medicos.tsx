@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { adminService, type AdminMedico, type Equipe } from '../services/admin.service';
 import { notify } from '../lib/notificationEmitter';
 import { formatCRM, fixMojibake } from '../utils/validation.util';
+import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, LABEL_ASSOCIADO } from '../constants/branding';
+import { MedicoCadastroDadosModal } from '../components/medicos/MedicoCadastroDadosModal';
 
 /** Chave alinhada com `normalizarEmailDocuseal` no backend (ex.: @gmail → @gmail.com). */
 function emailChaveDocuseal(email: string | null | undefined): string {
@@ -43,9 +45,7 @@ const Medicos = () => {
   const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [selectedMedico, setSelectedMedico] = useState<AdminMedico | null>(null);
-  const [pontoModalOpen, setPontoModalOpen] = useState(false);
-  const [pontoInicio, setPontoInicio] = useState('');
-  const [pontoFim, setPontoFim] = useState('');
+  const [dadosModalOpen, setDadosModalOpen] = useState(false);
   const [docusealModalMedico, setDocusealModalMedico] = useState<{ id: string; nomeCompleto: string; email: string | null } | null>(
     null
   );
@@ -215,23 +215,11 @@ const Medicos = () => {
     setPage(1);
   };
 
-  const { data: registrosPontoResp, isLoading: loadingPontos } = useQuery({
-    queryKey: ['admin', 'registros-ponto', selectedMedico?.id, pontoInicio, pontoFim],
-    queryFn: () =>
-      adminService.listRegistrosPonto({
-        medicoId: selectedMedico!.id,
-        ...(pontoInicio ? { dataInicio: pontoInicio } : {}),
-        ...(pontoFim ? { dataFim: pontoFim } : {}),
-      }),
-    enabled: !!user && isMaster && pontoModalOpen && !!selectedMedico?.id,
-  });
-  const registrosPonto: any[] = registrosPontoResp?.data?.data ?? registrosPontoResp?.data ?? [];
-
   if (!isMaster) {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Esta área é exclusiva para o perfil Master.</p>
+        <p className="text-gray-600">Esta área é exclusiva para o perfil de {LABEL_ADMINISTRADOR.toLowerCase()}.</p>
       </div>
     );
   }
@@ -268,7 +256,7 @@ const Medicos = () => {
 
   return (
     <div className="card hover:shadow-lg transition-shadow">
-      <h2 className="text-2xl font-bold text-coop-900 mb-1">Médicos</h2>
+      <h2 className="text-2xl font-bold text-coop-900 mb-1">{LABEL_ASSOCIADOS}</h2>
       <p className="text-gray-600 mb-6">Lista de profissionais vinculados ao seu tenant.</p>
 
       <form
@@ -282,7 +270,7 @@ const Medicos = () => {
             placeholder="Pesquisar por nome, CRM ou CPF..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            aria-label="Pesquisar médicos"
+            aria-label={`Pesquisar ${LABEL_ASSOCIADOS.toLowerCase()}`}
           />
           <button type="submit" className="btn btn-primary">
             Pesquisar
@@ -320,12 +308,12 @@ const Medicos = () => {
       </form>
 
       {isLoading ? (
-        <p className="text-sm text-gray-600">Carregando médicos...</p>
+        <p className="text-sm text-gray-600">Carregando {LABEL_ASSOCIADOS.toLowerCase()}...</p>
       ) : medicos.length === 0 ? (
         <p className="text-sm text-gray-600">
           {search || statusFilter !== 'all'
-            ? 'Nenhum médico encontrado com os filtros aplicados. Tente alterar a pesquisa ou o status.'
-            : 'Nenhum médico cadastrado para este tenant.'}
+            ? `Nenhum ${LABEL_ASSOCIADO.toLowerCase()} encontrado com os filtros aplicados. Tente alterar a pesquisa ou o status.`
+            : `Nenhum ${LABEL_ASSOCIADO.toLowerCase()} cadastrado para este tenant.`}
         </p>
       ) : (
         <>
@@ -339,9 +327,9 @@ const Medicos = () => {
                 type="button"
                 className="btn btn-secondary text-sm"
                 disabled={!selectedMedico}
-                onClick={() => setPontoModalOpen(true)}
+                onClick={() => setDadosModalOpen(true)}
               >
-                Histórico de pontos
+                Ver dados
               </button>
             </div>
           </div>
@@ -537,7 +525,7 @@ const Medicos = () => {
           {totalPages > 1 && (
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-coop-200 pt-4">
               <p className="text-sm text-coop-700">
-                Exibindo <strong>{from}</strong> a <strong>{to}</strong> de <strong>{total}</strong> médicos
+                Exibindo <strong>{from}</strong> a <strong>{to}</strong> de <strong>{total}</strong> {LABEL_ASSOCIADOS.toLowerCase()}
               </p>
               <div className="flex items-center gap-2">
                 <button
@@ -919,129 +907,12 @@ const Medicos = () => {
           document.body
         )}
 
-      {pontoModalOpen &&
-        selectedMedico &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-50 bg-black/40 overflow-y-auto sm:overflow-hidden flex items-start sm:items-center justify-center"
-            role="dialog"
-            aria-modal="true"
-            onClick={() => setPontoModalOpen(false)}
-          >
-            <div
-              className="card w-full sm:max-w-5xl border border-coop-200/70 shadow-2xl overflow-hidden flex flex-col rounded-none sm:rounded-2xl h-[100svh] sm:h-auto sm:max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex-none bg-white/95 backdrop-blur-sm border-b border-coop-100 px-4 sm:px-5 py-4 flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <h3 className="text-base font-bold text-coop-900 font-display">Histórico de pontos</h3>
-                  <p className="text-xs text-coop-600 font-serif truncate">{selectedLabel}</p>
-                </div>
-                <button
-                  type="button"
-                  className="btn text-sm border border-coop-300 bg-white text-coop-800"
-                  onClick={() => setPontoModalOpen(false)}
-                >
-                  Fechar
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-4 sm:px-5 pb-5">
-                <div className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-coop-200/60 bg-coop-50/50 p-3">
-                  <div className="min-w-[160px]">
-                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display mb-1">Início</label>
-                    <input type="date" className="input w-full" value={pontoInicio} onChange={(e) => setPontoInicio(e.target.value)} />
-                  </div>
-                  <div className="min-w-[160px]">
-                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display mb-1">Fim</label>
-                    <input type="date" className="input w-full" value={pontoFim} onChange={(e) => setPontoFim(e.target.value)} />
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-secondary text-sm"
-                    onClick={() => {
-                      setPontoInicio('');
-                      setPontoFim('');
-                    }}
-                  >
-                    Limpar
-                  </button>
-                </div>
-
-                <div className="mt-4">
-                  {loadingPontos ? (
-                    <p className="text-sm text-coop-700">Carregando registros...</p>
-                  ) : registrosPonto.length === 0 ? (
-                    <p className="text-sm text-coop-700">Nenhum registro encontrado.</p>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full text-sm">
-                        <thead>
-                          <tr className="text-left text-coop-700 border-b">
-                            <th className="py-2 pr-4">Check-in</th>
-                            <th className="py-2 pr-4">Check-out</th>
-                            <th className="py-2 pr-4">Duração</th>
-                            <th className="py-2 pr-4">Escala</th>
-                            <th className="py-2 pr-4">Origem</th>
-                            <th className="py-2 pr-4">Foto</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {registrosPonto.map((r) => {
-                            const checkIn = r.checkInAt ? new Date(r.checkInAt).toLocaleString('pt-BR') : '—';
-                            const checkOut = r.checkOutAt ? new Date(r.checkOutAt).toLocaleString('pt-BR') : '—';
-                            const dur = r.duracaoMinutos != null ? `${r.duracaoMinutos} min` : '—';
-                            const escalaNome = r.escala?.nome ? fixMojibake(r.escala.nome) : r.escalaId ? 'Escala' : '—';
-                          const hasFoto = typeof r.fotoCheckinCaminho === 'string' && r.fotoCheckinCaminho.trim().length > 0;
-                            return (
-                              <tr key={r.id} className="border-b last:border-b-0">
-                                <td className="py-2 pr-4 text-coop-900">{checkIn}</td>
-                                <td className="py-2 pr-4 text-coop-900">{checkOut}</td>
-                                <td className="py-2 pr-4 text-coop-900">{dur}</td>
-                                <td className="py-2 pr-4 text-coop-900">{escalaNome}</td>
-                                <td className="py-2 pr-4 text-coop-900">{r.origem ?? '—'}</td>
-                                <td className="py-2 pr-4">
-                                  {hasFoto ? (
-                                    <button
-                                      type="button"
-                                      className="btn-sm btn-primary"
-                                    onClick={async () => {
-                                      try {
-                                        await adminService.openRegistroPontoFotoCheckin(r.id);
-                                      } catch (err: any) {
-                                        const status = err?.response?.status;
-                                        const msg = err?.response?.data?.error;
-                                        notify({
-                                          kind: 'warning',
-                                          title: 'Foto indisponível',
-                                          message:
-                                            status === 404
-                                              ? 'Este registro não possui foto (ou o arquivo não está mais disponível no servidor).'
-                                              : (typeof msg === 'string' && msg.trim()) || 'Não foi possível abrir a foto.',
-                                          source: 'admin',
-                                        });
-                                      }
-                                    }}
-                                    >
-                                      Ver
-                                    </button>
-                                  ) : (
-                                    <span className="text-xs text-coop-600">—</span>
-                                  )}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
+      <MedicoCadastroDadosModal
+        medicoId={selectedMedico?.id ?? ''}
+        medicoLabel={selectedLabel}
+        open={dadosModalOpen && !!selectedMedico}
+        onClose={() => setDadosModalOpen(false)}
+      />
     </div>
   );
 };

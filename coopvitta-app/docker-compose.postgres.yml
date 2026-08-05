@@ -67,3 +67,5 @@ services:
 volumes:
   app_medico_pgdata:
   app_medico_redis:
+  coopvitta_uploads:
+    name: coopvitta_uploads

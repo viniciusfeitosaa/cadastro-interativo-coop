@@ -1,10 +1,15 @@
 # Mapa de Bordo — COOPVITTA
 
-> Última atualização: 2026-06-29
+> Última atualização: 2026-07-07
 
 ## Histórico de evolução
 
 Itens concluídos (mais recentes no topo):
+
+- [x] **2026-07-07** — **Gcoop em produção (homolog)**: código deployado na VPS, `GCOOP_*` no `.env`, migration aplicada, `DadosIniciais` OK a partir do container backend; pendente teste E2E cadastro → aprovação → POST.
+- [x] **2026-07-07** — **Integração Gcoop (código)**: client HTTP Basic, `dadosGcoopJson`, GetPreCadastro no cadastro, POST na aprovação, fallback `PENDENTE_SYNC`, reenvio admin/cron — ver `coopvitta-app/docs/GCOOP-INTEGRACAO.md`.
+- [x] **2026-07-07** — **DocuSeal e-mail COOPVITTA**: conta admin, segunda parte e reply-to → `rtenfermagem@coopvitta.org` (antes `contato@coopvitta.org`).
+- [x] **2026-07-07** — **Evolution Manager**: acesso via `https://app.coopvitta.cloud/manager` + API em `/evolution-api` (NPM/SSL).
 
 - [x] **2026-06-28** — **Cadastro 413 (upload)**: `client_max_body_size 320m` no nginx frontend + NPM; cadastro com documentos passa pelo proxy.
 - [x] **2026-06-28** — **Rotas SPA sem /app/**: redirects nginx para `/esqueci-senha`, `/redefinir-senha`, `/ativar-conta/*`.
@@ -21,15 +26,14 @@ Itens concluídos (mais recentes no topo):
 - [x] **2026-06-29** — **Governança e resiliência**: Helmet+CSP+HSTS, log scrubbing, circuit breaker (APIs externas), shutdown gracioso, BCrypt≥12, util AES-256-GCM opcional, auditoria sanitizada.
 - [x] **2026-06-29** — **SPA na raiz**: sem landing; login em `https://app.coopvitta.cloud/`; API em `/api`; redirects legado `/app/*`.
 - [x] **2026-06-30** — **OpenObserve**: stack em `/opt/coopvitta/infra/openobserve` — logs Docker, métricas host/containers, rotas NPM.
-- [x] **2026-07-02** — **Repositório único**: plataforma `coopvitta-app/` versionada em `cadastro-interativo-coop` (fonte de verdade COOPVITTA na VPS).
+- [x] **2026-07-06** — **Evolution API (WhatsApp)**: stack em `/opt/coopvitta/infra/evolution` — PoC Baileys; integração esqueci-senha via `EVOLUTION_*`.
 
 ## 🗺️ Mapa de Bordo (Backlog Técnico e Próximos Passos)
 
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
-- [ ] 🟥 **Alta Prioridade**: Rebrand completo da landing (`landing/*.html`) — **obsoleto** (landing removida; app na raiz)
-- [x] **2026-07-02** — Push do `coopvitta-app` (rebrand + segurança + auditoria) para `cadastro-interativo-coop`
-- [ ] 🟨 **Média Prioridade**: DNS opcional `obs.coopvitta.cloud` — monitor já em `https://app.coopvitta.cloud/obs/`
+- [ ] 🟥 **Alta Prioridade**: Gcoop teste ponta a ponta — cadastro público com CPF fictício válido → aprovar em Avaliação → confirmar `SINCRONIZADO` ou reenvio em “Sync pendente”
+- [ ] 🟨 **Média Prioridade**: Parear WhatsApp Evolution — QR em `https://app.coopvitta.cloud/manager` (instância `coopvitta-prod`) ou `show-pairing-code.sh`; depois testar esqueci-senha
 - [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/cadastro`
 - [ ] 🟨 **Média Prioridade**: JWT em produção ainda `JWT_EXPIRES_IN=24h` no `.env` — validar refresh token no frontend antes de reduzir para 15m
 - [ ] 🟨 **Média Prioridade**: Ativar `FIELD_ENCRYPTION_KEY` no `.env` se campos sensíveis forem criptografados em repouso (CPF hoje em texto para índice único)

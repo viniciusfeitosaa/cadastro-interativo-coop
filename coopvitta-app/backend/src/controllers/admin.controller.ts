@@ -23,6 +23,8 @@ import {
   listAdicionaisPlantaoService,
   inviteMedicoService,
   getMedicoDocusealDocumentosService,
+  getMedicoCadastroDetalheService,
+  downloadMedicoCadastroDocumentoService,
   enviarDocusealTemplateMedicoService,
   listContratoEquipesService,
   listContratoSubgruposService,
@@ -70,6 +72,7 @@ import {
   listCadastrosPendentesService,
   rejeitarCadastroPendenteService,
 } from '../services/cadastro-pendente.service';
+import { importCadastrosPendentesLoteService } from '../services/cadastro-import-lote.service';
 import {
   getRelatorioProcedimentosMesService,
   upsertRelatorioProcedimentosMesService,
@@ -160,6 +163,44 @@ export const getMedicoDocusealDocumentosController = async (req: Request, res: R
     return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Erro ao consultar documentos DocuSeal',
+    });
+  }
+};
+
+export const getMedicoCadastroDetalheController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const medicoId = req.params.id;
+    const data = await getMedicoCadastroDetalheService(req.user.tenantId, medicoId);
+    return res.status(200).json({ success: true, data });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao carregar dados do cadastro',
+    });
+  }
+};
+
+export const downloadMedicoCadastroDocumentoController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { id: medicoId, documentoId } = req.params;
+    const { path: filePath, nomeArquivo, mimeType } = await downloadMedicoCadastroDocumentoService(
+      req.user.tenantId,
+      medicoId,
+      documentoId
+    );
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Content-Disposition', `inline; filename="${nomeArquivo.replace(/"/g, '\\"')}"`);
+    return res.sendFile(filePath);
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao baixar documento',
     });
   }
 };
@@ -1467,7 +1508,15 @@ export const listCadastrosPendentesController = async (req: Request, res: Respon
     if (!req.user) {
       return res.status(401).json({ success: false, error: 'Não autenticado' });
     }
-    const data = await listCadastrosPendentesService(req.user.tenantId);
+    const nome = req.query.nome ? String(req.query.nome) : undefined;
+    const profissao = req.query.profissao ? String(req.query.profissao) : undefined;
+    const especialidade = req.query.especialidade ? String(req.query.especialidade) : undefined;
+
+    const data = await listCadastrosPendentesService(req.user.tenantId, {
+      nome: nome?.trim() || undefined,
+      profissao: profissao?.trim() || undefined,
+      especialidade: especialidade?.trim() || undefined,
+    });
     return res.status(200).json({ success: true, data });
   } catch (error: any) {
     return res.status(error.statusCode || 500).json({
@@ -1531,6 +1580,29 @@ export const aprovarCadastroPendenteController = async (req: Request, res: Respo
   }
 };
 
+export const importCadastrosPendentesLoteController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const rows = Array.isArray(req.body?.rows) ? req.body.rows : null;
+    if (!rows) {
+      return res.status(400).json({ success: false, error: 'Informe rows: array de cadastros' });
+    }
+    const data = await importCadastrosPendentesLoteService(req.user.tenantId, req.user.id, rows);
+    return res.status(200).json({
+      success: true,
+      data,
+      message: `Importação concluída: ${data.criados} criado(s), ${data.falhas} falha(s)`,
+    });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao importar cadastros em lote',
+    });
+  }
+};
+
 export const rejeitarCadastroPendenteController = async (req: Request, res: Response) => {
   try {
     if (!req.user) {
@@ -1543,6 +1615,55 @@ export const rejeitarCadastroPendenteController = async (req: Request, res: Resp
     return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Erro ao rejeitar cadastro',
+    });
+  }
+};
+
+export const listGcoopSyncPendentesController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { listGcoopSyncPendentesService } = await import('../services/gcoop/gcoop.service');
+    const data = await listGcoopSyncPendentesService(req.user.tenantId);
+    return res.status(200).json({ success: true, data });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao listar sincronizações Gcoop pendentes',
+    });
+  }
+};
+
+export const retryGcoopSyncController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { retryGcoopSyncPendentesService } = await import('../services/gcoop/gcoop.service');
+    const medicoId = req.params.medicoId;
+    const data = await retryGcoopSyncPendentesService(req.user.tenantId, medicoId);
+    return res.status(200).json({ success: true, data, message: 'Reenvio ao Gcoop processado' });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao reenviar para o Gcoop',
+    });
+  }
+};
+
+export const retryAllGcoopSyncController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { retryGcoopSyncPendentesService } = await import('../services/gcoop/gcoop.service');
+    const data = await retryGcoopSyncPendentesService(req.user.tenantId);
+    return res.status(200).json({ success: true, data, message: 'Reenvio em lote ao Gcoop processado' });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao reenviar lote para o Gcoop',
     });
   }
 };

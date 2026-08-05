@@ -350,7 +350,7 @@ const ValoresPonto = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Somente o perfil Master pode configurar valores e horas do ponto eletrônico.</p>
+        <p className="text-gray-600">Somente o administrador pode configurar valores e horas do ponto eletrônico.</p>
       </div>
     );
   }

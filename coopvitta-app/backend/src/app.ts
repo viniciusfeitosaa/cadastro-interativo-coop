@@ -15,6 +15,7 @@ import adminRoutes from './routes/admin.routes';
 import pontoRoutes from './routes/ponto.routes';
 import leadsRoutes from './routes/leads.routes';
 import blogRoutes from './routes/blog.routes';
+import whatsappRoutes from './routes/whatsapp.routes';
 
 // Criar aplicação Express
 const app: Express = express();
@@ -116,6 +117,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/ponto', pontoRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/whatsapp', whatsappRoutes);
 
 // Rota raiz
 app.get('/', (_req: Request, res: Response) => {

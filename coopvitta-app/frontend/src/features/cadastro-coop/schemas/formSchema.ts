@@ -25,6 +25,17 @@ const fileField = z
     return v instanceof File
   }, 'Envie o documento solicitado')
 
+/** Anexo opcional: vazio ou File/FileList com pelo menos 1 arquivo. */
+const optionalFileField = z
+  .custom<FileList | File | null | undefined>()
+  .refine((v) => {
+    if (v == null) return true
+    if (v instanceof FileList) return v.length === 0 || v.length > 0
+    return v instanceof File
+  }, 'Arquivo inválido')
+  .optional()
+  .nullable()
+
 export const step1Schema = z.object({
   nomeCompleto: requiredString('Nome completo'),
   email: emailField,
@@ -105,28 +116,14 @@ export const step6Schema = z.object({
   curriculumVitae: fileField,
   cartaoVacina: fileField,
   certificadoCurso: fileField,
-  aph: fileField,
+  aph: optionalFileField,
 })
 
-export const step7Schema = z
-  .object({
-    password: z
-      .string()
-      .min(8, 'Senha deve ter no mínimo 8 caracteres'),
-    confirmPassword: z.string().min(1, 'Confirme a senha'),
-    termoConsentimento: z
-      .boolean()
-      .refine((v) => v === true, 'Você precisa aceitar o termo de consentimento'),
-  })
-  .superRefine((data, ctx) => {
-    if (data.password !== data.confirmPassword) {
-      ctx.addIssue({
-        code: 'custom',
-        message: 'As senhas não coincidem',
-        path: ['confirmPassword'],
-      })
-    }
-  })
+export const step7Schema = z.object({
+  termoConsentimento: z
+    .boolean()
+    .refine((v) => v === true, 'Você precisa aceitar o termo de consentimento'),
+})
 
 export const stepSchemas = [
   step1Schema,
@@ -209,8 +206,6 @@ export const defaultFormValues: FormData = {
   cartaoVacina: undefined,
   certificadoCurso: undefined,
   aph: undefined,
-  password: '',
-  confirmPassword: '',
   termoConsentimento: false,
 }
 

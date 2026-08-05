@@ -58,7 +58,7 @@ const MeusDocumentos = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-base font-bold text-coop-900 mb-2 font-display">Acesso restrito</h2>
-        <p className="text-sm text-coop-700 font-serif">Documentos enviados para você estão na área do profissional. Use o perfil Master apenas para envio em Envio de Documentos.</p>
+        <p className="text-sm text-coop-700 font-serif">Documentos enviados para você estão na área do profissional. Use o administrador apenas para envio em Envio de Documentos.</p>
       </div>
     );
   }

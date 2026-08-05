@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { BrandLogo } from '../../../../components/brand/BrandLogo';
 import {
@@ -10,6 +9,7 @@ import {
   type FormData,
 } from '../../schemas/formSchema';
 import { submitCadastroRegister } from '../../utils/submitRegister';
+import { GCOOP_AREA_COOPERADO_URL } from '../../../../constants/gcoopPortal';
 import { StepIndicator } from './StepIndicator';
 import { STEP_COMPONENTS } from './WizardSteps';
 import './FormWizard.css';
@@ -98,12 +98,19 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
         <h2>Pré-cadastro enviado!</h2>
         <p>
           Recebemos suas informações. Sua conta está em análise na COOPVITTA; você será
-          notificado quando for aprovada para acessar a plataforma.
+          notificado por e-mail quando for aprovada para acessar a{' '}
+          <strong>área do cooperado no Gcoop</strong>.
         </p>
         {embedded ? (
-          <Link to="/login" className="btn btn-primary" style={{ display: 'inline-flex', textDecoration: 'none' }}>
-            Ir para o login
-          </Link>
+          <a
+            href={GCOOP_AREA_COOPERADO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary"
+            style={{ display: 'inline-flex', textDecoration: 'none' }}
+          >
+            Área do cooperado (Gcoop)
+          </a>
         ) : (
           <button type="button" onClick={() => window.location.reload()}>
             Novo cadastro
@@ -118,15 +125,11 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
       <div className="wizard-layout">
         <header className="wizard-topbar">
           <BrandLogo className="h-14 w-auto" linkToSite />
-          {embedded ? (
-            <Link to="/login" className="topbar-link">
-              Já tenho conta
-            </Link>
-          ) : (
+          {!embedded ? (
             <a href="https://coopvitta.org" target="_blank" rel="noopener noreferrer" className="topbar-link">
               Voltar ao site
             </a>
-          )}
+          ) : null}
         </header>
 
         <aside className="wizard-sidebar">

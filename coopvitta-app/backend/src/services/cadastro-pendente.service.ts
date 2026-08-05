@@ -1,10 +1,22 @@
-import { StatusCadastroMedico } from '@prisma/client';
+import { GcoopSyncStatus, StatusCadastroMedico } from '@prisma/client';
 import { prisma } from '../config/database';
 import { createAuditLog } from './auditoria.service';
 import { getMedicoDocumentoPerfilForDownload } from './medico.service';
+import { isGcoopEnabled } from './gcoop/gcoop.config';
+import { syncMedicoToGcoop } from './gcoop/gcoop.service';
 
-export async function listCadastrosPendentesService(tenantId: string) {
-  return prisma.medico.findMany({
+export interface ListCadastrosPendentesFilters {
+  nome?: string;
+  profissao?: string;
+  especialidade?: string;
+}
+
+export async function listCadastrosPendentesService(tenantId: string, filters?: ListCadastrosPendentesFilters) {
+  const qNome = filters?.nome?.trim().toLowerCase();
+  const qProf = filters?.profissao?.trim().toLowerCase();
+  const qEsp = filters?.especialidade?.trim().toLowerCase();
+
+  const itens = await prisma.medico.findMany({
     where: { tenantId, statusCadastro: StatusCadastroMedico.PENDENTE_ANALISE },
     orderBy: { createdAt: 'desc' },
     select: {
@@ -15,9 +27,24 @@ export async function listCadastrosPendentesService(tenantId: string) {
       crm: true,
       cpf: true,
       telefone: true,
+      especialidades: true,
       createdAt: true,
     },
   });
+
+  const filtrados = itens.filter((m) => {
+    if (qNome && !m.nomeCompleto.toLowerCase().includes(qNome)) return false;
+    if (qProf && !m.profissao.toLowerCase().includes(qProf)) return false;
+    if (qEsp) {
+      const especialidades = m.especialidades ?? [];
+      const ok = especialidades.some((e) => e?.toLowerCase().includes(qEsp));
+      return ok;
+    }
+    return true;
+  });
+
+  // Mantemos a resposta compatível com a interface do frontend (CadastroPendenteListItem)
+  return filtrados.map(({ especialidades: _ignored, ...rest }) => rest);
 }
 
 export async function getCadastroPendenteDetalheService(tenantId: string, medicoId: string) {
@@ -138,7 +165,33 @@ export async function aprovarCadastroPendenteService(tenantId: string, masterId:
     console.error('[cadastro-pendente] Falha no e-mail de cadastro aprovado (SMTP/Resend não configurado ou erro de envio):', err);
   }
 
-  return { ok: true as const };
+  let gcoopSync: {
+    status: GcoopSyncStatus | null;
+    ok: boolean;
+    error?: string;
+    skipped?: boolean;
+  } = { status: null, ok: true, skipped: !isGcoopEnabled() };
+
+  if (isGcoopEnabled()) {
+    gcoopSync = await syncMedicoToGcoop(medicoId, tenantId);
+    if (!gcoopSync.ok) {
+      console.warn(
+        '[cadastro-pendente] Cadastro aprovado localmente; sync Gcoop pendente:',
+        medicoId,
+        gcoopSync.error
+      );
+    }
+  }
+
+  return {
+    ok: true as const,
+    gcoopSync: {
+      status: gcoopSync.status,
+      ok: gcoopSync.ok,
+      error: gcoopSync.error,
+      skipped: gcoopSync.skipped,
+    },
+  };
 }
 
 export async function rejeitarCadastroPendenteService(tenantId: string, masterId: string, medicoId: string) {

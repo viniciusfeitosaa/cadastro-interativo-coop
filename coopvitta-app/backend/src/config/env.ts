@@ -54,7 +54,7 @@ const envSchema = z.object({
   // Multi-tenant / Master
   TENANT_DEFAULT_SLUG: z.string().default('seja-viva-saude'),
   MASTER_INITIAL_EMAIL: z.string().email().default('contato@sejavivasaude.com.br'),
-  MASTER_INITIAL_NAME: z.string().default('Administrador Master'),
+  MASTER_INITIAL_NAME: z.string().default('Administrador'),
   MASTER_INITIAL_PASSWORD: z.string().min(8, 'MASTER_INITIAL_PASSWORD deve ter pelo menos 8 caracteres').optional(),
 
   // E-mail: SMTP próprio (ex.: Maddy) tem prioridade; Resend só se SMTP não estiver configurado
@@ -74,6 +74,19 @@ const envSchema = z.object({
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   TWILIO_WHATSAPP_FROM: z.string().optional(),
+  // DocuSeal (assinatura digital de contratos)
+  DOCUSEAL_API_URL: z.string().url().optional(),
+  DOCUSEAL_API_KEY: z.string().optional(),
+
+  // Gcoop — pré-cadastro de cooperados (homologação/produção)
+  GCOOP_API_BASE_URL: z.string().url().optional(),
+  GCOOP_API_USER: z.string().optional(),
+  GCOOP_API_PASSWORD: z.string().optional(),
+  GCOOP_API_TIMEOUT_MS: z.string().optional(),
+  /** Intervalo em minutos para reenvio automático de cadastros com sync pendente (0 = desligado). */
+  GCOOP_SYNC_INTERVAL_MINUTES: z.string().optional(),
+  /** Portal do cooperado (área Gcoop) — link enviado nos e-mails de cadastro. */
+  GCOOP_AREA_COOPERADO_URL: z.string().url().optional(),
 });
 
 // Validar e exportar variáveis de ambiente

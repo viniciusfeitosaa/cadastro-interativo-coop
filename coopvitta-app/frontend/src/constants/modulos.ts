@@ -15,7 +15,7 @@ export type ModuloSistema =
 
 export const MODULO_LABEL: Record<ModuloSistema, string> = {
   DASHBOARD: 'Dashboard',
-  MEDICOS: 'Médicos',
+  MEDICOS: 'Associados',
   CONTRATOS_ATIVOS: 'Contratos Ativos',
   ESCALAS: 'Escalas',
   VALORES_PLANTAO: 'Valores Hora/Plantão',

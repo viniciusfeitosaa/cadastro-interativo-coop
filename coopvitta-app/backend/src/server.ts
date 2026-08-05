@@ -7,6 +7,7 @@ import { connectDatabase, disconnectDatabase } from './config/database';
 import { connectRedis, disconnectRedis } from './config/redis';
 import { markShuttingDown } from './config/shutdown';
 import { startEmailQueue, stopEmailQueue } from './jobs/email-queue';
+import { startGcoopSyncScheduler } from './jobs/gcoop-sync.scheduler';
 import { safeLogger } from './utils/safe-logger';
 
 const PORT = parseInt(env.PORT) || 3001;
@@ -46,6 +47,7 @@ function startServer() {
       void connectRedis().then((ok) => {
         if (ok) startEmailQueue();
       });
+      startGcoopSyncScheduler();
     });
 
     trackConnections(server);

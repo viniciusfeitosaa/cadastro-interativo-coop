@@ -7,6 +7,11 @@ import { generateTokens } from '../utils/jwt.util';
 import { createAuditLog } from './auditoria.service';
 import { StatusCadastroMedico, UserRole } from '@prisma/client';
 import { upsertMedicoDocumentosFromMulter } from './medico.service';
+import {
+  assertGcoopCpfDisponivel,
+  parseDadosGcoopJson,
+  sanitizeDadosGcoopForStorage,
+} from './gcoop/gcoop.service';
 import { TERMOS_CADASTRO_VERSAO } from '../constants/termos-cadastro.const';
 import { enviarEmailsPosCadastroPublico } from './cadastro-publico-email.service';
 import crypto from 'crypto';
@@ -175,7 +180,7 @@ async function sendResetPasswordWhatsApp(toPhoneE164: string, resetLink: string)
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
+        apikey: apiKey,
       },
       body: JSON.stringify({ number, text: body }),
     });
@@ -304,7 +309,7 @@ function parseAceitouTermosCadastro(v: unknown): boolean {
 interface RegisterPublicMedicoInput {
   nomeCompleto: string;
   email: string;
-  password: string;
+  password?: string;
   cpf: string;
   profissao: string;
   crm?: string;
@@ -316,6 +321,8 @@ interface RegisterPublicMedicoInput {
   chavePix?: string;
   /** Aceite explícito dos termos e declaração do cadastro público. */
   aceitouTermos?: boolean | string;
+  /** JSON do wizard COOPVITTA (campos para integração Gcoop). */
+  dadosGcoop?: string | Record<string, unknown>;
 }
 
 const getDefaultTenant = async () => {
@@ -708,6 +715,8 @@ export const registerPublicMedicoService = async (
     throw { statusCode: 400, message: 'CPF inválido' };
   }
 
+  await assertGcoopCpfDisponivel(cpf);
+
   if (!profissao) {
     throw { statusCode: 400, message: 'Profissão é obrigatória' };
   }
@@ -768,9 +777,17 @@ export const registerPublicMedicoService = async (
     throw { statusCode: 409, message: 'Já existe cadastro com este e-mail' };
   }
 
-  const senhaHash = await hashPassword(input.password);
+  const senhaPlain =
+    typeof input.password === 'string' && input.password.trim().length >= 8
+      ? input.password.trim()
+      : crypto.randomBytes(24).toString('base64url');
+  const senhaHash = await hashPassword(senhaPlain);
 
   const trimOpt = (v: string | undefined) => (v && String(v).trim()) || undefined;
+  const dadosGcoopParsed = parseDadosGcoopJson(input.dadosGcoop);
+  const dadosGcoopJson = dadosGcoopParsed
+    ? sanitizeDadosGcoopForStorage(dadosGcoopParsed)
+    : null;
 
   const medico = await prisma.$transaction(async (tx: any) => {
     const created = await tx.medico.create({
@@ -789,6 +806,7 @@ export const registerPublicMedicoService = async (
         enderecoResidencial: trimOpt(input.enderecoResidencial),
         dadosBancarios: trimOpt(input.dadosBancarios),
         chavePix: trimOpt(input.chavePix),
+        dadosGcoopJson: dadosGcoopJson ?? undefined,
         termosCadastroAceitosEm: new Date(),
         termosCadastroVersao: TERMOS_CADASTRO_VERSAO,
         ativo: false,

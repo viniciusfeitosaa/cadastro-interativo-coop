@@ -7,6 +7,7 @@ import { medicoService } from '../services/medico.service';
 import { PONTO_SEM_ESCALA_ESCALA_ID } from '../constants/ponto';
 import { pontoService } from '../services/ponto.service';
 import { formatCRM, fixMojibake } from '../utils/validation.util';
+import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, LABEL_PAINEL_ADMIN, displayNomeUsuario } from '../constants/branding';
 import {
   faixaExibicaoPlantao,
   fimPlantaoCliente,
@@ -478,10 +479,10 @@ const Dashboard = () => {
       {/* Hero */}
       <div className="card dashboard-hero col-span-full stagger-1 py-8 md:py-10">
         <p className="text-xs font-semibold uppercase tracking-widest text-coop-600 mb-2 font-display">
-          {isMaster ? 'Acesso Master' : 'Acesso Profissional'}
+          {isMaster ? LABEL_PAINEL_ADMIN : 'Acesso Profissional'}
         </p>
         <h1 className="text-xl md:text-2xl font-bold text-coop-900 font-display leading-tight mb-2">
-          Bem-vindo, {fixMojibake(primeiroSegundoNome(displayUser?.nomeCompleto))}!
+          Bem-vindo, {fixMojibake(primeiroSegundoNome(displayNomeUsuario(displayUser?.nomeCompleto)))}!
         </h1>
         <p className="text-coop-700 font-serif text-base">
           Sistema de gestão COOPVITTA
@@ -1113,16 +1114,15 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Acesso rápido Master */}
+      {/* Acesso rápido administrativo */}
       {isMaster && (
         <div className="card col-span-full stagger-2 flex flex-wrap items-center justify-between gap-4 border-l-4 border-l-coop-500 bg-gradient-to-r from-coop-50/60 to-transparent">
           <p className="text-coop-900 font-medium text-sm font-display">
             Acesso rápido às áreas de gestão
           </p>
           <div className="flex flex-wrap gap-2">
-            <Link to="/escalas" className="btn-sm btn-primary">Escalas</Link>
-            <Link to="/medicos" className="btn-sm btn-primary">Médicos</Link>
-            <Link to="/relatorios" className="btn-sm btn-primary">Relatórios</Link>
+            <Link to="/medicos" className="btn-sm btn-primary">{LABEL_ASSOCIADOS}</Link>
+            <Link to="/avaliacao" className="btn-sm btn-primary">Avaliação</Link>
           </div>
         </div>
       )}
@@ -1185,7 +1185,7 @@ const Dashboard = () => {
             <>
               <div className="rounded-xl bg-coop-100/80 border border-coop-200/60 p-4">
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display">Perfil</p>
-                <p className="text-sm font-semibold text-coop-900 mt-1 font-display">Administrador Master</p>
+                <p className="text-sm font-semibold text-coop-900 mt-1 font-display">{LABEL_ADMINISTRADOR}</p>
               </div>
               {displayUser?.email && (
                 <div className="rounded-xl bg-coop-50/80 border border-coop-200/50 p-4">
@@ -1228,7 +1228,7 @@ const Dashboard = () => {
                 Documentos enviados para você
               </h3>
               <p className="text-xs text-coop-600 mt-1 font-serif max-w-xl">
-                Acesse Documentos para registar ciência depois de ler (visível para o Master em Envio de Documentos).
+                Acesse Documentos para registar ciência depois de ler (visível para o administrador em Envio de Documentos).
               </p>
             </div>
             <Link

@@ -12,7 +12,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       # Cap do heap V8 (ajusta NODE_MAX_OLD_SPACE_SIZE_MB no .env se precisares de mais sob carga)
-      - NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE_MB:-256}
+      - NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE_MB:-768}
       - PORT=3001
       - DATABASE_URL=${DATABASE_URL}
       - DB_HOST=${DB_HOST:-}
@@ -47,9 +47,11 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M
+          memory: 1024M
         reservations:
-          memory: 128M
+          memory: 256M
+    volumes:
+      - coopvitta_uploads:/app/uploads
 
   # Frontend Service
   frontend:
@@ -118,6 +120,6 @@ networks:
   proxy-network:
     external: true
 
-# Volumes (se necessário no futuro)
-# volumes:
-#   postgres_data:
+volumes:
+  coopvitta_uploads:
+    name: coopvitta_uploads

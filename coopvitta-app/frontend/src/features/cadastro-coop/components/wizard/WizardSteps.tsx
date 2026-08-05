@@ -11,6 +11,7 @@ import {
   ufOptions,
 } from '../../data/formOptions'
 import type { FormData } from '../../schemas/formSchema'
+import { GCOOP_AREA_COOPERADO_URL } from '../../../../constants/gcoopPortal'
 import {
   maskAgencia,
   maskCep,
@@ -301,7 +302,7 @@ export function StepAnexos() {
       <FileField name="curriculumVitae" label="Curriculum Vitae" accept=".pdf,.doc,.docx" />
       <FileField name="cartaoVacina" label="Cartão de vacina" />
       <FileField name="certificadoCurso" label="Certificado de curso profissional (diploma)" />
-      <FileField name="aph" label="APH" />
+      <FileField name="aph" label="APH" required={false} />
     </div>
   )
 }
@@ -315,27 +316,19 @@ export function StepConsentimento() {
   return (
     <div className="consent-step">
       <div className="consent-card">
-        <h3>Acesso à plataforma</h3>
+        <h3>Finalização do pré-cadastro</h3>
         <p>
-          Após aprovação do seu cadastro, você acessará a plataforma COOPVITTA com o
-          e-mail informado e a senha definida abaixo.
+          Seus dados serão enviados para análise da equipe COOPVITTA e integrados ao sistema
+          Gcoop após aprovação. Não é necessário criar senha nesta etapa.
         </p>
-        <div className="step-grid" style={{ marginTop: '1.25rem' }}>
-          <TextField
-            name="password"
-            label="Senha de acesso"
-            type="password"
-            placeholder="Mínimo 8 caracteres"
-            autoComplete="new-password"
-          />
-          <TextField
-            name="confirmPassword"
-            label="Confirmar senha"
-            type="password"
-            placeholder="Repita a senha"
-            autoComplete="new-password"
-          />
-        </div>
+        <p>
+          Após a aprovação, você acessará a{' '}
+          <strong>área do cooperado no Gcoop</strong> (
+          <a href={GCOOP_AREA_COOPERADO_URL} target="_blank" rel="noopener noreferrer">
+            {GCOOP_AREA_COOPERADO_URL.replace(/^https?:\/\//, '')}
+          </a>
+          ). A senha de entrada é definida diretamente nesse portal — não neste formulário.
+        </p>
       </div>
 
       <div className="consent-card">
