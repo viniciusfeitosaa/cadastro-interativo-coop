@@ -1,11 +1,12 @@
 # Mapa de Bordo — COOPVITTA
 
-> Última atualização: 2026-08-05
+> Última atualização: 2026-08-12
 
 ## Histórico de evolução
 
 Itens concluídos (mais recentes no topo):
 
+- [x] **2026-08-12** — **Onvio Fase 0 + scaffold**: docs OAuth/`ONVIO-INTEGRACAO.md`; módulo `services/onvio` + Prisma sync; modal Associados com Abrir Onvio + Copiar dados; sync API preparado (503 até OAuth/path Onvio).
 - [x] **2026-08-05** — **Importação em lote na Avaliação**: colar lista (Excel/TSV) → pré-visualização → `PENDENTE_ANALISE` via `POST /admin/cadastros-pendentes/import-lote` (UI em `/avaliacao`, sem documentos/e-mail).
 - [x] **2026-07-30** — **APH opcional** no wizard de pré-cadastro público (demais anexos continuam obrigatórios).
 - [x] **2026-07-21** — **Gcoop mapeamento + CPF já filiado**: `Serviço Social` → ASSISTENTE SOCIAL/CRESS; 400 com CPF já existente/filiado marca `SINCRONIZADO`; mensagens de erro da API mais legíveis.
@@ -39,6 +40,8 @@ Itens concluídos (mais recentes no topo):
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
 - [ ] 🟥 **Alta Prioridade**: Cadastros com anexos perdidos (antes do volume `coopvitta_uploads`, ~20/07) — reenviar documentos ou fluxo admin de reupload; sem binário o Gcoop/“Ver dados” ficam incompletos
+- [ ] 🟨 **Média Prioridade**: Onvio — enviar e-mail `docs/ONVIO-PEDIDO-CREDENCIAIS.md` a `api.dominio@tr.com`; com OAuth + path de partner-registration, preencher `ONVIO_*` e ativar sync API
+- [ ] 🟨 **Média Prioridade**: Onvio — se a integration key vazou, pedir rotação ao suporte e atualizar `ONVIO_INTEGRATION_KEY` só no `.env` VPS
 - [ ] 🟨 **Média Prioridade**: Bot WhatsApp (menu 1/2/3) — código em `whatsapp-menu.service.ts` desligado; reativar webhook Evolution + números `WHATSAPP_MENU_*` quando quiser atendimento
 - [ ] 🟨 **Média Prioridade**: Parear/validar WhatsApp Evolution em `https://wa.coopvitta.cloud/manager` e testar esqueci-senha por WhatsApp
 - [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/cadastro`

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   DOCUMENTO_LABEL_BY_FIELD,
@@ -38,6 +39,56 @@ type Props = {
   onClose: () => void;
 };
 
+function OnvioActions({ medicoId }: { medicoId: string }) {
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const prepQuery = useQuery({
+    queryKey: ['admin', 'medico-onvio-prep', medicoId],
+    queryFn: async () => {
+      const r = await adminService.getMedicoOnvioPrep(medicoId);
+      return r.data;
+    },
+  });
+
+  const prep = prepQuery.data;
+
+  const copyDados = async () => {
+    if (!prep?.clipboardText) return;
+    try {
+      await navigator.clipboard.writeText(prep.clipboardText);
+      setFeedback('Dados copiados. Cole no formulário do Onvio.');
+    } catch {
+      setFeedback('Não foi possível copiar. Selecione o texto manualmente se necessário.');
+    }
+  };
+
+  return (
+    <div className="rounded-xl border border-coop-200/70 bg-coop-50/40 p-4 space-y-3">
+      <h4 className="text-sm font-bold text-coop-900 font-display">Onvio</h4>
+      {prepQuery.isLoading && <p className="text-xs text-coop-700">Carregando…</p>}
+      {prep && (
+        <div className="flex flex-wrap gap-2">
+          <a
+            className="btn text-sm border border-coop-300 bg-white text-coop-800"
+            href={prep.partnerRegistrationUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Abrir Onvio
+          </a>
+          <button
+            type="button"
+            className="btn text-sm border border-coop-300 bg-white text-coop-800"
+            onClick={() => void copyDados()}
+          >
+            Copiar dados
+          </button>
+        </div>
+      )}
+      {feedback && <p className="text-xs text-coop-800 whitespace-pre-wrap">{feedback}</p>}
+    </div>
+  );
+}
+
 function DadosContent({ d, medicoId }: { d: MedicoCadastroDetalhe; medicoId: string }) {
   const wizard = (d.dadosGcoopJson && typeof d.dadosGcoopJson === 'object' ? d.dadosGcoopJson : {}) as Record<
     string,
@@ -51,6 +102,8 @@ function DadosContent({ d, medicoId }: { d: MedicoCadastroDetalhe; medicoId: str
 
   return (
     <div className="space-y-6">
+      <OnvioActions medicoId={medicoId} />
+
       <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
         <div>
           <dt className="text-coop-600 font-medium">CPF</dt>
@@ -109,6 +162,21 @@ function DadosContent({ d, medicoId }: { d: MedicoCadastroDetalhe; medicoId: str
                 : ''}
               {d.gcoopSyncErro ? (
                 <span className="block text-amber-800 text-xs mt-1">{d.gcoopSyncErro}</span>
+              ) : null}
+            </dd>
+          </div>
+        )}
+        {d.onvioSyncStatus && (
+          <div className="sm:col-span-2">
+            <dt className="text-coop-600 font-medium">Sincronização Onvio</dt>
+            <dd className="text-coop-900">
+              {d.onvioSyncStatus}
+              {d.onvioExternalId ? ` · ${d.onvioExternalId}` : ''}
+              {d.onvioSincronizadoEm
+                ? ` · ${new Date(d.onvioSincronizadoEm).toLocaleString('pt-BR')}`
+                : ''}
+              {d.onvioSyncErro ? (
+                <span className="block text-amber-800 text-xs mt-1">{d.onvioSyncErro}</span>
               ) : null}
             </dd>
           </div>

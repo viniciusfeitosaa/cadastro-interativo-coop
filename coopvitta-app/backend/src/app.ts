@@ -12,6 +12,7 @@ import { safeLogger } from './utils/safe-logger';
 import authRoutes from './routes/auth.routes';
 import medicoRoutes from './routes/medico.routes';
 import adminRoutes from './routes/admin.routes';
+import integrationsRoutes from './routes/integrations.routes';
 import pontoRoutes from './routes/ponto.routes';
 import leadsRoutes from './routes/leads.routes';
 import blogRoutes from './routes/blog.routes';
@@ -114,6 +115,7 @@ app.get('/health', (_req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/medico', medicoRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/integrations', integrationsRoutes);
 app.use('/api/ponto', pontoRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/blog', blogRoutes);

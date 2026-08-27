@@ -47,8 +47,31 @@ export interface MedicoCadastroDetalhe extends CadastroPendenteDetalhe {
   gcoopSyncStatus: string | null;
   gcoopSyncErro: string | null;
   gcoopSincronizadoEm: string | null;
+  onvioSyncStatus: string | null;
+  onvioSyncErro: string | null;
+  onvioSincronizadoEm: string | null;
+  onvioExternalId: string | null;
   termosCadastroAceitosEm: string | null;
   termosCadastroVersao: string | null;
+}
+
+export interface OnvioPrepResponse {
+  oauthConfigured: boolean;
+  partnerCreateConfigured: boolean;
+  integrationKeyPresent: boolean;
+  apiBaseConfigured: boolean;
+  partnerRegistrationUrl: string;
+  redirectUri: string;
+  message: string;
+  clipboardText: string;
+  medico: {
+    id: string;
+    nomeCompleto: string;
+    onvioSyncStatus: string | null;
+    onvioSyncErro: string | null;
+    onvioSincronizadoEm: string | null;
+    onvioExternalId: string | null;
+  };
 }
 
 /** Equipes do profissional (listagem em `/admin/medicos`). */
@@ -472,6 +495,20 @@ export const adminService = {
   getMedicoCadastroDetalhe: async (medicoId: string) => {
     const response = await api.get<{ success: boolean; data: MedicoCadastroDetalhe }>(
       `/admin/medicos/${medicoId}/cadastro`
+    );
+    return response.data;
+  },
+
+  getMedicoOnvioPrep: async (medicoId: string) => {
+    const response = await api.get<{ success: boolean; data: OnvioPrepResponse }>(
+      `/admin/medicos/${medicoId}/onvio`
+    );
+    return response.data;
+  },
+
+  syncMedicoOnvio: async (medicoId: string) => {
+    const response = await api.post<{ success: boolean; data?: unknown; error?: string }>(
+      `/admin/medicos/${medicoId}/onvio/sync`
     );
     return response.data;
   },

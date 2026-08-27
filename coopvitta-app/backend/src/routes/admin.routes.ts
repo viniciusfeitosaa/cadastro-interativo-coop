@@ -54,6 +54,9 @@ import {
   listGcoopSyncPendentesController,
   retryGcoopSyncController,
   retryAllGcoopSyncController,
+  getOnvioStatusController,
+  getMedicoOnvioPrepController,
+  syncMedicoOnvioController,
   removerEscalaPlantaoController,
   removerMedicoEscalaController,
   removeContratoEquipeController,
@@ -292,6 +295,20 @@ router.post(
   requireModuleAccess(ModuloSistema.AVALIACAO),
   validateUUIDParam('medicoId'),
   retryGcoopSyncController
+);
+
+router.get('/onvio/status', requireModuleAccess(ModuloSistema.MEDICOS), getOnvioStatusController);
+router.get(
+  '/medicos/:id/onvio',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  getMedicoOnvioPrepController
+);
+router.post(
+  '/medicos/:id/onvio/sync',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  syncMedicoOnvioController
 );
 
 router.get('/documentos-enviados', requireModuleAccess(ModuloSistema.ENVIO_DOCUMENTOS), listDocumentosEnviadosController);

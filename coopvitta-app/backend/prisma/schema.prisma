@@ -46,6 +46,12 @@ enum GcoopSyncStatus {
   ERRO_SYNC
 }
 
+enum OnvioSyncStatus {
+  PENDENTE_SYNC
+  SINCRONIZADO
+  ERRO_SYNC
+}
+
 enum ModuloSistema {
   DASHBOARD
   MEDICOS
@@ -212,6 +218,11 @@ model Medico {
   gcoopSyncStatus        GcoopSyncStatus? @map("gcoop_sync_status")
   gcoopSyncErro          String?   @map("gcoop_sync_erro") @db.Text
   gcoopSincronizadoEm    DateTime? @map("gcoop_sincronizado_em")
+  /// Estado da sincronização com Onvio partner-registration (null = ainda não tentou).
+  onvioSyncStatus        OnvioSyncStatus? @map("onvio_sync_status")
+  onvioSyncErro          String?   @map("onvio_sync_erro") @db.Text
+  onvioSincronizadoEm    DateTime? @map("onvio_sincronizado_em")
+  onvioExternalId        String?   @map("onvio_external_id") @db.VarChar(120)
   ativo         Boolean  @default(true)
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")

@@ -87,6 +87,24 @@ const envSchema = z.object({
   GCOOP_SYNC_INTERVAL_MINUTES: z.string().optional(),
   /** Portal do cooperado (área Gcoop) — link enviado nos e-mails de cadastro. */
   GCOOP_AREA_COOPERADO_URL: z.string().url().optional(),
+
+  // Onvio BR Accounting API — ver docs/ONVIO-INTEGRACAO.md
+  ONVIO_CLIENT_ID: z.string().optional(),
+  ONVIO_CLIENT_SECRET: z.string().optional(),
+  ONVIO_INTEGRATION_KEY: z.string().optional(),
+  ONVIO_API_BASE_URL: z.string().url().optional(),
+  ONVIO_AUTH_URL: z.string().url().optional(),
+  ONVIO_TOKEN_URL: z.string().url().optional(),
+  ONVIO_AUDIENCE: z.string().optional(),
+  ONVIO_REDIRECT_URI: z.string().url().optional(),
+  ONVIO_REFRESH_TOKEN: z.string().optional(),
+  ONVIO_ACCESS_TOKEN: z.string().optional(),
+  ONVIO_INTEGRATION_PATH: z.string().optional(),
+  ONVIO_CLIENTINFO_PATH: z.string().optional(),
+  /** Path relativo confirmado pelo Onvio para criar partner-registration (sem isso o sync fica desligado). */
+  ONVIO_PARTNER_CREATE_PATH: z.string().optional(),
+  ONVIO_PARTNER_REGISTRATION_URL: z.string().url().optional(),
+  ONVIO_API_TIMEOUT_MS: z.string().optional(),
 });
 
 // Validar e exportar variáveis de ambiente
