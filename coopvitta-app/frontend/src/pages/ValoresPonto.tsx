@@ -1,10 +1,15 @@
-import { useState, useMemo, useEffect } from 'react';
+﻿import { useState, useMemo, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import { useMasterEscopo } from '../context/MasterEscopoContext';
 import { PontoEnderecoMapaBlock } from '../components/PontoEnderecoMapaBlock';
 import { usePontoEnderecoMapa } from '../hooks/usePontoEnderecoMapa';
 import { adminService, ConfigPontoEletronico } from '../services/admin.service';
+import {
+  cobrancaFromMargem,
+  formatMargemNumber,
+  margemFromCobranca,
+} from '../utils/margemLucro';
 
 const MESES = [
   'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -80,6 +85,7 @@ const ValoresPonto = () => {
   const [ano, setAno] = useState<number>(() => new Date().getFullYear());
   const [draftHoras, setDraftHoras] = useState<string>('');
   const [draftValorPorDia, setDraftValorPorDia] = useState<Record<string, string>>({});
+  const [draftMargemPorDia, setDraftMargemPorDia] = useState<Record<string, string>>({});
   const [draftValorCobrancaPorDia, setDraftValorCobrancaPorDia] = useState<Record<string, string>>({});
   const [draftHorarioEntrada, setDraftHorarioEntrada] = useState<string>('');
   const [draftHorarioSaida, setDraftHorarioSaida] = useState<string>('');
@@ -120,7 +126,8 @@ const ValoresPonto = () => {
     if (!contratoId) return [];
     return subgrupos
       .filter((s) => s.ativo !== false)
-      .filter((s) => allowedSubgrupoIds.has(s.id));
+      .filter((s) => allowedSubgrupoIds.has(s.id))
+      .filter((s) => !(s.usaEscala && !s.usaPonto));
   }, [allowedSubgrupoIds, contratoId, subgrupos]);
 
   const contratoIdsSoPonto = useMemo(() => {
@@ -156,6 +163,7 @@ const ValoresPonto = () => {
   useEffect(() => {
     if (!temContratoESubgrupo) {
       setDraftValorPorDia({});
+      setDraftMargemPorDia({});
       setDraftValorCobrancaPorDia({});
       return;
     }
@@ -164,12 +172,14 @@ const ValoresPonto = () => {
     if (!config) {
       const z = mapaVazioPorDia();
       setDraftValorPorDia(z);
+      setDraftMargemPorDia({ ...z });
       setDraftValorCobrancaPorDia({ ...z });
       return;
     }
 
     const rep: Record<string, string> = {};
     const cob: Record<string, string> = {};
+    const mar: Record<string, string> = {};
     const baseRep = config.valorHora != null ? parseFloat(String(config.valorHora)) : NaN;
     const baseCob = config.valorHoraCobranca != null ? parseFloat(String(config.valorHoraCobranca)) : NaN;
     for (const { key } of DIAS_SEMANA) {
@@ -192,8 +202,16 @@ const ValoresPonto = () => {
         nCob = baseCob;
       }
       cob[key] = nCob != null ? formatValor(nCob) : '';
+
+      if (nRep != null && nRep > 0 && nCob != null && nCob > 0) {
+        const m = margemFromCobranca(nRep, nCob);
+        mar[key] = m != null ? formatMargemNumber(m) : '';
+      } else {
+        mar[key] = '';
+      }
     }
     setDraftValorPorDia(rep);
+    setDraftMargemPorDia(mar);
     setDraftValorCobrancaPorDia(cob);
   }, [temContratoESubgrupo, loadingConfig, config, contratoId, subgrupoId, equipeId]);
 
@@ -208,6 +226,7 @@ const ValoresPonto = () => {
     setContratoId(id);
     setDraftHoras('');
     setDraftValorPorDia({});
+    setDraftMargemPorDia({});
     setDraftValorCobrancaPorDia({});
     setDraftHorarioEntrada('');
     setDraftHorarioSaida('');
@@ -219,6 +238,7 @@ const ValoresPonto = () => {
     setSubgrupoId(id);
     setDraftHoras('');
     setDraftValorPorDia({});
+    setDraftMargemPorDia({});
     setDraftValorCobrancaPorDia({});
     setDraftHorarioEntrada('');
     setDraftHorarioSaida('');
@@ -230,6 +250,7 @@ const ValoresPonto = () => {
     setEquipeId(id);
     setDraftHoras('');
     setDraftValorPorDia({});
+    setDraftMargemPorDia({});
     setDraftValorCobrancaPorDia({});
     setDraftHorarioEntrada('');
     setDraftHorarioSaida('');
@@ -239,20 +260,69 @@ const ValoresPonto = () => {
 
   const DIAS_APOS_SEG = ['ter', 'qua', 'qui', 'sex', 'sab', 'dom'] as const;
 
-  const replicarSegParaRestanteRepasse = () => {
-    const v = draftValorPorDia.seg ?? '';
-    setDraftValorPorDia((prev) => {
-      const next = { ...prev };
-      for (const k of DIAS_APOS_SEG) next[k] = v;
-      return next;
-    });
+  const onRepasseDiaChange = (key: string, raw: string) => {
+    setDraftValorPorDia((prev) => ({ ...prev, [key]: raw }));
+    const rep = parseValorInput(raw);
+    const margemRaw = draftMargemPorDia[key] ?? '';
+    const margem = parseValorInput(margemRaw);
+    if (rep != null && margem != null && margemRaw.trim() !== '') {
+      const cob = cobrancaFromMargem(rep, margem);
+      if (cob != null) {
+        setDraftValorCobrancaPorDia((prev) => ({ ...prev, [key]: formatValor(cob) }));
+        return;
+      }
+    }
+    const cobRaw = draftValorCobrancaPorDia[key] ?? '';
+    const cob = parseValorInput(cobRaw);
+    if (rep != null && cob != null && cobRaw.trim() !== '' && margemRaw.trim() === '') {
+      const m = margemFromCobranca(rep, cob);
+      setDraftMargemPorDia((prev) => ({ ...prev, [key]: m != null ? formatMargemNumber(m) : '' }));
+    }
   };
 
-  const replicarSegParaRestanteCobranca = () => {
-    const v = draftValorCobrancaPorDia.seg ?? '';
+  const onMargemDiaChange = (key: string, raw: string) => {
+    setDraftMargemPorDia((prev) => ({ ...prev, [key]: raw }));
+    const margem = parseValorInput(raw);
+    const rep = parseValorInput(draftValorPorDia[key] ?? '');
+    if (rep == null || margem == null || raw.trim() === '') return;
+    const cob = cobrancaFromMargem(rep, margem);
+    if (cob != null) {
+      setDraftValorCobrancaPorDia((prev) => ({ ...prev, [key]: formatValor(cob) }));
+    }
+  };
+
+  const onCobrancaDiaChange = (key: string, raw: string) => {
+    setDraftValorCobrancaPorDia((prev) => ({ ...prev, [key]: raw }));
+    const cob = parseValorInput(raw);
+    const rep = parseValorInput(draftValorPorDia[key] ?? '');
+    if (rep == null || cob == null || raw.trim() === '') return;
+    const m = margemFromCobranca(rep, cob);
+    setDraftMargemPorDia((prev) => ({ ...prev, [key]: m != null ? formatMargemNumber(m) : '' }));
+  };
+
+  const replicarSegParaRestanteSemana = () => {
+    const repSeg = draftValorPorDia.seg ?? '';
+    const marSeg = draftMargemPorDia.seg ?? '';
+    const repN = parseValorInput(repSeg);
+    const marN = parseValorInput(marSeg);
+    let cobSeg = draftValorCobrancaPorDia.seg ?? '';
+    if (repN != null && marN != null && marSeg.trim() !== '') {
+      const cob = cobrancaFromMargem(repN, marN);
+      if (cob != null) cobSeg = formatValor(cob);
+    }
+    setDraftValorPorDia((prev) => {
+      const next: Record<string, string> = { ...prev };
+      for (const k of DIAS_APOS_SEG) next[k] = repSeg;
+      return next;
+    });
+    setDraftMargemPorDia((prev) => {
+      const next: Record<string, string> = { ...prev };
+      for (const k of DIAS_APOS_SEG) next[k] = marSeg;
+      return next;
+    });
     setDraftValorCobrancaPorDia((prev) => {
-      const next = { ...prev };
-      for (const k of DIAS_APOS_SEG) next[k] = v;
+      const next: Record<string, string> = { ...prev, seg: cobSeg };
+      for (const k of DIAS_APOS_SEG) next[k] = cobSeg;
       return next;
     });
   };
@@ -350,7 +420,7 @@ const ValoresPonto = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Somente o administrador pode configurar valores e horas do ponto eletrônico.</p>
+        <p className="text-gray-600">Somente o perfil Master pode configurar valores e horas do ponto eletrônico.</p>
       </div>
     );
   }
@@ -495,7 +565,9 @@ const ValoresPonto = () => {
                 <div className="border-t border-coop-100 pt-4">
                   <h4 className="text-base font-bold text-coop-900 mb-1">Valor hora por dia (ponto sem escala)</h4>
                   <p className="text-sm text-gray-600 mb-4">
-                    Preencha repasse e cobrança por dia. Configurações antigas com um único valor aparecem repetidas em todos os dias até você ajustar.
+                    Preencha repasse, margem % e cobrança por dia. A margem é sobre o valor cobrado (ex.: 100 + 25% →
+                    133,33). Configurações antigas com um único valor aparecem repetidas em todos os dias até você
+                    ajustar.
                   </p>
 
                   <div className="p-4 rounded-xl border border-coop-200 bg-white space-y-4">
@@ -505,92 +577,66 @@ const ValoresPonto = () => {
                         <span className="font-normal text-coop-600">(ponto sem escala)</span>
                       </p>
                       <p className="text-xs text-gray-600 mt-1">
-                        Use → na segunda para copiar o valor para ter–dom. Um único salvar grava repasse e cobrança da semana (seg–dom).
+                        Margem de lucro sobre a cobrança. Ex.: repasse 100 e margem 25% → cobrança 133,33. Editar a
+                        cobrança recalcula a margem. Use → na segunda para copiar repasse + margem (e cobrança) para
+                        ter–dom.
                       </p>
                     </div>
 
-                    <div>
-                      <p className="text-sm font-semibold text-coop-800 mb-2">Repasse (R$/h)</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        {DIAS_SEMANA.map(({ key, label }) => (
-                          <div
-                            key={key}
-                            className="flex flex-wrap items-end gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
-                          >
-                            <div className="min-w-[200px] flex-1">
-                              <label className="block text-sm font-semibold text-coop-800 mb-1">
-                                {label}{' '}
-                                <span className="font-normal text-coop-600">(Repasse R$/h)</span>
-                              </label>
-                              <input
-                                type="text"
-                                inputMode="decimal"
-                                className="input w-full max-w-[180px]"
-                                placeholder="Ex: 150,00"
-                                value={draftValorPorDia[key] ?? ''}
-                                onChange={(e) =>
-                                  setDraftValorPorDia((prev) => ({
-                                    ...prev,
-                                    [key]: e.target.value,
-                                  }))
-                                }
-                              />
-                            </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      {DIAS_SEMANA.map(({ key, label }) => (
+                        <div
+                          key={key}
+                          className="flex flex-col gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="text-sm font-semibold text-coop-900">{label}</p>
                             {key === 'seg' ? (
                               <button
                                 type="button"
                                 className="btn btn-secondary shrink-0 px-2 min-w-[2.25rem]"
-                                title="Replicar valor da segunda para ter–dom"
-                                onClick={replicarSegParaRestanteRepasse}
+                                title="Replicar repasse, margem e cobrança da segunda para ter–dom"
+                                onClick={replicarSegParaRestanteSemana}
                               >
                                 →
                               </button>
                             ) : null}
                           </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-2">
-                      <p className="text-sm font-semibold text-coop-800 mb-2">Cobrança (R$/h)</p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        {DIAS_SEMANA.map(({ key, label }) => (
-                          <div
-                            key={key}
-                            className="flex flex-wrap items-end gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
-                          >
-                            <div className="min-w-[200px] flex-1">
-                              <label className="block text-sm font-semibold text-coop-800 mb-1">
-                                {label}{' '}
-                                <span className="font-normal text-coop-600">(Cobrança R$/h)</span>
-                              </label>
-                              <input
-                                type="text"
-                                inputMode="decimal"
-                                className="input w-full max-w-[180px]"
-                                placeholder="Ex: 150,00"
-                                value={draftValorCobrancaPorDia[key] ?? ''}
-                                onChange={(e) =>
-                                  setDraftValorCobrancaPorDia((prev) => ({
-                                    ...prev,
-                                    [key]: e.target.value,
-                                  }))
-                                }
-                              />
-                            </div>
-                            {key === 'seg' ? (
-                              <button
-                                type="button"
-                                className="btn btn-secondary shrink-0 px-2 min-w-[2.25rem]"
-                                title="Replicar valor da segunda para ter–dom"
-                                onClick={replicarSegParaRestanteCobranca}
-                              >
-                                →
-                              </button>
-                            ) : null}
+                          <div>
+                            <label className="block text-xs font-semibold text-coop-800 mb-1">Repasse (R$/h)</label>
+                            <input
+                              type="text"
+                              inputMode="decimal"
+                              className="input w-full"
+                              placeholder="Ex: 100,00"
+                              value={draftValorPorDia[key] ?? ''}
+                              onChange={(e) => onRepasseDiaChange(key, e.target.value)}
+                            />
                           </div>
-                        ))}
-                      </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-coop-800 mb-1">Margem (%)</label>
+                            <input
+                              type="text"
+                              inputMode="decimal"
+                              className="input w-full"
+                              placeholder="Ex: 25"
+                              value={draftMargemPorDia[key] ?? ''}
+                              onChange={(e) => onMargemDiaChange(key, e.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-coop-800 mb-1">Cobrança (R$/h)</label>
+                            <input
+                              type="text"
+                              inputMode="decimal"
+                              className="input w-full"
+                              placeholder="Ex: 133,33"
+                              value={draftValorCobrancaPorDia[key] ?? ''}
+                              onChange={(e) => onCobrancaDiaChange(key, e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
 
                     <div className="flex justify-end pt-2">

@@ -1,7 +1,7 @@
 # 11 — Frontend e UX
 
 **Status:** ✅ Implementado  
-**Última atualização:** 2026-05-28
+**Última atualização:** 2026-08-26
 
 ## Stack
 
@@ -39,7 +39,9 @@ Ver `App.tsx` — dashboard, médicos, escalas, ponto, vagas, relatórios, contr
 
 **Placeholder:** `/atendimentos` → `FeaturePlaceholder`
 
-**Só MASTER:** `/avaliacao`, `/modulo-escala-master`
+**Só MASTER:** `/avaliacao`
+
+**Ocultos do menu (rota mantida):** `/relatorios-procedimentos`, `/envio-documentos`, `/modulo-escala-master` (este último redundante com Valores Plantão + filtro `somente_escala`)
 
 ## Padrões UX
 
@@ -58,3 +60,27 @@ Ver `App.tsx` — dashboard, médicos, escalas, ponto, vagas, relatórios, contr
 
 - [ ] Implementar módulo Atendimentos (hoje placeholder)
 - [ ] Manter paridade mobile (ver etapa 12)
+
+## Changelog
+
+### 2026-08-26 — Menu: ocultar Envio de Documentos e Somente escala
+- Removidos do menu Administração; rotas `/envio-documentos` e `/modulo-escala-master` permanecem
+- Decisão: “Somente escala” era só atalho de `ValoresPlantao`; o conceito útil segue em Valores + Relatório financeiro
+
+### 2026-08-26 — Perfis e equipe (staff)
+- Schema `NivelAcessoModulo` + `PerfilAcesso` + FK em `UsuarioMaster`
+- UI `/perfis-equipe` (só admin pleno); menu Administração
+- Middleware `requireAdminPleno` / `requireModuleWrite(ESCALAS)`
+- Arquivos: `frontend/src/pages/PerfisEquipe.tsx`, `backend/src/services/perfil-acesso.service.ts`, `usuario-staff.service.ts`
+
+### 2026-08-26 — Sync AppVS (módulos existentes)
+- Overlay AppVS `8b866b4` em Médicos, ValoresPlantao (+ margem), Relatórios, Dashboard, Escalas, Subgrupos, Cadastro, ValoresPonto
+- Backend: detalhe do médico, download docs perfil, relatório plantões somente-escala, upload-path persistente
+- Preservado: Avaliação/Gcoop/Onvio, CadastroCoop, matriz boolean de módulos
+- Não portado: Conteúdos, E-mail, Justificativas, Push, Perfis staff
+- Arquivos-chave: `frontend/src/pages/Medicos.tsx`, `ValoresPlantao.tsx`, `backend/src/services/relatorio-plantoes-somente-escala.service.ts`
+
+### 2026-08-26 — Menu master com módulos completos
+- `AppShell` do MASTER voltou a listar Escalas, Relatórios e Administração (estava só Corpo Clínico)
+- Arquivos: `frontend/src/components/Layout/AppShell.tsx`
+- Decisão: alinhar ao AppVS, só com rotas que já existem no COOPVITTA (sem e-mail/push/conteúdos)

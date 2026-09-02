@@ -1,12 +1,16 @@
 import fs from 'fs';
 import { Request, Response, NextFunction } from 'express';
 import { body, param, query, validationResult } from 'express-validator';
+import { ModuloSistema, NivelAcessoModulo } from '@prisma/client';
 import { PONTO_SEM_ESCALA_ESCALA_ID } from '../constants/ponto.const';
 import { validateCPF, validateCRM } from '../utils/validation.util';
 import {
   normalizeRegistroConselhoParaProfissao,
   profissaoExigeRegistroConselho,
 } from '../utils/profissao-registro.util';
+
+const MODULO_SISTEMA_VALUES = Object.values(ModuloSistema);
+const NIVEL_ACESSO_MODULO_VALUES = Object.values(NivelAcessoModulo);
 
 const UUID_ANY_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -976,5 +980,57 @@ export const validateCreateBlogCategory = [
   body('nome').trim().isLength({ min: 2, max: 120 }).withMessage('Nome da categoria inválido'),
   body('slug').optional().trim().isLength({ max: 80 }),
   body('ordem').optional().isInt({ min: 0 }),
+  handleValidationErrors,
+];
+
+/** POST /admin/perfis-acesso */
+export const validateCreatePerfilAcesso = [
+  body('nome')
+    .notEmpty()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 120 })
+    .withMessage('Nome do perfil é obrigatório'),
+  body('descricao')
+    .optional({ values: 'null' })
+    .isString()
+    .trim()
+    .isLength({ max: 4000 })
+    .withMessage('descricao inválida'),
+  body('ativo').optional().isBoolean().withMessage('ativo deve ser booleano'),
+  body('modulos').isArray({ min: 1 }).withMessage('Informe a grade de módulos'),
+  body('modulos.*.modulo')
+    .isIn(MODULO_SISTEMA_VALUES)
+    .withMessage('módulo inválido'),
+  body('modulos.*.nivel')
+    .isIn(NIVEL_ACESSO_MODULO_VALUES)
+    .withMessage('nível inválido (OFF, VER ou EDITAR)'),
+  handleValidationErrors,
+];
+
+/** PUT /admin/perfis-acesso/:id */
+export const validateUpdatePerfilAcesso = [
+  body('nome')
+    .optional()
+    .isString()
+    .trim()
+    .isLength({ min: 1, max: 120 })
+    .withMessage('Nome do perfil inválido'),
+  body('descricao')
+    .optional({ values: 'null' })
+    .isString()
+    .trim()
+    .isLength({ max: 4000 })
+    .withMessage('descricao inválida'),
+  body('ativo').optional().isBoolean().withMessage('ativo deve ser booleano'),
+  body('modulos').optional().isArray({ min: 1 }).withMessage('Grade de módulos inválida'),
+  body('modulos.*.modulo')
+    .optional()
+    .isIn(MODULO_SISTEMA_VALUES)
+    .withMessage('módulo inválido'),
+  body('modulos.*.nivel')
+    .optional()
+    .isIn(NIVEL_ACESSO_MODULO_VALUES)
+    .withMessage('nível inválido (OFF, VER ou EDITAR)'),
   handleValidationErrors,
 ];

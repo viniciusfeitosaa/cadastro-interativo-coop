@@ -14,6 +14,7 @@ import {
 import { MODULO_LABEL, ModuloSistema } from '../constants/modulos';
 import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, displayNomeUsuario } from '../constants/branding';
 import { ESPECIALIDADES_MEDICAS } from '../constants/profissoesEspecialidades';
+import { authService, isAdminPleno } from '../services/auth.service';
 
 type TabPerfil = 'pessoais' | 'bancarios' | 'documentos' | 'conta';
 
@@ -22,6 +23,12 @@ const Perfil = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isMaster = user?.role === 'MASTER';
+  const { data: modulosAcessoResp } = useQuery({
+    queryKey: ['auth', 'modulos-acesso', user?.id],
+    queryFn: () => authService.getModulosAcesso(),
+    enabled: !!user && isMaster,
+  });
+  const pleno = isAdminPleno(modulosAcessoResp?.data);
   const [activeTab, setActiveTab] = useState<TabPerfil>('pessoais');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +78,7 @@ const Perfil = () => {
   const { data: acessosResp, isLoading: loadingAcessos } = useQuery({
     queryKey: ['admin', 'acessos-modulos', user?.id],
     queryFn: () => adminService.getMatrizAcessosModulos(),
-    enabled: !!user && isMaster,
+    enabled: !!user && isMaster && pleno,
   });
 
   useEffect(() => {
@@ -532,7 +539,7 @@ const Perfil = () => {
         </div>
       )}
 
-      {isMaster && (
+      {isMaster && pleno && (
         <div className="card stagger-2 border-l-4 border-l-coop-500">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-coop-600 mb-2 font-display">Administração de Acesso por Módulo</h3>
           <p className="text-sm text-coop-700 mb-4 font-serif">

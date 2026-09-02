@@ -156,3 +156,38 @@ export const uploadPontoCheckinMiddleware = (req: Request, res: Response, next: 
     next();
   });
 };
+
+const uploadConteudosDir = path.resolve(process.cwd(), 'uploads', 'conteudos');
+if (!fs.existsSync(uploadConteudosDir)) {
+  fs.mkdirSync(uploadConteudosDir, { recursive: true });
+}
+
+const storageConteudoCapa = multer.diskStorage({
+  destination: (req: Request, _file: Express.Multer.File, cb) => {
+    const tenantId = (req as { user?: { tenantId?: string } }).user?.tenantId || 'unknown';
+    const dir = path.join(uploadConteudosDir, tenantId);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: (_req: Request, file: Express.Multer.File, cb) => {
+    const ext = path.extname(file.originalname || '').toLowerCase() || '.jpg';
+    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `capa-${unique}${ext}`);
+  },
+});
+
+export const uploadConteudoCapa = multer({
+  storage: storageConteudoCapa,
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 },
+  fileFilter: (_req, file, cb) => {
+    const ok = ['image/jpeg', 'image/png', 'image/webp'].includes(file.mimetype);
+    if (!ok) {
+      cb(new Error('Capa deve ser JPEG, PNG ou WebP (máx. 5 MB).'));
+      return;
+    }
+    cb(null, true);
+  },
+});
+

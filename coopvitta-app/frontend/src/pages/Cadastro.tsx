@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, type FieldErrors, type FieldPath } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { authService, type RegisterPayload } from '../services/auth.service';
@@ -21,6 +21,7 @@ import {
   isDocumentoObrigatorioNoCadastro,
   type DocumentoPerfilField,
 } from '../constants/documentosPerfil';
+import { validateCPF, validateCRM } from '../utils/validation.util';
 
 function formatBytes(n: number): string {
   if (n < 1024) return `${n} B`;
@@ -116,7 +117,8 @@ const cadastroSchema = z
     cpf: z
       .string()
       .min(1, 'CPF é obrigatório')
-      .refine((v) => cpfSomenteDigitos(v).length === 11, 'CPF deve ter 11 dígitos'),
+      .refine((v) => cpfSomenteDigitos(v).length === 11, 'CPF deve ter 11 dígitos')
+      .refine((v) => validateCPF(v), 'CPF inválido'),
     telefone: z.string().min(8, 'Telefone é obrigatório'),
     profissao: z.string().min(2, 'Selecione a profissão'),
     crm: z.string().optional(),
@@ -163,10 +165,10 @@ const cadastroSchema = z
       return;
     }
     if (data.profissao === 'Médico') {
-      if (v.replace(/\s/g, '').length < 6) {
+      if (!validateCRM(v)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'CRM inválido (use o formato número-UF, ex.: 12345-CE)',
+          message: 'CRM inválido. Use o formato número-UF (ex.: 12345-CE)',
           path: ['crm'],
         });
       }
@@ -207,6 +209,8 @@ const Cadastro = () => {
     formState: { errors },
   } = useForm<CadastroFormData>({
     resolver: zodResolver(cadastroSchema),
+    mode: 'onSubmit',
+    shouldFocusError: true,
     defaultValues: {
       profissao: '',
       estadoCivil: '',
@@ -296,7 +300,7 @@ const Cadastro = () => {
     );
   };
 
-  const fieldsByStep: Record<number, (keyof CadastroFormData)[]> = {
+  const fieldsByStep: Record<number, FieldPath<CadastroFormData>[]> = {
     0: ['nomeCompleto', 'email', 'cpf', 'telefone'],
     1: ['profissao'],
     2: [
@@ -314,6 +318,75 @@ const Cadastro = () => {
     5: ['password', 'confirmPassword', 'aceitouTermos'],
   };
 
+  const fieldToStep = useMemo(() => {
+    const map = new Map<string, number>();
+    (Object.entries(fieldsByStep) as [string, FieldPath<CadastroFormData>[]][]).forEach(([stepStr, keys]) => {
+      const s = Number(stepStr);
+      keys.forEach((k) => map.set(k, s));
+    });
+    map.set('crm', 1);
+    return map;
+  }, []);
+
+  const labelForField = (key: string): string => {
+    const labels: Record<string, string> = {
+      nomeCompleto: 'Nome completo',
+      email: 'E-mail',
+      cpf: 'CPF',
+      telefone: 'Telefone',
+      profissao: 'Profissão',
+      crm: 'Registro no conselho',
+      estadoCivil: 'Estado civil',
+      cep: 'CEP',
+      enderecoLogradouro: 'Logradouro',
+      enderecoNumero: 'Número',
+      enderecoComplemento: 'Complemento',
+      enderecoBairro: 'Bairro',
+      enderecoCidade: 'Cidade',
+      enderecoUf: 'UF',
+      dadosBancoConta: 'Conta bancária',
+      dadosBancoAgencia: 'Agência',
+      dadosBancoNome: 'Banco',
+      chavePix: 'Chave Pix',
+      password: 'Senha',
+      confirmPassword: 'Confirmar senha',
+      aceitouTermos: 'Aceite dos termos',
+    };
+    return labels[key] || key;
+  };
+
+  /** Validação falhou: mostra mensagem e volta à etapa do 1.º erro (antes o clique "não fazia nada"). */
+  const onInvalid = (formErrors: FieldErrors<CadastroFormData>) => {
+    const keys = Object.keys(formErrors) as string[];
+    if (!keys.length) {
+      setError('Não foi possível validar o formulário. Revise os dados e tente novamente.');
+      return;
+    }
+    let firstStep = STEP_LABELS.length - 1;
+    for (const k of keys) {
+      const s = fieldToStep.get(k);
+      if (s !== undefined && s < firstStep) firstStep = s;
+    }
+    setStep(firstStep);
+
+    const parts = keys
+      .map((k) => {
+        const err = formErrors[k as keyof CadastroFormData];
+        const msg =
+          err && typeof err === 'object' && 'message' in err && err.message
+            ? String(err.message)
+            : 'campo inválido';
+        return `${labelForField(k)}: ${msg}`;
+      })
+      .slice(0, 4);
+    setError(
+      parts.length
+        ? `Corrija antes de enviar: ${parts.join(' · ')}${keys.length > 4 ? '…' : ''}`
+        : 'Há campos inválidos. Revise as etapas do formulário.'
+    );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const documentosObrigatoriosPreenchidos = () =>
     DOCUMENTOS_PERFIL_OBRIGATORIOS_CADASTRO.every((k) => docFiles[k] instanceof File);
 
@@ -322,11 +395,26 @@ const Cadastro = () => {
     const keys =
       step === 1
         ? profissaoExigeRegistroConselho(getValues('profissao'))
-          ? (['profissao', 'crm'] as (keyof CadastroFormData)[])
-          : (['profissao'] as (keyof CadastroFormData)[])
+          ? (['profissao', 'crm'] as FieldPath<CadastroFormData>[])
+          : (['profissao'] as FieldPath<CadastroFormData>[])
         : fieldsByStep[step] || [];
     const ok = keys.length === 0 ? true : await trigger(keys, { shouldFocus: true });
-    if (!ok) return;
+    if (!ok) {
+      const values = getValues();
+      if (keys.includes('cpf') && values.cpf && !validateCPF(values.cpf)) {
+        setError('CPF inválido. Corrija antes de continuar.');
+      } else if (
+        keys.includes('crm') &&
+        getValues('profissao') === 'Médico' &&
+        (values.crm || '').trim() &&
+        !validateCRM(values.crm || '')
+      ) {
+        setError('CRM inválido. Use o formato número-UF (ex.: 12345-CE).');
+      } else {
+        setError('Corrija os campos destacados antes de continuar.');
+      }
+      return;
+    }
     if (step === 1 && isMedico && especialidadesSelecionadas.length === 0) {
       setError('Selecione ao menos uma especialidade.');
       return;
@@ -519,13 +607,14 @@ const Cadastro = () => {
 
         <form
           className="space-y-6 stagger-3"
+          noValidate
           onSubmit={(e) => {
             e.preventDefault();
             if (step < STEP_LABELS.length - 1) {
               void goNext();
               return;
             }
-            void handleSubmit(onSubmit)(e);
+            void handleSubmit(onSubmit, onInvalid)(e);
           }}
         >
           {error && <div className="cadastro-error">{error}</div>}
@@ -909,10 +998,20 @@ const Cadastro = () => {
                   </div>
                 </details>
                 <label className="flex items-start gap-3 cursor-pointer text-[14px] text-zinc-800 leading-snug">
-                  <input
-                    type="checkbox"
-                    className="mt-1 rounded border-zinc-300 text-emerald-800 focus:ring-emerald-800/25"
-                    {...formRegister('aceitouTermos')}
+                  <Controller
+                    control={control}
+                    name="aceitouTermos"
+                    render={({ field }) => (
+                      <input
+                        type="checkbox"
+                        className="mt-1 rounded border-zinc-300 text-emerald-800 focus:ring-emerald-800/25"
+                        checked={field.value === true}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        onBlur={field.onBlur}
+                        ref={field.ref}
+                        name={field.name}
+                      />
+                    )}
                   />
                   <span>
                     Declaro que li e aceito integralmente o texto acima; confirmo que os dados enviados são verdadeiros

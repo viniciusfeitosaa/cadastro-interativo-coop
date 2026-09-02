@@ -238,6 +238,80 @@ export async function listMedicosService(params: ListMedicosParams) {
   };
 }
 
+export async function getMedicoDetalheAdminService(tenantId: string, medicoId: string) {
+  const medico = await prisma.medico.findFirst({
+    where: { id: medicoId, tenantId },
+    select: {
+      id: true,
+      nomeCompleto: true,
+      cpf: true,
+      profissao: true,
+      crm: true,
+      email: true,
+      especialidades: true,
+      vinculo: true,
+      telefone: true,
+      estadoCivil: true,
+      enderecoResidencial: true,
+      dadosBancarios: true,
+      chavePix: true,
+      statusCadastro: true,
+      termosCadastroAceitosEm: true,
+      termosCadastroVersao: true,
+      inviteAcceptedAt: true,
+      ativo: true,
+      createdAt: true,
+      updatedAt: true,
+      documentos: {
+        select: {
+          id: true,
+          tipo: true,
+          nomeArquivo: true,
+          mimeType: true,
+          tamanhoBytes: true,
+          updatedAt: true,
+        },
+        orderBy: { updatedAt: 'desc' },
+      },
+      equipeMedicos: {
+        select: {
+          equipe: {
+            select: {
+              id: true,
+              nome: true,
+              ativo: true,
+              subgrupo: { select: { id: true, nome: true } },
+            },
+          },
+        },
+      },
+      subgrupoMedicos: {
+        select: {
+          subgrupo: { select: { id: true, nome: true, ativo: true } },
+        },
+      },
+    },
+  });
+
+  if (!medico) {
+    throw { statusCode: 404, message: 'Médico não encontrado' };
+  }
+
+  const equipes = medico.equipeMedicos
+    .map((row) => row.equipe)
+    .filter(Boolean)
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' }));
+  const subgrupos = medico.subgrupoMedicos
+    .map((row) => row.subgrupo)
+    .filter(Boolean)
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity: 'base' }));
+
+  const { equipeMedicos, subgrupoMedicos, ...rest } = medico;
+  void equipeMedicos;
+  void subgrupoMedicos;
+  return { ...rest, equipes, subgrupos };
+}
+
 export async function createMedicoService(input: CreateMedicoInput) {
   const cpf = input.cpf.replace(/\D/g, '');
   const email = input.email?.trim().toLowerCase() || null;

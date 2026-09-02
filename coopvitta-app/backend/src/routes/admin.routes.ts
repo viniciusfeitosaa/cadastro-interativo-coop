@@ -31,6 +31,7 @@ import {
   listEscalasController,
   listRegistrosPontoAdminController,
   downloadRegistroPontoFotoAdminController,
+  listPlantoesSomenteEscalaRelatorioController,
   getMatrizAcessosModulosController,
   salvarMatrizAcessosModulosController,
   listContratosAtivosController,
@@ -40,6 +41,8 @@ import {
   docusealResendSubmitterController,
   getMedicoDocusealDocumentosController,
   getMedicoCadastroDetalheController,
+  getMedicoDetalheAdminController,
+  downloadMedicoDocumentoPerfilAdminController,
   downloadMedicoCadastroDocumentoController,
   postMedicoDocusealEnviarTemplateController,
   listDocumentosEnviadosController,
@@ -93,10 +96,43 @@ import {
   updateEquipeController,
   updateSubgrupoController,
 } from '../controllers/grupo-equipe.controller';
-import { authenticateToken, requireAnyModuleAccess, requireModuleAccess, requireRole } from '../middleware/auth.middleware';
+import {
+  createPerfilAcessoController,
+  getPerfilAcessoController,
+  listPerfisAcessoController,
+  updatePerfilAcessoController,
+} from '../controllers/perfil-acesso.controller';
+import {
+  createUsuarioStaffController,
+  listUsuariosStaffController,
+  updateUsuarioStaffController,
+} from '../controllers/usuario-staff.controller';
+import {
+  authenticateToken,
+  requireAdminPleno,
+  requireAnyModuleAccess,
+  requireModuleAccess,
+  requireModuleWrite,
+  requireRole,
+} from '../middleware/auth.middleware';
 import { uploadDocumentoEnviado } from '../middleware/upload.middleware';
 import { ModuloSistema, UserRole } from '@prisma/client';
-import { validateUUIDParam, validateCreateEscala, validateUpdateEscala, validateCreateEscalaPlantao, validateReplicarPlantoesMes, validateAlocarMedicoEscala, validateUpsertAdicionalPlantao, validateListAdicionaisPlantao, validateRemoverAdicionalPlantao, validateCreateTipoPlantao, validateUpdateTipoPlantao, validateSetConfigPonto } from '../middleware/validation.middleware';
+import {
+  validateUUIDParam,
+  validateCreateEscala,
+  validateUpdateEscala,
+  validateCreateEscalaPlantao,
+  validateReplicarPlantoesMes,
+  validateAlocarMedicoEscala,
+  validateUpsertAdicionalPlantao,
+  validateListAdicionaisPlantao,
+  validateRemoverAdicionalPlantao,
+  validateCreateTipoPlantao,
+  validateUpdateTipoPlantao,
+  validateSetConfigPonto,
+  validateCreatePerfilAcesso,
+  validateUpdatePerfilAcesso,
+} from '../middleware/validation.middleware';
 import blogAdminRoutes from './blog-admin.routes';
 
 const router = Router();
@@ -105,6 +141,19 @@ router.use(authenticateToken);
 router.use(requireRole([UserRole.MASTER]));
 
 router.get('/medicos', requireModuleAccess(ModuloSistema.MEDICOS), listMedicosController);
+router.get(
+  '/medicos/:id',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  getMedicoDetalheAdminController
+);
+router.get(
+  '/medicos/:id/documentos/:documentoId/download',
+  requireModuleAccess(ModuloSistema.MEDICOS),
+  validateUUIDParam('id'),
+  validateUUIDParam('documentoId'),
+  downloadMedicoDocumentoPerfilAdminController
+);
 // Relatório de procedimentos (Lançamentos do mês): persistência por mês no backend.
 // Mantemos apenas autenticação + role MASTER (sem gate por módulo) para evitar "parece que salvou mas some" em outros PCs.
 router.get('/relatorios/procedimentos/:mesRef', getRelatorioProcedimentosMesController);
@@ -166,9 +215,9 @@ router.post('/contratos-ativos/:id/equipes', requireModuleAccess(ModuloSistema.C
 router.delete('/contratos-ativos/:id/equipes/:equipeId', requireModuleAccess(ModuloSistema.CONTRATOS_ATIVOS), removeContratoEquipeController);
 
 router.get('/escalas', requireModuleAccess(ModuloSistema.ESCALAS), listEscalasController);
-router.post('/escalas', requireModuleAccess(ModuloSistema.ESCALAS), validateCreateEscala, createEscalaController);
-router.put('/escalas/:id', requireModuleAccess(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateUpdateEscala, updateEscalaController);
-router.delete('/escalas/:id', requireModuleAccess(ModuloSistema.ESCALAS), validateUUIDParam('id'), deleteEscalaController);
+router.post('/escalas', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), validateCreateEscala, createEscalaController);
+router.put('/escalas/:id', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateUpdateEscala, updateEscalaController);
+router.delete('/escalas/:id', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), validateUUIDParam('id'), deleteEscalaController);
 router.get('/escalas/:id/medicos', requireModuleAccess(ModuloSistema.ESCALAS), listEscalaMedicosController);
 router.post(
   '/escalas/:id/medicos',
@@ -198,8 +247,8 @@ router.post(
   validateReplicarPlantoesMes,
   replicarEscalaPlantoesMesController
 );
-router.post('/escalas/:id/plantoes', requireModuleAccess(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateCreateEscalaPlantao, createEscalaPlantaoController);
-router.delete('/escalas/:id/plantoes/:plantaoId', requireModuleAccess(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateUUIDParam('plantaoId'), removerEscalaPlantaoController);
+router.post('/escalas/:id/plantoes', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateCreateEscalaPlantao, createEscalaPlantaoController);
+router.delete('/escalas/:id/plantoes/:plantaoId', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), validateUUIDParam('id'), validateUUIDParam('plantaoId'), removerEscalaPlantaoController);
 
 router.get('/valores-plantao/opcoes', requireModuleAccess(ModuloSistema.VALORES_PLANTAO), getValoresPlantaoOpcoesController);
 router.get('/valores-plantao', requireAnyModuleAccess([ModuloSistema.VALORES_PLANTAO, ModuloSistema.ESCALAS]), getValoresPlantaoController);
@@ -239,6 +288,11 @@ router.get('/config-ponto', requireModuleAccess(ModuloSistema.PONTO_ELETRONICO),
 router.put('/config-ponto', requireModuleAccess(ModuloSistema.PONTO_ELETRONICO), validateSetConfigPonto, setConfigPontoController);
 
 router.get('/registros-ponto', requireModuleAccess(ModuloSistema.RELATORIOS), listRegistrosPontoAdminController);
+router.get(
+  '/relatorio-plantoes-somente-escala',
+  requireModuleAccess(ModuloSistema.RELATORIOS),
+  listPlantoesSomenteEscalaRelatorioController
+);
 router.get(
   '/registros-ponto/:id/foto-checkin',
   requireModuleAccess(ModuloSistema.RELATORIOS),
@@ -315,7 +369,36 @@ router.get('/documentos-enviados', requireModuleAccess(ModuloSistema.ENVIO_DOCUM
 router.post('/documentos-enviados', requireModuleAccess(ModuloSistema.ENVIO_DOCUMENTOS), uploadDocumentoEnviado.single('arquivo'), uploadDocumentoEnviadoController);
 router.delete('/documentos-enviados/:id', requireModuleAccess(ModuloSistema.ENVIO_DOCUMENTOS), deleteDocumentoEnviadoController);
 router.get('/acessos-modulos', requireModuleAccess(ModuloSistema.CONFIGURACOES), getMatrizAcessosModulosController);
-router.put('/acessos-modulos', requireModuleAccess(ModuloSistema.CONFIGURACOES), salvarMatrizAcessosModulosController);
+router.put('/acessos-modulos', requireAdminPleno(), salvarMatrizAcessosModulosController);
+
+router.get('/perfis-acesso', requireAdminPleno(), listPerfisAcessoController);
+router.post(
+  '/perfis-acesso',
+  requireAdminPleno(),
+  validateCreatePerfilAcesso,
+  createPerfilAcessoController
+);
+router.get(
+  '/perfis-acesso/:id',
+  requireAdminPleno(),
+  validateUUIDParam('id'),
+  getPerfilAcessoController
+);
+router.put(
+  '/perfis-acesso/:id',
+  requireAdminPleno(),
+  validateUUIDParam('id'),
+  validateUpdatePerfilAcesso,
+  updatePerfilAcessoController
+);
+router.get('/usuarios-staff', requireAdminPleno(), listUsuariosStaffController);
+router.post('/usuarios-staff', requireAdminPleno(), createUsuarioStaffController);
+router.put(
+  '/usuarios-staff/:id',
+  requireAdminPleno(),
+  validateUUIDParam('id'),
+  updateUsuarioStaffController
+);
 router.get('/subgrupos', requireModuleAccess(ModuloSistema.MEDICOS), listSubgruposController);
 router.post('/subgrupos', requireModuleAccess(ModuloSistema.MEDICOS), createSubgrupoController);
 router.put('/subgrupos/:id', requireModuleAccess(ModuloSistema.MEDICOS), updateSubgrupoController);
@@ -333,11 +416,11 @@ router.get('/equipes/:id/escalas', requireModuleAccess(ModuloSistema.ESCALAS), l
 router.post('/equipes/:id/medicos', requireModuleAccess(ModuloSistema.MEDICOS), addMedicoToEquipeController);
 router.delete('/equipes/:id/medicos/:medicoId', requireModuleAccess(ModuloSistema.MEDICOS), removeMedicoFromEquipeController);
 router.get('/escalas/:id/subgrupos', requireModuleAccess(ModuloSistema.ESCALAS), listEscalaSubgruposController);
-router.post('/escalas/:id/subgrupos', requireModuleAccess(ModuloSistema.ESCALAS), addSubgrupoToEscalaController);
-router.delete('/escalas/:id/subgrupos/:subgrupoId', requireModuleAccess(ModuloSistema.ESCALAS), removeSubgrupoFromEscalaController);
+router.post('/escalas/:id/subgrupos', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), addSubgrupoToEscalaController);
+router.delete('/escalas/:id/subgrupos/:subgrupoId', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), removeSubgrupoFromEscalaController);
 router.get('/escalas/:id/equipes', requireModuleAccess(ModuloSistema.ESCALAS), listEscalaEquipesController);
-router.post('/escalas/:id/equipes', requireModuleAccess(ModuloSistema.ESCALAS), addEquipeToEscalaController);
-router.delete('/escalas/:id/equipes/:equipeId', requireModuleAccess(ModuloSistema.ESCALAS), removeEquipeFromEscalaController);
+router.post('/escalas/:id/equipes', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), addEquipeToEscalaController);
+router.delete('/escalas/:id/equipes/:equipeId', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), removeEquipeFromEscalaController);
 
 router.use('/blog', blogAdminRoutes);
 

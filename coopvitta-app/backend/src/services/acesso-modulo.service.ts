@@ -1,4 +1,4 @@
-import { ModuloSistema, UserRole } from '@prisma/client';
+import { ModuloSistema, NivelAcessoModulo, UserRole } from '@prisma/client';
 import { prisma } from '../config/database';
 import {
   CORE_MASTER_SEMPRE_ATIVOS,
@@ -12,6 +12,32 @@ export interface AcessoModuloItem {
   modulo: ModuloSistema;
   permitido: boolean;
 }
+
+export interface NiveisModuloUsuario {
+  isAdminPleno: boolean;
+  map: Record<ModuloSistema, NivelAcessoModulo>;
+}
+
+const mapOffTodos = (): Record<ModuloSistema, NivelAcessoModulo> =>
+  Object.fromEntries(MODULOS_SISTEMA.map((m) => [m, NivelAcessoModulo.OFF])) as Record<
+    ModuloSistema,
+    NivelAcessoModulo
+  >;
+
+const mapEditarTodos = (): Record<ModuloSistema, NivelAcessoModulo> =>
+  Object.fromEntries(MODULOS_SISTEMA.map((m) => [m, NivelAcessoModulo.EDITAR])) as Record<
+    ModuloSistema,
+    NivelAcessoModulo
+  >;
+
+const nivelRank = (nivel: NivelAcessoModulo): number => {
+  if (nivel === NivelAcessoModulo.EDITAR) return 2;
+  if (nivel === NivelAcessoModulo.VER) return 1;
+  return 0;
+};
+
+const maxNivel = (a: NivelAcessoModulo, b: NivelAcessoModulo): NivelAcessoModulo =>
+  nivelRank(a) >= nivelRank(b) ? a : b;
 
 export const getAcessosModuloPerfilService = async (tenantId: string, perfil: UserRole) => {
   const rows = await prisma.acessoModuloPerfil.findMany({
@@ -35,15 +61,6 @@ export const getAcessosModuloPerfilService = async (tenantId: string, perfil: Us
     modulo,
     permitido: base[modulo],
   }));
-};
-
-export const getMinhaPermissaoModulosService = async (tenantId: string, perfil: UserRole) => {
-  const items = await getAcessosModuloPerfilService(tenantId, perfil);
-  return {
-    perfil,
-    items,
-    map: Object.fromEntries(items.map((i) => [i.modulo, i.permitido])) as Record<ModuloSistema, boolean>,
-  };
 };
 
 export const getMatrizAcessosModulosService = async (tenantId: string) => {
@@ -97,6 +114,91 @@ export const salvarMatrizAcessosModulosService = async (
   return getMatrizAcessosModulosService(tenantId);
 };
 
+export const getNiveisModuloUsuarioService = async (
+  tenantId: string,
+  userId: string,
+  role: UserRole
+): Promise<NiveisModuloUsuario> => {
+  if (role === UserRole.MEDICO) {
+    const items = await getAcessosModuloPerfilService(tenantId, UserRole.MEDICO);
+    const map = mapOffTodos();
+    for (const item of items) {
+      map[item.modulo] = item.permitido ? NivelAcessoModulo.VER : NivelAcessoModulo.OFF;
+    }
+    return { isAdminPleno: false, map };
+  }
+
+  const master = await prisma.usuarioMaster.findFirst({
+    where: { id: userId, tenantId },
+    select: {
+      id: true,
+      ativo: true,
+      perfilAcessoId: true,
+      perfilAcesso: {
+        select: {
+          id: true,
+          tenantId: true,
+          ativo: true,
+          modulos: { select: { modulo: true, nivel: true } },
+        },
+      },
+    },
+  });
+
+  if (!master || !master.ativo) {
+    return { isAdminPleno: false, map: mapOffTodos() };
+  }
+
+  if (master.perfilAcessoId == null) {
+    return { isAdminPleno: true, map: mapEditarTodos() };
+  }
+
+  const perfil = master.perfilAcesso;
+  if (!perfil || !perfil.ativo || perfil.tenantId !== tenantId) {
+    return { isAdminPleno: false, map: mapOffTodos() };
+  }
+
+  const map = mapOffTodos();
+  for (const row of perfil.modulos) {
+    map[row.modulo] = row.nivel;
+  }
+
+  // Defesa em profundidade: staff nunca edita CONFIGURACOES
+  if (map[ModuloSistema.CONFIGURACOES] === NivelAcessoModulo.EDITAR) {
+    map[ModuloSistema.CONFIGURACOES] = NivelAcessoModulo.VER;
+  }
+
+  // Todo perfil staff garante ao menos VER em PERFIL (Minha Conta)
+  map[ModuloSistema.PERFIL] = maxNivel(map[ModuloSistema.PERFIL], NivelAcessoModulo.VER);
+
+  return { isAdminPleno: false, map };
+};
+
+export const getMinhaPermissaoModulosService = async (
+  tenantId: string,
+  perfil: UserRole,
+  userId?: string
+) => {
+  if (userId) {
+    const { isAdminPleno, map: mapNiveis } = await getNiveisModuloUsuarioService(
+      tenantId,
+      userId,
+      perfil
+    );
+    const map = Object.fromEntries(
+      MODULOS_SISTEMA.map((m) => [m, mapNiveis[m] !== NivelAcessoModulo.OFF])
+    ) as Record<ModuloSistema, boolean>;
+    return { isAdminPleno, mapNiveis, map, perfil };
+  }
+
+  const items = await getAcessosModuloPerfilService(tenantId, perfil);
+  return {
+    perfil,
+    items,
+    map: Object.fromEntries(items.map((i) => [i.modulo, i.permitido])) as Record<ModuloSistema, boolean>,
+  };
+};
+
 export const possuiAcessoModuloService = async (
   tenantId: string,
   perfil: UserRole,
@@ -104,4 +206,25 @@ export const possuiAcessoModuloService = async (
 ) => {
   const permissao = await getMinhaPermissaoModulosService(tenantId, perfil);
   return permissao.map[modulo] ?? false;
+};
+
+export const possuiAcessoModuloUsuarioService = async (
+  tenantId: string,
+  userId: string,
+  role: UserRole,
+  modulo: ModuloSistema
+) => {
+  const { map } = await getNiveisModuloUsuarioService(tenantId, userId, role);
+  const nivel = map[modulo] ?? NivelAcessoModulo.OFF;
+  return nivel === NivelAcessoModulo.VER || nivel === NivelAcessoModulo.EDITAR;
+};
+
+export const possuiEscritaModuloUsuarioService = async (
+  tenantId: string,
+  userId: string,
+  role: UserRole,
+  modulo: ModuloSistema
+) => {
+  const { map } = await getNiveisModuloUsuarioService(tenantId, userId, role);
+  return (map[modulo] ?? NivelAcessoModulo.OFF) === NivelAcessoModulo.EDITAR;
 };

@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
-import { adminService, type AdminMedico, type Equipe } from '../services/admin.service';
+import { adminService, type AdminMedico, type AdminMedicoDetalhe, type Equipe } from '../services/admin.service';
 import { notify } from '../lib/notificationEmitter';
-import { formatCRM, fixMojibake } from '../utils/validation.util';
-import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADOS, LABEL_ASSOCIADO } from '../constants/branding';
-import { MedicoCadastroDadosModal } from '../components/medicos/MedicoCadastroDadosModal';
+import { formatCRM, formatCPF, fixMojibake } from '../utils/validation.util';
+import { DOCUMENTO_LABEL_BY_TIPO } from '../constants/documentosPerfil';
+import { LABEL_ADMINISTRADOR, LABEL_ASSOCIADO, LABEL_ASSOCIADOS } from '../constants/branding';
+import { whatsappHrefFromTelefone } from '../utils/whatsapp';
 
 /** Chave alinhada com `normalizarEmailDocuseal` no backend (ex.: @gmail → @gmail.com). */
 function emailChaveDocuseal(email: string | null | undefined): string {
@@ -34,6 +35,34 @@ function nomesContratosEquipe(eq: Equipe): string[] {
   return out;
 }
 
+function DadoProfissional({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="min-w-0 rounded-lg border border-coop-100 bg-coop-50/40 px-3 py-2.5">
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display">{label}</p>
+      <p className="mt-0.5 text-sm text-coop-900 break-words whitespace-pre-wrap">{value}</p>
+    </div>
+  );
+}
+
+function textoOuTraco(v: string | null | undefined) {
+  const t = v?.trim();
+  return t ? fixMojibake(t) : '—';
+}
+
+function statusCadastroLabel(s: string) {
+  if (s === 'ATIVO') return 'Ativo (cadastro)';
+  if (s === 'PENDENTE_ANALISE') return 'Pendente de análise';
+  if (s === 'REJEITADO') return 'Rejeitado';
+  return s || '—';
+}
+
+function formatBytes(n: number) {
+  if (!Number.isFinite(n) || n <= 0) return '—';
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 type StatusFilter = 'all' | 'active' | 'inactive';
 
 const Medicos = () => {
@@ -45,7 +74,10 @@ const Medicos = () => {
   const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [selectedMedico, setSelectedMedico] = useState<AdminMedico | null>(null);
+  const [pontoModalOpen, setPontoModalOpen] = useState(false);
   const [dadosModalOpen, setDadosModalOpen] = useState(false);
+  const [pontoInicio, setPontoInicio] = useState('');
+  const [pontoFim, setPontoFim] = useState('');
   const [docusealModalMedico, setDocusealModalMedico] = useState<{ id: string; nomeCompleto: string; email: string | null } | null>(
     null
   );
@@ -215,6 +247,25 @@ const Medicos = () => {
     setPage(1);
   };
 
+  const { data: registrosPontoResp, isLoading: loadingPontos } = useQuery({
+    queryKey: ['admin', 'registros-ponto', selectedMedico?.id, pontoInicio, pontoFim],
+    queryFn: () =>
+      adminService.listRegistrosPonto({
+        medicoId: selectedMedico!.id,
+        ...(pontoInicio ? { dataInicio: pontoInicio } : {}),
+        ...(pontoFim ? { dataFim: pontoFim } : {}),
+      }),
+    enabled: !!user && isMaster && pontoModalOpen && !!selectedMedico?.id,
+  });
+  const registrosPonto: any[] = registrosPontoResp?.data?.data ?? registrosPontoResp?.data ?? [];
+
+  const { data: detalheResp, isLoading: loadingDetalhe, isError: erroDetalhe } = useQuery({
+    queryKey: ['admin', 'medico-detalhe', selectedMedico?.id],
+    queryFn: () => adminService.getMedicoDetalhe(selectedMedico!.id),
+    enabled: !!user && isMaster && dadosModalOpen && !!selectedMedico?.id,
+  });
+  const detalhe: AdminMedicoDetalhe | undefined = detalheResp?.data;
+
   if (!isMaster) {
     return (
       <div className="card border-l-4 border-red-400">
@@ -236,6 +287,11 @@ const Medicos = () => {
     const crm = selectedMedico.crm ? formatCRM(selectedMedico.crm) : '';
     return crm ? `${nome} · ${crm}` : nome;
   }, [selectedMedico]);
+
+  const selectedWhatsappHref = useMemo(
+    () => whatsappHrefFromTelefone(selectedMedico?.telefone),
+    [selectedMedico?.telefone]
+  );
 
   const docusealByEmail = docusealResumoResp?.data?.byEmail;
 
@@ -329,8 +385,39 @@ const Medicos = () => {
                 disabled={!selectedMedico}
                 onClick={() => setDadosModalOpen(true)}
               >
-                Ver dados
+                Dados do profissional
               </button>
+              <button
+                type="button"
+                className="btn btn-secondary text-sm"
+                disabled={!selectedMedico}
+                onClick={() => setPontoModalOpen(true)}
+              >
+                Histórico de pontos
+              </button>
+              {selectedWhatsappHref ? (
+                <a
+                  href={selectedWhatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary text-sm"
+                >
+                  WhatsApp
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-secondary text-sm"
+                  disabled
+                  title={
+                    selectedMedico
+                      ? 'Este profissional não tem telefone válido cadastrado'
+                      : 'Selecione um profissional'
+                  }
+                >
+                  WhatsApp
+                </button>
+              )}
             </div>
           </div>
 
@@ -525,7 +612,8 @@ const Medicos = () => {
           {totalPages > 1 && (
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-coop-200 pt-4">
               <p className="text-sm text-coop-700">
-                Exibindo <strong>{from}</strong> a <strong>{to}</strong> de <strong>{total}</strong> {LABEL_ASSOCIADOS.toLowerCase()}
+                Exibindo <strong>{from}</strong> a <strong>{to}</strong> de <strong>{total}</strong>{' '}
+                {LABEL_ASSOCIADOS.toLowerCase()}
               </p>
               <div className="flex items-center gap-2">
                 <button
@@ -907,12 +995,338 @@ const Medicos = () => {
           document.body
         )}
 
-      <MedicoCadastroDadosModal
-        medicoId={selectedMedico?.id ?? ''}
-        medicoLabel={selectedLabel}
-        open={dadosModalOpen && !!selectedMedico}
-        onClose={() => setDadosModalOpen(false)}
-      />
+      {dadosModalOpen &&
+        selectedMedico &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-50 bg-black/40 overflow-y-auto sm:overflow-hidden flex items-start sm:items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dados-profissional-modal-title"
+            onClick={() => setDadosModalOpen(false)}
+          >
+            <div
+              className="card w-full sm:max-w-3xl border border-coop-200/70 shadow-2xl overflow-hidden flex flex-col rounded-none sm:rounded-2xl h-[100svh] sm:h-auto sm:max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex-none bg-white/95 backdrop-blur-sm border-b border-coop-100 px-4 sm:px-5 py-4 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 id="dados-profissional-modal-title" className="text-base font-bold text-coop-900 font-display">
+                    Dados do profissional
+                  </h3>
+                  <p className="text-xs text-coop-600 font-serif truncate">{selectedLabel}</p>
+                </div>
+                <button
+                  type="button"
+                  className="btn text-sm border border-coop-300 bg-white text-coop-800 shrink-0"
+                  onClick={() => setDadosModalOpen(false)}
+                >
+                  Fechar
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-5">
+                {loadingDetalhe ? (
+                  <p className="text-sm text-coop-600 font-serif">A carregar dados completos…</p>
+                ) : erroDetalhe || !detalhe ? (
+                  <p className="text-sm text-red-700 font-serif">Não foi possível carregar os dados deste profissional.</p>
+                ) : (
+                  <>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Identificação
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <DadoProfissional label="Nome completo" value={textoOuTraco(detalhe.nomeCompleto)} />
+                        <DadoProfissional label="Status na plataforma" value={detalhe.ativo ? 'Ativo' : 'Inativo'} />
+                        <DadoProfissional label="Status do cadastro" value={statusCadastroLabel(detalhe.statusCadastro)} />
+                        <DadoProfissional label="Profissão" value={textoOuTraco(detalhe.profissao)} />
+                        <DadoProfissional
+                          label="Registro (CRM / conselho)"
+                          value={detalhe.crm ? formatCRM(detalhe.crm) : '—'}
+                        />
+                        <DadoProfissional label="CPF" value={detalhe.cpf ? formatCPF(detalhe.cpf) : '—'} />
+                        <DadoProfissional
+                          label="Vínculo"
+                          value={detalhe.vinculo?.trim() ? fixMojibake(detalhe.vinculo) : 'Associado'}
+                        />
+                        <div className="sm:col-span-2">
+                          <DadoProfissional
+                            label="Especialidades"
+                            value={
+                              (detalhe.especialidades?.length ?? 0) > 0
+                                ? fixMojibake(detalhe.especialidades.join(', '))
+                                : '—'
+                            }
+                          />
+                        </div>
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Contato
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <DadoProfissional label="E-mail" value={textoOuTraco(detalhe.email)} />
+                        <DadoProfissional label="Telefone" value={textoOuTraco(detalhe.telefone)} />
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Residência
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <DadoProfissional label="Estado civil" value={textoOuTraco(detalhe.estadoCivil)} />
+                        <div className="sm:col-span-2">
+                          <DadoProfissional
+                            label="Endereço residencial"
+                            value={textoOuTraco(detalhe.enderecoResidencial)}
+                          />
+                        </div>
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Dados bancários
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="sm:col-span-2">
+                          <DadoProfissional label="Dados bancários" value={textoOuTraco(detalhe.dadosBancarios)} />
+                        </div>
+                        <DadoProfissional label="Chave PIX" value={textoOuTraco(detalhe.chavePix)} />
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Equipes e subgrupos
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <DadoProfissional
+                          label="Equipes"
+                          value={
+                            (detalhe.equipes?.length ?? 0) > 0
+                              ? detalhe.equipes!
+                                  .map((e) => {
+                                    const sg = e.subgrupo?.nome ? ` (${fixMojibake(e.subgrupo.nome)})` : '';
+                                    return `${fixMojibake(e.nome)}${sg}`;
+                                  })
+                                  .join(' · ')
+                              : '—'
+                          }
+                        />
+                        <DadoProfissional
+                          label="Subgrupos"
+                          value={
+                            (detalhe.subgrupos?.length ?? 0) > 0
+                              ? detalhe.subgrupos.map((s) => fixMojibake(s.nome)).join(' · ')
+                              : '—'
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Cadastro e convite
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <DadoProfissional
+                          label="Termos aceitos em"
+                          value={
+                            detalhe.termosCadastroAceitosEm
+                              ? new Date(detalhe.termosCadastroAceitosEm).toLocaleString('pt-BR')
+                              : '—'
+                          }
+                        />
+                        <DadoProfissional
+                          label="Versão dos termos"
+                          value={textoOuTraco(detalhe.termosCadastroVersao)}
+                        />
+                        <DadoProfissional
+                          label="Convite aceito em"
+                          value={
+                            detalhe.inviteAcceptedAt
+                              ? new Date(detalhe.inviteAcceptedAt).toLocaleString('pt-BR')
+                              : '—'
+                          }
+                        />
+                        <DadoProfissional
+                          label="Cadastrado em"
+                          value={
+                            detalhe.createdAt ? new Date(detalhe.createdAt).toLocaleString('pt-BR') : '—'
+                          }
+                        />
+                        <DadoProfissional
+                          label="Atualizado em"
+                          value={
+                            detalhe.updatedAt ? new Date(detalhe.updatedAt).toLocaleString('pt-BR') : '—'
+                          }
+                        />
+                      </div>
+                    </section>
+                    <section>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-coop-700 font-display mb-2">
+                        Documentos de perfil
+                      </h4>
+                      {(detalhe.documentos?.length ?? 0) === 0 ? (
+                        <p className="text-sm text-coop-600 font-serif">Nenhum documento de perfil enviado.</p>
+                      ) : (
+                        <ul className="space-y-2">
+                          {detalhe.documentos.map((doc) => (
+                            <li
+                              key={doc.id}
+                              className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-coop-100 bg-coop-50/40 px-3 py-2.5"
+                            >
+                              <div className="min-w-0">
+                                <p className="text-sm font-medium text-coop-900">
+                                  {DOCUMENTO_LABEL_BY_TIPO[doc.tipo] || doc.tipo}
+                                </p>
+                                <p className="text-xs text-coop-600 truncate">
+                                  {doc.nomeArquivo} · {formatBytes(doc.tamanhoBytes)} ·{' '}
+                                  {doc.updatedAt ? new Date(doc.updatedAt).toLocaleString('pt-BR') : '—'}
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                className="btn btn-secondary text-sm shrink-0"
+                                onClick={() => adminService.openMedicoDocumentoPerfil(detalhe.id, doc.id)}
+                              >
+                                Abrir
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </section>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+
+      {pontoModalOpen &&
+        selectedMedico &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-50 bg-black/40 overflow-y-auto sm:overflow-hidden flex items-start sm:items-center justify-center"
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setPontoModalOpen(false)}
+          >
+            <div
+              className="card w-full sm:max-w-5xl border border-coop-200/70 shadow-2xl overflow-hidden flex flex-col rounded-none sm:rounded-2xl h-[100svh] sm:h-auto sm:max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex-none bg-white/95 backdrop-blur-sm border-b border-coop-100 px-4 sm:px-5 py-4 flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="text-base font-bold text-coop-900 font-display">Histórico de pontos</h3>
+                  <p className="text-xs text-coop-600 font-serif truncate">{selectedLabel}</p>
+                </div>
+                <button
+                  type="button"
+                  className="btn text-sm border border-coop-300 bg-white text-coop-800"
+                  onClick={() => setPontoModalOpen(false)}
+                >
+                  Fechar
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 sm:px-5 pb-5">
+                <div className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-coop-200/60 bg-coop-50/50 p-3">
+                  <div className="min-w-[160px]">
+                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display mb-1">Início</label>
+                    <input type="date" className="input w-full" value={pontoInicio} onChange={(e) => setPontoInicio(e.target.value)} />
+                  </div>
+                  <div className="min-w-[160px]">
+                    <label className="block text-[10px] font-semibold uppercase tracking-wider text-coop-600 font-display mb-1">Fim</label>
+                    <input type="date" className="input w-full" value={pontoFim} onChange={(e) => setPontoFim(e.target.value)} />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-secondary text-sm"
+                    onClick={() => {
+                      setPontoInicio('');
+                      setPontoFim('');
+                    }}
+                  >
+                    Limpar
+                  </button>
+                </div>
+
+                <div className="mt-4">
+                  {loadingPontos ? (
+                    <p className="text-sm text-coop-700">Carregando registros...</p>
+                  ) : registrosPonto.length === 0 ? (
+                    <p className="text-sm text-coop-700">Nenhum registro encontrado.</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full text-sm">
+                        <thead>
+                          <tr className="text-left text-coop-700 border-b">
+                            <th className="py-2 pr-4">Check-in</th>
+                            <th className="py-2 pr-4">Check-out</th>
+                            <th className="py-2 pr-4">Duração</th>
+                            <th className="py-2 pr-4">Escala</th>
+                            <th className="py-2 pr-4">Origem</th>
+                            <th className="py-2 pr-4">Foto</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {registrosPonto.map((r) => {
+                            const checkIn = r.checkInAt ? new Date(r.checkInAt).toLocaleString('pt-BR') : '—';
+                            const checkOut = r.checkOutAt ? new Date(r.checkOutAt).toLocaleString('pt-BR') : '—';
+                            const dur = r.duracaoMinutos != null ? `${r.duracaoMinutos} min` : '—';
+                            const escalaNome = r.escala?.nome ? fixMojibake(r.escala.nome) : r.escalaId ? 'Escala' : '—';
+                          const hasFoto = typeof r.fotoCheckinCaminho === 'string' && r.fotoCheckinCaminho.trim().length > 0;
+                            return (
+                              <tr key={r.id} className="border-b last:border-b-0">
+                                <td className="py-2 pr-4 text-coop-900">{checkIn}</td>
+                                <td className="py-2 pr-4 text-coop-900">{checkOut}</td>
+                                <td className="py-2 pr-4 text-coop-900">{dur}</td>
+                                <td className="py-2 pr-4 text-coop-900">{escalaNome}</td>
+                                <td className="py-2 pr-4 text-coop-900">{r.origem ?? '—'}</td>
+                                <td className="py-2 pr-4">
+                                  {hasFoto ? (
+                                    <button
+                                      type="button"
+                                      className="btn-sm btn-primary"
+                                    onClick={async () => {
+                                      try {
+                                        await adminService.openRegistroPontoFotoCheckin(r.id);
+                                      } catch (err: any) {
+                                        const status = err?.response?.status;
+                                        const msg = err?.response?.data?.error;
+                                        notify({
+                                          kind: 'warning',
+                                          title: 'Foto indisponível',
+                                          message:
+                                            status === 404
+                                              ? 'Este registro não possui foto (ou o arquivo não está mais disponível no servidor).'
+                                              : (typeof msg === 'string' && msg.trim()) || 'Não foi possível abrir a foto.',
+                                          source: 'admin',
+                                        });
+                                      }
+                                    }}
+                                    >
+                                      Ver
+                                    </button>
+                                  ) : (
+                                    <span className="text-xs text-coop-600">—</span>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

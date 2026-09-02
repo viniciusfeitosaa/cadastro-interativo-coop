@@ -37,6 +37,7 @@ import AcessoNegado from './pages/AcessoNegado';
 import Vagas from './pages/Vagas';
 import Avaliacao from './pages/Avaliacao';
 import ModuloEscalaMaster from './pages/ModuloEscalaMaster';
+import PerfisEquipe from './pages/PerfisEquipe';
 
 const PageLoadingScreen = () => (
   <div className="min-h-screen flex items-center justify-center bg-coop-50">
@@ -174,6 +175,14 @@ function AppRoutes() {
         <Route
           path="/perfil"
           element={<Perfil />}
+        />
+        <Route
+          path="/perfis-equipe"
+          element={
+            <MasterOnly>
+              <PerfisEquipe />
+            </MasterOnly>
+          }
         />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

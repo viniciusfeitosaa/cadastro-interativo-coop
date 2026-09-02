@@ -30,6 +30,23 @@ export function resolveStoredFileToAbsolute(caminhoStored: string): string {
   return assertPathInsideUploads(full);
 }
 
+/**
+ * Grava no banco caminho relativo a `process.cwd()` (ex.: `uploads/medicos/x.pdf`),
+ * para sobreviver a mudanças de layout e bater com `resolveStoredFileToAbsolute`.
+ */
+export function toStoredUploadPath(absoluteOrRelativePath: string): string {
+  const normalized = absoluteOrRelativePath.replace(/\\/g, '/').trim();
+  if (!normalized) {
+    throw { statusCode: 400, message: 'Caminho de arquivo inválido' };
+  }
+  const abs = path.isAbsolute(normalized)
+    ? path.resolve(normalized)
+    : path.resolve(process.cwd(), normalized);
+  assertPathInsideUploads(abs);
+  const rel = path.relative(process.cwd(), abs).split(path.sep).join('/');
+  return rel.startsWith('uploads/') ? rel : path.posix.join('uploads', rel);
+}
+
 export function fileExistsSafe(absolutePath: string): boolean {
   return fs.existsSync(absolutePath);
 }

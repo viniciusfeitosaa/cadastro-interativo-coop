@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyAccessToken } from '../utils/jwt.util';
 import { ModuloSistema, UserRole } from '@prisma/client';
-import { possuiAcessoModuloService } from '../services/acesso-modulo.service';
+import {
+  getNiveisModuloUsuarioService,
+  possuiAcessoModuloUsuarioService,
+  possuiEscritaModuloUsuarioService,
+} from '../services/acesso-modulo.service';
 
 // Estender tipo Request para incluir user
 declare global {
@@ -75,7 +79,12 @@ export const requireModuleAccess = (modulo: ModuloSistema) => {
       });
     }
 
-    const allowed = await possuiAcessoModuloService(req.user.tenantId, req.user.role, modulo);
+    const allowed = await possuiAcessoModuloUsuarioService(
+      req.user.tenantId,
+      req.user.id,
+      req.user.role,
+      modulo
+    );
     if (!allowed) {
       return res.status(403).json({
         success: false,
@@ -97,12 +106,68 @@ export const requireAnyModuleAccess = (modulos: ModuloSistema[]) => {
     }
 
     for (const modulo of modulos) {
-      const allowed = await possuiAcessoModuloService(req.user.tenantId, req.user.role, modulo);
+      const allowed = await possuiAcessoModuloUsuarioService(
+        req.user.tenantId,
+        req.user.id,
+        req.user.role,
+        modulo
+      );
       if (allowed) return next();
     }
     return res.status(403).json({
       success: false,
       error: 'Sem acesso ao módulo solicitado',
     });
+  };
+};
+
+export const requireAdminPleno = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Não autenticado',
+      });
+    }
+
+    const niveis = await getNiveisModuloUsuarioService(
+      req.user.tenantId,
+      req.user.id,
+      req.user.role
+    );
+    if (!niveis.isAdminPleno) {
+      return res.status(403).json({
+        success: false,
+        error: 'Apenas administrador pleno pode gerenciar perfis e equipe',
+      });
+    }
+
+    return next();
+  };
+};
+
+export const requireModuleWrite = (modulo: ModuloSistema) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Não autenticado',
+      });
+    }
+
+    const ok = await possuiEscritaModuloUsuarioService(
+      req.user.tenantId,
+      req.user.id,
+      req.user.role,
+      modulo
+    );
+    if (!ok) {
+      return res.status(403).json({
+        success: false,
+        error: 'Sem permissão de edição neste módulo',
+      });
+    }
+
+    return next();
   };
 };

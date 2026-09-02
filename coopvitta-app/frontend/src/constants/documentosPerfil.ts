@@ -60,3 +60,10 @@ export const DOCUMENTO_TIPO_BY_FIELD: Record<DocumentoPerfilField, string> = {
   rgCpfOuCnh: 'RG_CPF_OU_CNH',
   tituloEspecialista: 'TITULO_ESPECIALISTA',
 };
+
+export const DOCUMENTO_LABEL_BY_TIPO: Record<string, string> = Object.fromEntries(
+  (Object.keys(DOCUMENTO_TIPO_BY_FIELD) as DocumentoPerfilField[]).map((field) => [
+    DOCUMENTO_TIPO_BY_FIELD[field],
+    DOCUMENTO_LABEL_BY_FIELD[field],
+  ])
+);

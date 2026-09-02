@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
-import { authService } from '../../services/auth.service';
+import { authService, hasAccess as hasAccessPerm, isAdminPleno } from '../../services/auth.service';
 import { medicoService } from '../../services/medico.service';
 import { pontoService } from '../../services/ponto.service';
 import { ModuloSistema } from '../../constants/modulos';
@@ -129,11 +129,12 @@ const AppShell = () => {
     enabled: !!user,
   });
 
-  const modulosMap = modulosAcessoResp?.data?.map || ({} as Record<ModuloSistema, boolean>);
+  const pleno = isAdminPleno(modulosAcessoResp?.data);
   /** Cadastros pendentes / Avaliação: só Master (independente do mapa da API). */
   const hasAccess = (modulo: ModuloSistema) => {
     if (modulo === 'AVALIACAO' && !isMaster) return false;
-    return modulosMap[modulo] ?? true;
+    if (!modulosAcessoResp?.data) return true;
+    return hasAccessPerm(modulosAcessoResp.data, modulo);
   };
 
   /** Evita 2× GET /ponto/meu-dia: o dashboard já inclui meuDia (mesma query key que a página Dashboard). */
@@ -166,10 +167,38 @@ const AppShell = () => {
   const menuGroupsBase: MenuGroup[] = isMaster
     ? [
         {
+          title: 'Escalas',
+          items: [
+            { to: '/escalas', label: 'Escalas' },
+            { to: '/subgrupos-equipes', label: 'Subgrupos e Equipes' },
+          ],
+        },
+        {
           title: 'Corpo Clínico',
           items: [
             { to: '/medicos', label: LABEL_ASSOCIADOS },
             { to: '/avaliacao', label: 'Avaliação' },
+          ],
+        },
+        {
+          title: 'Relatórios',
+          items: [
+            { to: '/relatorios', label: 'Relatório financeiro' },
+            { to: '/relatorios-ponto-eletronico', label: 'Relatórios de ponto eletrônico' },
+            // Oculto de propósito: rota `/relatorios-procedimentos` permanece em App.tsx
+          ],
+        },
+        {
+          title: 'Administração',
+          items: [
+            { to: '/contratos-ativos', label: 'Contratos Ativos' },
+            { to: '/valores-plantao', label: 'Valores Hora/Plantão' },
+            { to: '/valores-ponto', label: 'Horas/Valor Ponto Eletrônico' },
+            // Ocultos de propósito (rotas permanecem em App.tsx):
+            // `/modulo-escala-master` — redundante com Valores Plantão (filtro somente_escala)
+            // `/envio-documentos` — fluxo admin de push; DocuSeal/perfil cobrem o uso atual
+            ...(pleno ? [{ to: '/perfis-equipe', label: 'Perfis e equipe' } as MenuItem] : []),
+            { to: '/perfil', label: 'Minha Conta' },
           ],
         },
       ]
@@ -212,12 +241,16 @@ const AppShell = () => {
     '/vagas': 'VAGAS',
     '/avaliacao': 'AVALIACAO',
     '/modulo-escala-master': 'CONFIGURACOES',
+    '/perfis-equipe': 'CONFIGURACOES',
   };
 
   const menuGroups: MenuGroup[] = menuGroupsBase
     .map((group) => ({
       ...group,
-      items: group.items.filter((item) => hasAccess(moduloByRoute[item.to])),
+      items: group.items.filter((item) => {
+        if (item.to === '/perfis-equipe') return pleno;
+        return hasAccess(moduloByRoute[item.to]);
+      }),
     }))
     .filter((group) => group.items.length > 0);
 

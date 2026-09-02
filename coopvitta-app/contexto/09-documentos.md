@@ -1,7 +1,7 @@
 # 09 — Documentos
 
 **Status:** ✅ Implementado  
-**Última atualização:** 2026-05-28
+**Última atualização:** 2026-08-26
 
 ## Tipos
 
@@ -33,9 +33,15 @@ Enum `DocumentoPerfilTipo` (CRM, diploma, RQE, PIX, etc.) — modelo `MedicoDocu
 
 ## Frontend
 
-- `EnvioDocumentos.tsx` — envio (gestão)
-- `MeusDocumentos.tsx` — médico visualiza/aceita
+- `EnvioDocumentos.tsx` — envio (gestão); **oculto do menu** desde 2026-08-26 (rota `/envio-documentos` mantida)
+- `MeusDocumentos.tsx` — médico visualiza/aceita (`/documentos`)
+- DocuSeal na ficha de Médicos quando configurado
 
 ## Pendências
 
 - [ ] Atualizar este doc quando novos tipos de documento forem adicionados ao enum
+
+## Changelog
+
+### 2026-08-26 — Menu sem Envio de Documentos
+- Item removido do `AppShell`; fluxo admin continua acessível por URL direta se necessário

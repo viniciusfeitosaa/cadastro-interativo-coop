@@ -1,8 +1,9 @@
-import { useMemo, useState, useEffect } from 'react';
+﻿import { useMemo, useState, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useMasterEscopo } from '../context/MasterEscopoContext';
+import { useModuloNivel } from '../hooks/useModuloNivel';
 import { adminService, type AdminMedico } from '../services/admin.service';
 import { notify } from '../lib/notificationEmitter';
 
@@ -11,6 +12,7 @@ const SubgruposEquipes = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
   const isMaster = user?.role === 'MASTER';
+  const { canEdit: podeEditarEscalas } = useModuloNivel('ESCALAS');
   const {
     contratoId: selectedContratoId,
     subgrupoId: selectedSubgrupoId,
@@ -148,7 +150,15 @@ const SubgruposEquipes = () => {
   };
   const invalidateEquipes = async () => {
     await queryClient.invalidateQueries({ queryKey: ['admin', 'equipes'] });
-    if (selectedEquipeId) queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'medicos'] });
+    if (selectedEquipeId) {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'medicos'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'escalas'] });
+    }
+  };
+  const invalidateEscalas = () => queryClient.invalidateQueries({ queryKey: ['admin', 'escalas'] });
+  const invalidateEscalasDaEquipe = async () => {
+    await invalidateEscalas();
+    await invalidateEquipes();
   };
   const selectedSubgrupo = useMemo(() => subgrupos.find((s) => s.id === selectedSubgrupoId), [subgrupos, selectedSubgrupoId]);
 
@@ -208,11 +218,19 @@ const SubgruposEquipes = () => {
       setLoadingAction(false);
     }
   };
-  const invalidateEscalas = () => queryClient.invalidateQueries({ queryKey: ['admin', 'escalas'] });
   const criarEscala = async (e: React.FormEvent) => {
     e.preventDefault();
     const nome = novaEscalaNome.trim();
     if (!nome || !contratoEscalaDoSubgrupo || !selectedSubgrupoId || !selectedEquipeId) return;
+    if (equipeEscalas.length > 0) {
+      notify({
+        kind: 'error',
+        title: 'Equipe já tem escala',
+        message: 'Cada equipe pode ter apenas uma escala. Exclua a atual para criar outra.',
+        source: 'escala',
+      });
+      return;
+    }
     setLoadingAction(true);
     try {
       const ano = new Date().getFullYear();
@@ -231,9 +249,8 @@ const SubgruposEquipes = () => {
         await adminService.addEquipeToEscala(created.data.id, selectedEquipeId);
         setNovaEscalaNome('');
       }
-      await invalidateEscalas();
-      if (selectedEquipeId) queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'escalas'] });
-      notify({ kind: 'success', title: 'Escala criada', message: 'Escala criada e vinculada automaticamente.', source: 'escala' });
+      await invalidateEscalasDaEquipe();
+      notify({ kind: 'success', title: 'Escala criada', message: 'Escala criada e vinculada à equipe.', source: 'escala' });
     } catch (err: any) {
       notify({ kind: 'error', title: 'Erro ao criar escala', message: err.response?.data?.error || err.message || 'Tente novamente.', source: 'escala' });
     } finally {
@@ -331,8 +348,7 @@ const SubgruposEquipes = () => {
     setLoadingAction(true);
     try {
       await adminService.updateEscala(editEscala.id, { nome });
-      await invalidateEscalas();
-      if (selectedEquipeId) queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'escalas'] });
+      await invalidateEscalasDaEquipe();
       closeEditEscala();
     } finally {
       setLoadingAction(false);
@@ -357,8 +373,7 @@ const SubgruposEquipes = () => {
           await invalidateEquipes();
         } else {
           await adminService.deleteEscala(id);
-          await invalidateEscalas();
-          if (selectedEquipeId) queryClient.invalidateQueries({ queryKey: ['admin', 'equipes', selectedEquipeId, 'escalas'] });
+          await invalidateEscalasDaEquipe();
         }
       }
       setConfirmExcluir(null);
@@ -371,7 +386,7 @@ const SubgruposEquipes = () => {
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Somente o administrador pode gerenciar subgrupos e equipes.</p>
+        <p className="text-gray-600">Somente o perfil Master pode gerenciar subgrupos e equipes.</p>
       </div>
     );
   }
@@ -405,13 +420,17 @@ const SubgruposEquipes = () => {
         </div>
         {selectedContratoId && (
           <>
-            <form onSubmit={criarSubgrupo} className="flex flex-wrap items-end gap-2 mb-3">
-              <div className="min-w-[200px]">
-                <label className="block text-sm font-medium text-coop-800 mb-1">Novo subgrupo</label>
-                <input className="input w-full" placeholder="Nome do subgrupo" value={subgrupoNome} onChange={(e) => setSubgrupoNome(e.target.value)} />
-              </div>
-              <button type="submit" className="btn btn-primary" disabled={loadingAction}>Criar subgrupo</button>
-            </form>
+            {podeEditarEscalas ? (
+              <form onSubmit={criarSubgrupo} className="flex flex-wrap items-end gap-2 mb-3">
+                <div className="min-w-[200px]">
+                  <label className="block text-sm font-medium text-coop-800 mb-1">Novo subgrupo</label>
+                  <input className="input w-full" placeholder="Nome do subgrupo" value={subgrupoNome} onChange={(e) => setSubgrupoNome(e.target.value)} />
+                </div>
+                <button type="submit" className="btn btn-primary" disabled={loadingAction}>Criar subgrupo</button>
+              </form>
+            ) : (
+              <p className="text-sm text-coop-600 font-serif mb-3">Somente leitura — sem permissão para criar subgrupos.</p>
+            )}
             <div className="space-y-2 max-h-48 overflow-auto">
               {subgruposDoContrato.length === 0 ? (
                 <p className="text-sm text-gray-500">Nenhum subgrupo neste contrato ainda.</p>
@@ -437,7 +456,9 @@ const SubgruposEquipes = () => {
                               : ''}
                       </p>
                     </div>
-                    <button type="button" className="btn btn-secondary shrink-0" onClick={(e) => openConfirmExcluirSubgrupo(e, s.id, s.nome)} disabled={loadingAction}>Excluir</button>
+                    {podeEditarEscalas && (
+                      <button type="button" className="btn btn-secondary shrink-0" onClick={(e) => openConfirmExcluirSubgrupo(e, s.id, s.nome)} disabled={loadingAction}>Excluir</button>
+                    )}
                   </div>
                 ))
               )}
@@ -456,7 +477,7 @@ const SubgruposEquipes = () => {
                       name="estilo-producao-subgrupo"
                       checked={estiloProducaoSelecionado === 'ESCALA_E_PONTO'}
                       onChange={() => setProducaoSubgrupoDraft({ usaEscala: true, usaPonto: true })}
-                      disabled={loadingAction}
+                      disabled={loadingAction || !podeEditarEscalas}
                     />
                     <span>
                       <span className="font-semibold">Escala + ponto</span>
@@ -469,7 +490,7 @@ const SubgruposEquipes = () => {
                       name="estilo-producao-subgrupo"
                       checked={estiloProducaoSelecionado === 'SOMENTE_ESCALA'}
                       onChange={() => setProducaoSubgrupoDraft({ usaEscala: true, usaPonto: false })}
-                      disabled={loadingAction}
+                      disabled={loadingAction || !podeEditarEscalas}
                     />
                     <span>
                       <span className="font-semibold">Somente escala</span>
@@ -482,7 +503,7 @@ const SubgruposEquipes = () => {
                       name="estilo-producao-subgrupo"
                       checked={estiloProducaoSelecionado === 'SOMENTE_PONTO'}
                       onChange={() => setProducaoSubgrupoDraft({ usaEscala: false, usaPonto: true })}
-                      disabled={loadingAction}
+                      disabled={loadingAction || !podeEditarEscalas}
                     />
                     <span>
                       <span className="font-semibold">Somente ponto</span>
@@ -490,6 +511,7 @@ const SubgruposEquipes = () => {
                     </span>
                   </label>
                 </div>
+                {podeEditarEscalas && (
                 <button
                   type="button"
                   className="btn btn-primary text-sm"
@@ -523,6 +545,7 @@ const SubgruposEquipes = () => {
                 >
                   Salvar estilo
                 </button>
+                )}
               </div>
             )}
           </>
@@ -530,46 +553,76 @@ const SubgruposEquipes = () => {
       </div>
 
       {/* 2. Equipes do subgrupo */}
-      <div className="card">
-        <h3 className="text-lg font-bold text-coop-900 mb-2">2. Equipes do subgrupo</h3>
+      <div className="card overflow-hidden p-0">
+        <h3 className="sticky top-0 px-4 py-3 bg-white border-b border-coop-100 text-lg font-bold text-coop-800 shadow-sm z-10">
+          2. Equipes do subgrupo
+        </h3>
+        <div className="p-4">
         {!selectedSubgrupoId ? (
-          <p className="text-sm text-gray-600">Selecione um contrato e um subgrupo acima para criar equipes já vinculadas a esse subgrupo.</p>
+          <p className="text-sm text-coop-700 font-serif">Selecione um contrato e um subgrupo acima para criar equipes já vinculadas a esse subgrupo.</p>
         ) : (
           <>
-            <p className="text-sm text-gray-600 mb-3">Subgrupo selecionado: <strong>{selectedSubgrupo?.nome}</strong>. Crie equipes já vinculadas a ele.</p>
-            <form onSubmit={criarEquipe} className="flex flex-wrap items-end gap-2 mb-3">
-              <div className="min-w-[200px]">
-                <label className="block text-sm font-medium text-coop-800 mb-1">Nova equipe</label>
-                <input className="input w-full" placeholder="Nome da equipe" value={equipeNome} onChange={(e) => setEquipeNome(e.target.value)} />
-              </div>
-              <button type="submit" className="btn btn-primary" disabled={loadingAction}>Criar equipe</button>
-            </form>
-            <div className="space-y-2 max-h-48 overflow-auto">
+            <p className="text-sm text-coop-600 mb-3 font-serif">Subgrupo selecionado: <strong className="text-coop-900">{selectedSubgrupo?.nome}</strong>. {podeEditarEscalas ? 'Crie equipes já vinculadas a ele.' : 'Visualização somente leitura.'}</p>
+            {podeEditarEscalas ? (
+              <form onSubmit={criarEquipe} className="flex flex-wrap items-end gap-2 mb-4">
+                <div className="min-w-[200px] flex-1">
+                  <label className="block text-sm font-medium text-coop-800 mb-1">Nova equipe</label>
+                  <input className="input w-full" placeholder="Nome da equipe" value={equipeNome} onChange={(e) => setEquipeNome(e.target.value)} />
+                </div>
+                <button type="submit" className="btn btn-primary" disabled={loadingAction}>Criar equipe</button>
+              </form>
+            ) : null}
+            <div className="rounded-xl border border-coop-100 overflow-hidden bg-white mb-4">
+              <h4 className="px-4 py-2.5 bg-coop-50/80 border-b border-coop-100 text-sm font-bold text-coop-800">
+                Equipes de {selectedSubgrupo?.nome}
+              </h4>
+              <div className="flex flex-col gap-0 max-h-48 overflow-y-auto p-2">
               {equipes.length === 0 ? (
-                <p className="text-sm text-gray-500">Nenhuma equipe neste subgrupo ainda.</p>
+                <p className="text-sm text-coop-600 px-2 py-3 font-serif">Nenhuma equipe neste subgrupo ainda.</p>
               ) : (
-                equipes.map((equipe: { id: string; nome: string; _count?: { equipeMedicos: number; escalaEquipes: number } }) => (
+                equipes.map((equipe: { id: string; nome: string; _count?: { equipeMedicos: number; escalaEquipes: number } }) => {
+                  const isSelected = selectedEquipeId === equipe.id;
+                  const medicosCount = isSelected ? equipeMedicos.length : (equipe._count?.equipeMedicos ?? 0);
+                  const escalasCount = isSelected
+                    ? (equipeEscalasResp != null ? equipeEscalas.length : (equipe._count?.escalaEquipes ?? 0))
+                    : (equipe._count?.escalaEquipes ?? 0);
+                  return (
                   <div
                     key={equipe.id}
-                    role="button"
-                    tabIndex={0}
-                    className={`w-full text-left border rounded-lg p-2 flex items-center justify-between gap-2 ${selectedEquipeId === equipe.id ? 'border-coop-900 bg-coop-50' : 'border-coop-200'} cursor-pointer hover:bg-coop-50/50`}
-                    onClick={() => setSelectedEquipeId(equipe.id)}
+                    className={`flex items-stretch gap-2 p-3 rounded-lg w-full transition border-b border-coop-100 last:border-b-0 ${isSelected ? 'bg-coop-100 ring-2 ring-coop-500/30' : 'hover:bg-coop-50/80'}`}
                   >
-                    <div className="min-w-0">
-                      <p className="font-semibold text-coop-900">{equipe.nome}</p>
-                      <p className="text-xs text-gray-600">Associados: {equipe._count?.equipeMedicos ?? 0} | Escalas: {equipe._count?.escalaEquipes ?? 0}</p>
-                    </div>
-                    <button type="button" className="btn btn-secondary shrink-0" onClick={(e) => openConfirmExcluirEquipe(e, equipe.id, equipe.nome)} disabled={loadingAction}>Excluir</button>
+                    <button
+                      type="button"
+                      className="flex items-stretch gap-2 flex-1 min-w-0 text-left"
+                      onClick={() => setSelectedEquipeId(equipe.id)}
+                    >
+                      <div className="w-1.5 rounded-md bg-coop-500 flex-shrink-0 self-stretch" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-coop-900 truncate">{equipe.nome}</p>
+                        <p className="text-sm text-coop-600">{medicosCount} médico(s) · {escalasCount} escala(s)</p>
+                      </div>
+                    </button>
+                    {podeEditarEscalas && (
+                      <button type="button" className="btn btn-secondary shrink-0 self-center text-xs" onClick={(e) => openConfirmExcluirEquipe(e, equipe.id, equipe.nome)} disabled={loadingAction}>Excluir</button>
+                    )}
                   </div>
-                ))
+                  );
+                })
               )}
+              </div>
             </div>
             {selectedEquipeId && (
-              <div className="mt-4 pt-4 border-t border-coop-100">
-                <p className="text-sm font-medium text-coop-800 mb-3">Associados da equipe</p>
+              <div className="rounded-xl border border-coop-100 overflow-hidden bg-white">
+                <h4 className="px-4 py-2.5 bg-coop-50/80 border-b border-coop-100 text-sm font-bold text-coop-800">
+                  Associados da equipe
+                </h4>
+                <div className="p-4">
                 <div className="mb-4 pb-4 border-b border-coop-100">
                   <p className="text-xs font-semibold uppercase tracking-wide text-coop-600 mb-2">Adicionar profissionais</p>
+                  {!podeEditarEscalas ? (
+                    <p className="text-sm text-coop-600 font-serif">Somente leitura — sem permissão para alterar membros.</p>
+                  ) : (
+                  <>
                   <input
                     type="text"
                     className="input w-full py-2 text-sm mb-2"
@@ -633,10 +686,12 @@ const SubgruposEquipes = () => {
                       </button>
                     </>
                   )}
+                  </>
+                  )}
                 </div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-coop-600 mb-2">Na equipe</p>
                 {equipeMedicos.length === 0 ? (
-                  <p className="text-sm text-gray-500">Nenhum profissional vinculado a esta equipe.</p>
+                  <p className="text-sm text-coop-600 font-serif">Nenhum profissional vinculado a esta equipe.</p>
                 ) : (
                   <>
                     <label htmlFor="busca-membros-na-equipe" className="sr-only">
@@ -654,27 +709,30 @@ const SubgruposEquipes = () => {
                       spellCheck={false}
                     />
                     {equipeMedicosFiltradosNaLista.length === 0 ? (
-                      <p className="text-sm text-gray-500">Nenhum resultado para a pesquisa.</p>
+                      <p className="text-sm text-coop-600 font-serif">Nenhum resultado para a pesquisa.</p>
                     ) : (
-                      <ul className="space-y-2 max-h-[min(50vh,360px)] overflow-y-auto pr-0.5">
+                      <ul className="flex flex-col gap-0 max-h-[min(50vh,360px)] overflow-y-auto">
                         {equipeMedicosFiltradosNaLista.map(
                           (a: { id: string; medicoId: string; medico?: { nomeCompleto: string; crm?: string | null } }) => (
                             <li
                               key={a.id}
-                              className="flex items-center justify-between gap-2 border border-coop-200 rounded-lg px-3 py-2 bg-white"
+                              className="flex items-stretch gap-2 p-3 rounded-lg border-b border-coop-100 last:border-b-0 hover:bg-coop-50/80"
                             >
-                              <div className="min-w-0">
-                                <p className="font-medium text-coop-900 text-sm">{a.medico?.nomeCompleto ?? '—'}</p>
+                              <div className="w-1.5 rounded-md bg-coop-500 flex-shrink-0 self-stretch" />
+                              <div className="flex-1 min-w-0">
+                                <p className="font-bold text-coop-900 text-sm truncate">{a.medico?.nomeCompleto ?? '—'}</p>
                                 {a.medico?.crm ? <p className="text-xs text-coop-600">CRM: {a.medico.crm}</p> : null}
                               </div>
-                              <button
-                                type="button"
-                                className="btn btn-secondary text-sm shrink-0"
-                                disabled={membrosEquipeActionLoading}
-                                onClick={() => removerMedicoDaEquipe(a.medicoId)}
-                              >
-                                Remover
-                              </button>
+                              {podeEditarEscalas && (
+                                <button
+                                  type="button"
+                                  className="btn btn-secondary text-xs shrink-0 self-center"
+                                  disabled={membrosEquipeActionLoading}
+                                  onClick={() => removerMedicoDaEquipe(a.medicoId)}
+                                >
+                                  Remover
+                                </button>
+                              )}
                             </li>
                           )
                         )}
@@ -682,24 +740,36 @@ const SubgruposEquipes = () => {
                     )}
                   </>
                 )}
+                </div>
               </div>
             )}
           </>
         )}
+        </div>
       </div>
 
       {/* 3. Escala da equipe */}
-      <div className="card">
-        <h3 className="text-lg font-bold text-coop-900 mb-2">3. Escala da equipe</h3>
+      <div className="card overflow-hidden p-0">
+        <h3 className="sticky top-0 px-4 py-3 bg-white border-b border-coop-100 text-lg font-bold text-coop-800 shadow-sm z-10">
+          3. Escala da equipe
+        </h3>
+        <div className="p-4">
         {!selectedEquipeId || !contratoEscalaDoSubgrupo ? (
-          <p className="text-sm text-gray-600">Selecione uma equipe (cujo subgrupo tenha contrato com escala) acima para criar uma escala já vinculada a essa equipe e ao subgrupo.</p>
+          <p className="text-sm text-coop-700 font-serif">Selecione uma equipe (cujo subgrupo tenha contrato com escala) acima para criar uma escala já vinculada a essa equipe e ao subgrupo.</p>
         ) : (
           <>
-            <p className="text-sm text-gray-600 mb-3">Equipe selecionada: <strong>{equipes.find((e: { id: string; nome: string }) => e.id === selectedEquipeId)?.nome}</strong>. A nova escala será criada e já vinculada a esta equipe e ao subgrupo.</p>
-            {equipeEscalas.length === 0 && (
+            <p className="text-sm text-coop-600 mb-3 font-serif">
+              Equipe selecionada:{' '}
+              <strong className="text-coop-900">
+                {equipes.find((e: { id: string; nome: string }) => e.id === selectedEquipeId)?.nome}
+              </strong>
+              . Cada equipe tem no máximo uma escala — depois de criada, só editar ou excluir (ao excluir, pode criar outra).
+            </p>
+            {equipeEscalas.length === 0 ? (
+              podeEditarEscalas ? (
               <form onSubmit={criarEscala} className="flex flex-wrap items-end gap-2 mb-4">
-                <div className="min-w-[200px]">
-                  <label className="block text-sm font-medium text-coop-800 mb-1">Nova escala</label>
+                <div className="min-w-[200px] flex-1">
+                  <label className="block text-sm font-medium text-coop-800 mb-1">Escala da equipe</label>
                   <input
                     type="text"
                     className="input w-full"
@@ -710,42 +780,58 @@ const SubgruposEquipes = () => {
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={loadingAction}>Criar escala</button>
               </form>
-            )}
-            {equipeEscalas.length > 0 && (
-              <div>
-                <p className="text-sm font-medium text-coop-800 mb-2">Escalas desta equipe</p>
-                <ul className="space-y-1">
-                  {equipeEscalas.map((esc: { id: string; nome: string }) => (
-                    <li key={esc.id} className="flex items-center justify-between border border-coop-200 rounded-lg px-2 py-1.5">
-                      <span className="text-sm text-coop-900">{esc.nome}</span>
-                      <div className="flex items-center gap-3">
-                        <button
-                          type="button"
-                          className="text-sm text-coop-700 hover:underline font-medium"
-                          onClick={(e) => openEditEscala(e, esc.id, esc.nome)}
-                        >
-                          Editar
-                        </button>
-                        <button
-                          type="button"
-                          className="text-sm text-red-700 hover:underline font-medium"
-                          onClick={(e) => openConfirmExcluirEscala(e, esc.id, esc.nome)}
-                          disabled={loadingAction}
-                        >
-                          Excluir
-                        </button>
-                        <Link to="/escalas" state={{ escalaId: esc.id }} className="text-sm text-coop-600 hover:underline font-medium">Abrir na página Escalas</Link>
+              ) : (
+                <p className="text-sm text-coop-600 font-serif">Somente leitura — sem permissão para criar escala.</p>
+              )
+            ) : (
+              <div className="rounded-xl border border-coop-100 overflow-hidden bg-white">
+                <h4 className="px-4 py-2.5 bg-coop-50/80 border-b border-coop-100 text-sm font-bold text-coop-800">
+                  Escala desta equipe
+                </h4>
+                <div className="flex flex-col gap-0 p-2">
+                  {equipeEscalas.slice(0, 1).map((esc: { id: string; nome: string }) => (
+                    <div
+                      key={esc.id}
+                      className="flex items-stretch gap-2 p-3 rounded-lg w-full hover:bg-coop-50/80"
+                    >
+                      <div className="w-1.5 rounded-md bg-coop-500 flex-shrink-0 self-stretch" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-coop-900 truncate">{esc.nome}</p>
+                        <p className="text-sm text-coop-600">{selectedSubgrupo?.nome ?? 'Subgrupo'}</p>
                       </div>
-                    </li>
+                      <div className="flex items-center gap-2 shrink-0 self-center flex-wrap justify-end">
+                        {podeEditarEscalas && (
+                          <>
+                            <button
+                              type="button"
+                              className="text-sm text-coop-700 hover:underline font-medium"
+                              onClick={(e) => openEditEscala(e, esc.id, esc.nome)}
+                            >
+                              Editar
+                            </button>
+                            <button
+                              type="button"
+                              className="text-sm text-red-700 hover:underline font-medium"
+                              onClick={(e) => openConfirmExcluirEscala(e, esc.id, esc.nome)}
+                              disabled={loadingAction}
+                            >
+                              Excluir
+                            </button>
+                          </>
+                        )}
+                        <Link to="/escalas" state={{ escalaId: esc.id }} className="text-sm text-coop-600 hover:underline font-medium">Abrir</Link>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </>
         )}
+        </div>
       </div>
 
-      {confirmExcluir && (
+      {confirmExcluir && podeEditarEscalas && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={closeConfirmExcluir}>
           <div
             className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6"
@@ -770,7 +856,7 @@ const SubgruposEquipes = () => {
           </div>
         </div>
       )}
-      {editEscala && (
+      {editEscala && podeEditarEscalas && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={closeEditEscala}>
           <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg font-bold text-coop-900 mb-2">Editar escala</h3>

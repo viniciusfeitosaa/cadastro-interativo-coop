@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { prisma } from '../config/database';
 import { getFotoCheckinRegistroForAdmin } from '../services/ponto.service';
+import { getMedicoDocumentoPerfilForDownload } from '../services/medico.service';
+import { listPlantoesSomenteEscalaRelatorioService } from '../services/relatorio-plantoes-somente-escala.service';
 import {
   createTipoPlantaoService,
   deleteTipoPlantaoService,
@@ -24,6 +26,7 @@ import {
   inviteMedicoService,
   getMedicoDocusealDocumentosService,
   getMedicoCadastroDetalheService,
+  getMedicoDetalheAdminService,
   downloadMedicoCadastroDocumentoService,
   enviarDocusealTemplateMedicoService,
   listContratoEquipesService,
@@ -179,6 +182,44 @@ export const getMedicoCadastroDetalheController = async (req: Request, res: Resp
     return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Erro ao carregar dados do cadastro',
+    });
+  }
+};
+
+export const getMedicoDetalheAdminController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const data = await getMedicoDetalheAdminService(req.user.tenantId, String(req.params.id));
+    return res.status(200).json({ success: true, data });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao carregar dados do profissional',
+    });
+  }
+};
+
+export const downloadMedicoDocumentoPerfilAdminController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const medicoId = String(req.params.id);
+    const documentoId = String(req.params.documentoId);
+    const { path: filePath, nomeArquivo, mimeType } = await getMedicoDocumentoPerfilForDownload(
+      medicoId,
+      req.user.tenantId,
+      documentoId
+    );
+    res.setHeader('Content-Type', mimeType);
+    res.setHeader('Content-Disposition', `inline; filename="${nomeArquivo.replace(/"/g, '\\"')}"`);
+    return res.sendFile(filePath);
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao baixar documento',
     });
   }
 };
@@ -1385,6 +1426,29 @@ export const listRegistrosPontoAdminController = async (req: Request, res: Respo
     return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Erro ao listar registros de ponto',
+    });
+  }
+};
+
+export const listPlantoesSomenteEscalaRelatorioController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+
+    const data = await listPlantoesSomenteEscalaRelatorioService(req.user.tenantId, {
+      contratoAtivoId: req.query.contratoAtivoId ? String(req.query.contratoAtivoId) : undefined,
+      subgrupoId: req.query.subgrupoId ? String(req.query.subgrupoId) : undefined,
+      equipeId: req.query.equipeId ? String(req.query.equipeId) : undefined,
+      dataInicio: req.query.dataInicio ? String(req.query.dataInicio) : undefined,
+      dataFim: req.query.dataFim ? String(req.query.dataFim) : undefined,
+    });
+
+    return res.status(200).json({ success: true, data });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao listar plantões de somente escala',
     });
   }
 };

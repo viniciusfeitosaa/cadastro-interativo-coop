@@ -1,6 +1,49 @@
 import api from './api';
-import { ModuloSistema } from '../constants/modulos';
+import { ModuloSistema, NivelAcessoModulo } from '../constants/modulos';
 import type { DocumentoPerfilField } from '../constants/documentosPerfil';
+
+/** Payload de `GET /auth/modulos-acesso` (compat: `map` boolean + níveis). */
+export interface ModulosAcessoData {
+  perfil: 'MASTER' | 'MEDICO';
+  map: Record<ModuloSistema, boolean>;
+  mapNiveis?: Record<ModuloSistema, NivelAcessoModulo>;
+  isAdminPleno?: boolean;
+  items?: Array<{ perfil: 'MASTER' | 'MEDICO'; modulo: ModuloSistema; permitido: boolean }>;
+}
+
+export type NivelDeModuloInput = Pick<ModulosAcessoData, 'map' | 'mapNiveis' | 'isAdminPleno'>;
+
+export function nivelDeModulo(
+  perms: NivelDeModuloInput | null | undefined,
+  modulo: ModuloSistema
+): NivelAcessoModulo {
+  const fromNiveis = perms?.mapNiveis?.[modulo];
+  if (fromNiveis) return fromNiveis;
+  return perms?.map?.[modulo] ? 'EDITAR' : 'OFF';
+}
+
+/** Acesso de leitura: nível ≥ VER (ou admin pleno). */
+export function hasAccess(
+  perms: NivelDeModuloInput | null | undefined,
+  modulo: ModuloSistema
+): boolean {
+  if (perms?.isAdminPleno) return true;
+  const nivel = nivelDeModulo(perms, modulo);
+  return nivel === 'VER' || nivel === 'EDITAR';
+}
+
+/** Escrita: nível === EDITAR (ou admin pleno). */
+export function canEdit(
+  perms: NivelDeModuloInput | null | undefined,
+  modulo: ModuloSistema
+): boolean {
+  if (perms?.isAdminPleno) return true;
+  return nivelDeModulo(perms, modulo) === 'EDITAR';
+}
+
+export function isAdminPleno(perms: NivelDeModuloInput | null | undefined): boolean {
+  return !!perms?.isAdminPleno;
+}
 
 export interface LoginCredentials {
   email: string;
@@ -123,13 +166,9 @@ export const authService = {
 
   getModulosAcesso: async (): Promise<{
     success: boolean;
-    data: {
-      perfil: 'MASTER' | 'MEDICO';
-      items: Array<{ perfil: 'MASTER' | 'MEDICO'; modulo: ModuloSistema; permitido: boolean }>;
-      map: Record<ModuloSistema, boolean>;
-    };
+    data: ModulosAcessoData;
   }> => {
-    const response = await api.get('/auth/modulos-acesso');
+    const response = await api.get<{ success: boolean; data: ModulosAcessoData }>('/auth/modulos-acesso');
     return response.data;
   },
 

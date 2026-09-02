@@ -1,10 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../context/AuthContext';
 import { useMasterEscopo } from '../context/MasterEscopoContext';
 import { PontoEnderecoMapaBlock } from '../components/PontoEnderecoMapaBlock';
 import { usePontoEnderecoMapa } from '../hooks/usePontoEnderecoMapa';
 import { adminService, ConfigPontoEletronico, TipoPlantaoConfig, ValorPlantaoConfig } from '../services/admin.service';
+import {
+  cobrancaFromMargem,
+  formatMargemNumber,
+  margemFromCobranca,
+} from '../utils/margemLucro';
 
 function formatValor(valor: string | number | null | undefined): string {
   if (valor == null || valor === '') return '';
@@ -78,20 +84,14 @@ const ValoresPlantao = ({
   const [draftValorHoraPorDia, setDraftValorHoraPorDia] = useState<
     Record<string, Partial<Record<(typeof DIAS_SEMANA)[number]['key'], string>>>
   >({});
+  const [draftMargemPorDia, setDraftMargemPorDia] = useState<
+    Record<string, Partial<Record<(typeof DIAS_SEMANA)[number]['key'], string>>>
+  >({});
   const [draftValorHoraCobrancaPorDia, setDraftValorHoraCobrancaPorDia] = useState<
     Record<string, Partial<Record<(typeof DIAS_SEMANA)[number]['key'], string>>>
   >({});
   const [savingGeo, setSavingGeo] = useState(false);
   const [savedGeo, setSavedGeo] = useState(false);
-  const [novoTipoNome, setNovoTipoNome] = useState('');
-  const [novoTipoHi, setNovoTipoHi] = useState('08:00');
-  const [novoTipoHf, setNovoTipoHf] = useState('20:00');
-  const [novoTipoCruza, setNovoTipoCruza] = useState(false);
-  const [criandoTipo, setCriandoTipo] = useState(false);
-  const [excluindoTipoId, setExcluindoTipoId] = useState<string | null>(null);
-  const [excluirTipoModal, setExcluirTipoModal] = useState<{ id: string; nome: string } | null>(null);
-  const [editarTipoModal, setEditarTipoModal] = useState<TipoPlantaoConfig | null>(null);
-  const [salvandoEdicaoTipo, setSalvandoEdicaoTipo] = useState(false);
 
   const { data: opcoesResp, isLoading: loadingOpcoes, isError: erroOpcoes } = useQuery({
     queryKey: ['admin', 'valores-plantao', 'opcoes'],
@@ -238,7 +238,6 @@ const ValoresPlantao = ({
   };
 
   const getValorCobrancaForGrade = (gradeId: string): string => {
-    // Por enquanto, não temos um draft global de cobrança separado; usa o que vier do backend.
     const row = valores.find((v: ValorPlantaoConfig) => v.gradeId === gradeId);
     if (row?.valorHoraCobranca != null) return formatValor(row.valorHoraCobranca);
     return '';
@@ -254,36 +253,102 @@ const ValoresPlantao = ({
     return getValorCobrancaForGrade(gradeId);
   };
 
-  const replicarRepasseSegParaSemana = (gradeId: string) => {
-    const segVal = getValorHoraForGradeDia(gradeId, 'seg');
-    setDraftValorHoraPorDia((prev) => ({
+  const getMargemForGradeDia = (gradeId: string, diaKey: DiaKey): string => {
+    const byGrade = draftMargemPorDia[gradeId];
+    const v = byGrade?.[diaKey];
+    if (v !== undefined) return v;
+    const rep = parseValorInput(getValorHoraForGradeDia(gradeId, diaKey));
+    const cob = parseValorInput(getValorHoraCobrancaForGradeDia(gradeId, diaKey));
+    if (rep == null || cob == null || rep <= 0 || cob <= 0) return '';
+    const m = margemFromCobranca(rep, cob);
+    return m != null ? formatMargemNumber(m) : '';
+  };
+
+  const patchDraftDia = (
+    setter: Dispatch<SetStateAction<Record<string, Partial<Record<DiaKey, string>>>>>,
+    gradeId: string,
+    diaKey: DiaKey,
+    value: string
+  ) => {
+    setter((prev) => ({
       ...prev,
       [gradeId]: {
         ...(prev[gradeId] ?? {}),
-        ter: segVal,
-        qua: segVal,
-        qui: segVal,
-        sex: segVal,
-        sab: segVal,
-        dom: segVal,
+        [diaKey]: value,
       },
     }));
   };
 
-  const replicarCobrancaSegParaSemana = (gradeId: string) => {
-    const segVal = getValorHoraCobrancaForGradeDia(gradeId, 'seg');
-    setDraftValorHoraCobrancaPorDia((prev) => ({
-      ...prev,
-      [gradeId]: {
-        ...(prev[gradeId] ?? {}),
-        ter: segVal,
-        qua: segVal,
-        qui: segVal,
-        sex: segVal,
-        sab: segVal,
-        dom: segVal,
-      },
-    }));
+  const onRepasseGradeDiaChange = (gradeId: string, diaKey: DiaKey, raw: string) => {
+    patchDraftDia(setDraftValorHoraPorDia, gradeId, diaKey, raw);
+    const rep = parseValorInput(raw);
+    const margemStr = draftMargemPorDia[gradeId]?.[diaKey] ?? getMargemForGradeDia(gradeId, diaKey);
+    const margem = parseValorInput(margemStr);
+    if (rep != null && margem != null && margemStr.trim() !== '') {
+      const cob = cobrancaFromMargem(rep, margem);
+      if (cob != null) {
+        patchDraftDia(setDraftValorHoraCobrancaPorDia, gradeId, diaKey, formatValor(cob));
+        if (draftMargemPorDia[gradeId]?.[diaKey] === undefined) {
+          patchDraftDia(setDraftMargemPorDia, gradeId, diaKey, margemStr);
+        }
+        return;
+      }
+    }
+    const cobStr =
+      draftValorHoraCobrancaPorDia[gradeId]?.[diaKey] ?? getValorHoraCobrancaForGradeDia(gradeId, diaKey);
+    const cob = parseValorInput(cobStr);
+    if (rep != null && cob != null && cobStr.trim() !== '') {
+      const m = margemFromCobranca(rep, cob);
+      patchDraftDia(setDraftMargemPorDia, gradeId, diaKey, m != null ? formatMargemNumber(m) : '');
+    }
+  };
+
+  const onMargemGradeDiaChange = (gradeId: string, diaKey: DiaKey, raw: string) => {
+    patchDraftDia(setDraftMargemPorDia, gradeId, diaKey, raw);
+    const margem = parseValorInput(raw);
+    const rep = parseValorInput(getValorHoraForGradeDia(gradeId, diaKey));
+    if (rep == null || margem == null || raw.trim() === '') return;
+    const cob = cobrancaFromMargem(rep, margem);
+    if (cob != null) {
+      patchDraftDia(setDraftValorHoraCobrancaPorDia, gradeId, diaKey, formatValor(cob));
+    }
+  };
+
+  const onCobrancaGradeDiaChange = (gradeId: string, diaKey: DiaKey, raw: string) => {
+    patchDraftDia(setDraftValorHoraCobrancaPorDia, gradeId, diaKey, raw);
+    const cob = parseValorInput(raw);
+    const rep = parseValorInput(getValorHoraForGradeDia(gradeId, diaKey));
+    if (rep == null || cob == null || raw.trim() === '') return;
+    const m = margemFromCobranca(rep, cob);
+    patchDraftDia(setDraftMargemPorDia, gradeId, diaKey, m != null ? formatMargemNumber(m) : '');
+  };
+
+  const replicarSegParaRestanteSemana = (gradeId: string) => {
+    const repSeg = getValorHoraForGradeDia(gradeId, 'seg');
+    const marSeg = getMargemForGradeDia(gradeId, 'seg');
+    const repN = parseValorInput(repSeg);
+    const marN = parseValorInput(marSeg);
+    let cobSeg = getValorHoraCobrancaForGradeDia(gradeId, 'seg');
+    if (repN != null && marN != null && marSeg.trim() !== '') {
+      const cob = cobrancaFromMargem(repN, marN);
+      if (cob != null) cobSeg = formatValor(cob);
+    }
+    const dias: DiaKey[] = ['ter', 'qua', 'qui', 'sex', 'sab', 'dom'];
+    setDraftValorHoraPorDia((prev) => {
+      const g = { ...(prev[gradeId] ?? {}), seg: repSeg };
+      for (const k of dias) g[k] = repSeg;
+      return { ...prev, [gradeId]: g };
+    });
+    setDraftMargemPorDia((prev) => {
+      const g = { ...(prev[gradeId] ?? {}), seg: marSeg };
+      for (const k of dias) g[k] = marSeg;
+      return { ...prev, [gradeId]: g };
+    });
+    setDraftValorHoraCobrancaPorDia((prev) => {
+      const g = { ...(prev[gradeId] ?? {}), seg: cobSeg };
+      for (const k of dias) g[k] = cobSeg;
+      return { ...prev, [gradeId]: g };
+    });
   };
 
   const handleSaveSemana = async (grade: { id: string; nome: string }) => {
@@ -330,6 +395,12 @@ const ValoresPlantao = ({
         delete next[grade.id];
         return next;
       });
+      setDraftMargemPorDia((prev) => {
+        if (!prev[grade.id]) return prev;
+        const next = { ...prev };
+        delete next[grade.id];
+        return next;
+      });
       setSuccess(`Valores da semana (seg–dom) de ${grade.nome} salvos.`);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Erro ao salvar valor');
@@ -346,18 +417,16 @@ const ValoresPlantao = ({
     setContratoId(id);
     setDraft({});
     setDraftValorHoraPorDia({});
+    setDraftMargemPorDia({});
     setDraftValorHoraCobrancaPorDia({});
     limparRascunhosGeo();
-    setNovoTipoNome('');
-    setNovoTipoHi('08:00');
-    setNovoTipoHf('20:00');
-    setNovoTipoCruza(false);
   };
 
   const onSubgrupoChange = (id: string) => {
     setSubgrupoId(id);
     setDraft({});
     setDraftValorHoraPorDia({});
+    setDraftMargemPorDia({});
     setDraftValorHoraCobrancaPorDia({});
     limparRascunhosGeo();
   };
@@ -426,7 +495,7 @@ const ValoresPlantao = ({
     return (
       <div className="card border-l-4 border-red-400">
         <h2 className="text-xl font-bold text-coop-900 mb-2">Acesso restrito</h2>
-        <p className="text-gray-600">Somente o administrador pode configurar valores de plantão.</p>
+        <p className="text-gray-600">Somente o perfil Master pode configurar valores de plantão.</p>
       </div>
     );
   }
@@ -508,6 +577,7 @@ const ValoresPlantao = ({
                   setEquipeId(e.target.value);
                   setDraft({});
                   setDraftValorHoraPorDia({});
+                  setDraftMargemPorDia({});
                   setDraftValorHoraCobrancaPorDia({});
                   limparRascunhosGeo();
                 }}
@@ -527,125 +597,24 @@ const ValoresPlantao = ({
         )}
       </div>
 
-      {temEscopoCompleto && exibirLocalizacaoPonto && (
-        <div className="card">
-          <h3 className="text-lg font-bold text-coop-900 mb-4">Tipos de plantão (contrato)</h3>
-          <p className="text-sm text-coop-700 mb-4">
-            Cada tipo tem nome e faixa de horário (usada na grade, calendário, troca e ponto). O horário define-se ao
-            criar o tipo; depois só o <span className="font-semibold text-coop-800">nome</span> pode ser alterado. A
-            lista ordena-se automaticamente pelo <span className="font-semibold text-coop-800">início</span> do
-            plantão. Os padrões MT/SN são criados na primeira carga.
+      {temEscopoCompleto && (
+        <div className="card border-l-4 border-coop-400">
+          <h3 className="text-lg font-bold text-coop-900 mb-2">Tipos de plantão</h3>
+          <p className="text-sm text-coop-700 font-serif mb-3">
+            Os tipos (MT, SN, horários da grade) são gerenciados na página{' '}
+            <Link to="/escalas" className="font-semibold text-coop-800 underline hover:text-coop-600">
+              Escalas
+            </Link>
+            : abra uma equipe e use a aba <span className="font-semibold">Tipos</span>.
           </p>
           {loadingTipos ? (
-            <p className="text-sm text-gray-600">Carregando tipos...</p>
+            <p className="text-sm text-gray-600">Carregando tipos do contrato…</p>
+          ) : tiposPlantao.length === 0 ? (
+            <p className="text-sm text-amber-800">Nenhum tipo neste contrato ainda — cadastre em Escalas → Tipos.</p>
           ) : (
-            <>
-              <div className="space-y-3 mb-6">
-                {tiposPlantao.map((t) => (
-                  <div
-                    key={t.id}
-                    className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-lg border border-coop-200 bg-white"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-coop-900">{t.nome}</p>
-                      <p className="text-xs text-coop-600">
-                        {t.horaInicio.slice(0, 5)} – {t.horaFim.slice(0, 5)}
-                        {t.cruzaMeiaNoite ? ' (cruza meia-noite)' : ''}
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <button
-                        type="button"
-                        className="btn btn-secondary text-sm py-1.5 px-3"
-                        disabled={excluindoTipoId === t.id || salvandoEdicaoTipo}
-                        onClick={() => setEditarTipoModal({ ...t })}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-secondary text-sm py-1.5 px-3"
-                        disabled={excluindoTipoId === t.id || salvandoEdicaoTipo}
-                        onClick={() => setExcluirTipoModal({ id: t.id, nome: t.nome })}
-                      >
-                        {excluindoTipoId === t.id ? '…' : 'Excluir'}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="p-4 rounded-xl border border-dashed border-coop-300 bg-coop-50/40 space-y-3">
-                <p className="text-sm font-semibold text-coop-800">Novo tipo</p>
-                <div className="flex flex-wrap gap-3 items-end">
-                  <div className="min-w-[200px] flex-1">
-                    <label className="block text-xs font-semibold text-coop-800 mb-1">Nome</label>
-                    <input
-                      className="input w-full"
-                      placeholder="Ex.: Plantão vespertino"
-                      value={novoTipoNome}
-                      onChange={(e) => setNovoTipoNome(e.target.value)}
-                    />
-                  </div>
-                  <div className="min-w-[8.75rem]">
-                    <label className="block text-xs font-semibold text-coop-800 mb-1">Início</label>
-                    <input
-                      type="time"
-                      step={60}
-                      className="input-time"
-                      value={novoTipoHi}
-                      onChange={(e) => setNovoTipoHi(e.target.value)}
-                    />
-                  </div>
-                  <div className="min-w-[8.75rem]">
-                    <label className="block text-xs font-semibold text-coop-800 mb-1">Fim</label>
-                    <input
-                      type="time"
-                      step={60}
-                      className="input-time"
-                      value={novoTipoHf}
-                      onChange={(e) => setNovoTipoHf(e.target.value)}
-                    />
-                  </div>
-                  <label className="flex items-center gap-2 text-sm text-coop-800 cursor-pointer pb-1">
-                    <input
-                      type="checkbox"
-                      checked={novoTipoCruza}
-                      onChange={(e) => setNovoTipoCruza(e.target.checked)}
-                    />
-                    Cruza meia-noite
-                  </label>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    disabled={criandoTipo || !novoTipoNome.trim()}
-                    onClick={async () => {
-                      setCriandoTipo(true);
-                      setError(null);
-                      setSuccess(null);
-                      try {
-                        await adminService.createTipoPlantao({
-                          contratoAtivoId: contratoId,
-                          nome: novoTipoNome.trim(),
-                          horaInicio: novoTipoHi.length === 5 ? novoTipoHi : `${novoTipoHi}:00`.slice(0, 5),
-                          horaFim: novoTipoHf.length === 5 ? novoTipoHf : `${novoTipoHf}:00`.slice(0, 5),
-                          cruzaMeiaNoite: novoTipoCruza,
-                        });
-                        setNovoTipoNome('');
-                        setNovoTipoCruza(false);
-                        await queryClient.invalidateQueries({ queryKey: ['admin', 'tipos-plantao'] });
-                        setSuccess('Tipo de plantão criado.');
-                      } catch (err: any) {
-                        setError(err.response?.data?.error || 'Erro ao criar tipo');
-                      } finally {
-                        setCriandoTipo(false);
-                      }
-                    }}
-                  >
-                    {criandoTipo ? 'Salvando...' : 'Adicionar tipo'}
-                  </button>
-                </div>
-              </div>
-            </>
+            <p className="text-sm text-coop-600">
+              {tiposPlantao.length} tipo(s) neste contrato: {tiposPlantao.map((t) => t.nome).join(', ')}.
+            </p>
           )}
         </div>
       )}
@@ -656,7 +625,7 @@ const ValoresPlantao = ({
           {loadingValores ? (
             <p className="text-sm text-gray-600">Carregando valores...</p>
           ) : tiposPlantao.length === 0 ? (
-            <p className="text-sm text-coop-700">Carregue os tipos do contrato acima.</p>
+            <p className="text-sm text-coop-700">Nenhum tipo neste contrato. Cadastre em Escalas → aba Tipos.</p>
           ) : (
             <div className="space-y-6">
               {tiposPlantao.map((grade) => (
@@ -672,7 +641,8 @@ const ValoresPlantao = ({
                       </span>
                     </p>
                     <p className="text-xs text-gray-600 mt-1">
-                      Use → na segunda para copiar o valor para ter–dom. Um único salvar grava repasse e cobrança da semana (seg–dom).
+                      Margem de lucro sobre a cobrança. Ex.: repasse 100 e margem 25% → cobrança 133,33. Editar a
+                      cobrança recalcula a margem. Use → na segunda para copiar repasse + margem para ter–dom.
                     </p>
                   </div>
 
@@ -680,85 +650,56 @@ const ValoresPlantao = ({
                     {DIAS_SEMANA.map(({ key, label }) => (
                       <div
                         key={key}
-                        className="flex flex-wrap items-end gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
+                        className="flex flex-col gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
                       >
-                        <div className="min-w-[200px] flex-1">
-                          <label className="block text-sm font-semibold text-coop-800 mb-1">
-                            {label} <span className="font-normal text-coop-600">(Repasse R$/h)</span>
-                          </label>
-                          <input
-                            type="text"
-                            inputMode="decimal"
-                            className="input w-full max-w-[180px]"
-                            placeholder="Ex: 150,00"
-                            value={getValorHoraForGradeDia(grade.id, key)}
-                            onChange={(e) =>
-                              setDraftValorHoraPorDia((prev) => ({
-                                ...prev,
-                                [grade.id]: {
-                                  ...(prev[grade.id] ?? {}),
-                                  [key]: e.target.value,
-                                },
-                              }))
-                            }
-                          />
-                        </div>
-                        {key === 'seg' && (
-                          <button
-                            type="button"
-                            className="btn btn-secondary shrink-0 px-2 min-w-[2.25rem]"
-                            title="Replicar valor da segunda para ter–dom"
-                            onClick={() => replicarRepasseSegParaSemana(grade.id)}
-                          >
-                            →
-                          </button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="pt-2">
-                    <p className="text-sm font-semibold text-coop-800 mb-2">Cobrança (R$/h)</p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                      {DIAS_SEMANA.map(({ key, label }) => (
-                        <div
-                          key={key}
-                          className="flex flex-wrap items-end gap-2 p-4 rounded-xl border border-coop-200 bg-coop-50/30"
-                        >
-                          <div className="min-w-[200px] flex-1">
-                            <label className="block text-sm font-semibold text-coop-800 mb-1">
-                              {label} <span className="font-normal text-coop-600">(Cobrança R$/h)</span>
-                            </label>
-                            <input
-                              type="text"
-                              inputMode="decimal"
-                              className="input w-full max-w-[180px]"
-                              placeholder="Ex: 150,00"
-                              value={getValorHoraCobrancaForGradeDia(grade.id, key)}
-                              onChange={(e) =>
-                                setDraftValorHoraCobrancaPorDia((prev) => ({
-                                  ...prev,
-                                  [grade.id]: {
-                                    ...(prev[grade.id] ?? {}),
-                                    [key]: e.target.value,
-                                  },
-                                }))
-                              }
-                            />
-                          </div>
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="text-sm font-semibold text-coop-900">{label}</p>
                           {key === 'seg' && (
                             <button
                               type="button"
                               className="btn btn-secondary shrink-0 px-2 min-w-[2.25rem]"
-                              title="Replicar valor da segunda para ter–dom"
-                              onClick={() => replicarCobrancaSegParaSemana(grade.id)}
+                              title="Replicar repasse, margem e cobrança da segunda para ter–dom"
+                              onClick={() => replicarSegParaRestanteSemana(grade.id)}
                             >
                               →
                             </button>
                           )}
                         </div>
-                      ))}
-                    </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-coop-800 mb-1">Repasse (R$/h)</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="input w-full"
+                            placeholder="Ex: 100,00"
+                            value={getValorHoraForGradeDia(grade.id, key)}
+                            onChange={(e) => onRepasseGradeDiaChange(grade.id, key, e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-coop-800 mb-1">Margem (%)</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="input w-full"
+                            placeholder="Ex: 25"
+                            value={getMargemForGradeDia(grade.id, key)}
+                            onChange={(e) => onMargemGradeDiaChange(grade.id, key, e.target.value)}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-coop-800 mb-1">Cobrança (R$/h)</label>
+                          <input
+                            type="text"
+                            inputMode="decimal"
+                            className="input w-full"
+                            placeholder="Ex: 133,33"
+                            value={getValorHoraCobrancaForGradeDia(grade.id, key)}
+                            onChange={(e) => onCobrancaGradeDiaChange(grade.id, key, e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="flex justify-end pt-2">
@@ -778,7 +719,7 @@ const ValoresPlantao = ({
         </div>
       )}
 
-      {temEscopoCompleto && (
+      {temEscopoCompleto && exibirLocalizacaoPonto && (
         <div className="card">
           <h3 className="text-lg font-bold text-coop-900 mb-4">Localização do ponto (opcional)</h3>
           {loadingConfigPonto ? (
@@ -820,145 +761,6 @@ const ValoresPlantao = ({
               </div>
             </>
           )}
-        </div>
-      )}
-
-      {editarTipoModal && (
-        <div
-          className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/50"
-          role="presentation"
-          onClick={() => !salvandoEdicaoTipo && setEditarTipoModal(null)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 flex flex-col gap-4 border border-coop-200"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="editar-tipo-titulo"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 id="editar-tipo-titulo" className="text-lg font-bold text-coop-900 font-display">
-              Editar tipo de plantão
-            </h3>
-            <p className="text-xs text-coop-600">
-              O identificador na escala (ligação aos plantões) não muda. Só o nome de exibição é editável; horários
-              permanecem os definidos na criação do tipo.
-            </p>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-semibold text-coop-800 mb-1">Nome</label>
-                <input
-                  className="input w-full"
-                  value={editarTipoModal.nome}
-                  onChange={(e) => setEditarTipoModal((m) => (m ? { ...m, nome: e.target.value } : m))}
-                />
-              </div>
-              <div className="rounded-lg border border-coop-200 bg-coop-50/50 px-3 py-2.5">
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-coop-600 mb-1">Horário (fixo)</p>
-                <p className="text-sm text-coop-900">
-                  {editarTipoModal.horaInicio.slice(0, 5)} – {editarTipoModal.horaFim.slice(0, 5)}
-                  {editarTipoModal.cruzaMeiaNoite ? ' (cruza meia-noite)' : ''}
-                </p>
-                <p className="text-[11px] text-coop-600 mt-1">
-                  Para mudar início/fim ou “cruza meia-noite”, exclua este tipo e crie outro (sem plantões na escala
-                  usando este tipo).
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-end gap-3 pt-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                disabled={salvandoEdicaoTipo}
-                onClick={() => setEditarTipoModal(null)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={salvandoEdicaoTipo || !editarTipoModal.nome.trim()}
-                onClick={async () => {
-                  const m = editarTipoModal;
-                  setSalvandoEdicaoTipo(true);
-                  setError(null);
-                  setSuccess(null);
-                  try {
-                    await adminService.updateTipoPlantao(m.id, {
-                      nome: m.nome.trim(),
-                    });
-                    await queryClient.invalidateQueries({ queryKey: ['admin', 'tipos-plantao'] });
-                    setEditarTipoModal(null);
-                    setSuccess('Tipo atualizado.');
-                  } catch (err: any) {
-                    setError(err.response?.data?.error || 'Não foi possível salvar');
-                  } finally {
-                    setSalvandoEdicaoTipo(false);
-                  }
-                }}
-              >
-                {salvandoEdicaoTipo ? 'Salvando…' : 'Salvar'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {excluirTipoModal && (
-        <div
-          className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/50"
-          role="presentation"
-          onClick={() => !excluindoTipoId && setExcluirTipoModal(null)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 flex flex-col gap-4 border border-coop-200"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="excluir-tipo-titulo"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 id="excluir-tipo-titulo" className="text-lg font-bold text-coop-900 font-display">
-              Excluir tipo de plantão?
-            </h3>
-            <p className="text-sm text-coop-700 leading-relaxed">
-              O tipo <span className="font-semibold text-coop-900">{excluirTipoModal.nome}</span> será removido
-              permanentemente. Valores por subgrupo e adicionais por data deste tipo serão apagados junto. A exclusão
-              só é bloqueada se ainda existir <span className="font-semibold">plantão agendado na escala</span> usando
-              este tipo.
-            </p>
-            <div className="flex flex-wrap justify-end gap-3 pt-2">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                disabled={!!excluindoTipoId}
-                onClick={() => setExcluirTipoModal(null)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="rounded-lg px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 border border-red-700 disabled:opacity-60"
-                disabled={!!excluindoTipoId}
-                onClick={async () => {
-                  const id = excluirTipoModal.id;
-                  setExcluindoTipoId(id);
-                  setError(null);
-                  try {
-                    await adminService.deleteTipoPlantao(id);
-                    await queryClient.invalidateQueries({ queryKey: ['admin', 'tipos-plantao'] });
-                    await queryClient.invalidateQueries({ queryKey: ['admin', 'valores-plantao', contratoId] });
-                    setSuccess('Tipo removido.');
-                    setExcluirTipoModal(null);
-                  } catch (err: any) {
-                    setError(err.response?.data?.error || 'Não foi possível excluir');
-                  } finally {
-                    setExcluindoTipoId(null);
-                  }
-                }}
-              >
-                {excluindoTipoId ? 'Excluindo…' : 'Excluir'}
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

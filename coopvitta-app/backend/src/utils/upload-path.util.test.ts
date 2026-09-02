@@ -1,5 +1,9 @@
 import path from 'path';
-import { assertPathInsideUploads, resolveStoredFileToAbsolute } from './upload-path.util';
+import {
+  assertPathInsideUploads,
+  resolveStoredFileToAbsolute,
+  toStoredUploadPath,
+} from './upload-path.util';
 
 describe('upload-path.util', () => {
   it('bloqueia path traversal fora de uploads', () => {
@@ -16,5 +20,9 @@ describe('upload-path.util', () => {
     const abs = resolveStoredFileToAbsolute('uploads/ponto/foto.jpg');
     expect(abs).toContain(path.resolve(process.cwd(), 'uploads'));
   });
-});
 
+  it('normaliza path absoluto de multer para relativo uploads/', () => {
+    const abs = path.resolve(process.cwd(), 'uploads', 'medicos', 'doc.pdf');
+    expect(toStoredUploadPath(abs)).toBe('uploads/medicos/doc.pdf');
+  });
+});

@@ -466,8 +466,10 @@ export const loginMasterService = async (
     where: {
       tenantId: tenant.id,
       email: normalizedEmail,
-      ativo: true,
       role: UserRole.MASTER,
+    },
+    include: {
+      perfilAcesso: { select: { id: true, ativo: true, nome: true } },
     },
   });
 
@@ -489,6 +491,27 @@ export const loginMasterService = async (
       detalhes: { email: normalizedEmail },
     });
     throw { statusCode: 401, message: 'E-mail ou senha inválidos' };
+  }
+
+  if (!master.ativo) {
+    throw {
+      statusCode: 401,
+      message: 'Usuário inativo. Contate o administrador.',
+    };
+  }
+
+  if (master.perfilAcessoId && master.perfilAcesso && !master.perfilAcesso.ativo) {
+    throw {
+      statusCode: 401,
+      message: 'Perfil de acesso inativo. Contate o administrador.',
+    };
+  }
+
+  if (master.perfilAcessoId && !master.perfilAcesso) {
+    throw {
+      statusCode: 401,
+      message: 'Perfil de acesso inativo. Contate o administrador.',
+    };
   }
 
   const { accessToken, refreshToken } = await generateTokens(
@@ -534,8 +557,10 @@ export const loginByEmailService = async (
     where: {
       tenantId: tenant.id,
       email: normalizedEmail,
-      ativo: true,
       role: UserRole.MASTER,
+    },
+    include: {
+      perfilAcesso: { select: { id: true, ativo: true, nome: true } },
     },
   });
 
@@ -543,6 +568,20 @@ export const loginByEmailService = async (
     const ok = await comparePassword(password, master.senhaHash);
     if (!ok) {
       throw { statusCode: 401, message: 'E-mail ou senha inválidos' };
+    }
+
+    if (!master.ativo) {
+      throw {
+        statusCode: 401,
+        message: 'Usuário inativo. Contate o administrador.',
+      };
+    }
+
+    if (master.perfilAcessoId && (!master.perfilAcesso || !master.perfilAcesso.ativo)) {
+      throw {
+        statusCode: 401,
+        message: 'Perfil de acesso inativo. Contate o administrador.',
+      };
     }
 
     const { accessToken, refreshToken } = await generateTokens(

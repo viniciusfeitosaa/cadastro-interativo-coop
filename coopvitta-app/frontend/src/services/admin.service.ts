@@ -1,5 +1,62 @@
 import api from './api';
-import { ModuloSistema } from '../constants/modulos';
+import { ModuloSistema, NivelAcessoModulo } from '../constants/modulos';
+
+export interface PerfilAcessoModuloItem {
+  modulo: ModuloSistema;
+  nivel: NivelAcessoModulo;
+}
+
+export interface PerfilAcessoItem {
+  id: string;
+  tenantId: string;
+  nome: string;
+  descricao: string | null;
+  ativo: boolean;
+  createdAt: string;
+  updatedAt: string;
+  modulos: PerfilAcessoModuloItem[];
+  _count?: { usuarios: number };
+}
+
+export interface CreatePerfilAcessoPayload {
+  nome: string;
+  descricao?: string | null;
+  ativo?: boolean;
+  modulos: PerfilAcessoModuloItem[];
+}
+
+export interface UpdatePerfilAcessoPayload {
+  nome?: string;
+  descricao?: string | null;
+  ativo?: boolean;
+  modulos?: PerfilAcessoModuloItem[];
+}
+
+export interface UsuarioStaffItem {
+  id: string;
+  nome: string;
+  email: string;
+  ativo: boolean;
+  perfilAcessoId: string | null;
+  createdAt: string;
+  updatedAt: string;
+  perfilAcesso: { id: string; nome: string; ativo: boolean } | null;
+}
+
+export interface CreateUsuarioStaffPayload {
+  nome: string;
+  email: string;
+  senha: string;
+  perfilAcessoId: string;
+  ativo?: boolean;
+}
+
+export interface UpdateUsuarioStaffPayload {
+  nome?: string;
+  perfilAcessoId?: string | null;
+  ativo?: boolean;
+  senha?: string;
+}
 
 export interface CadastroPendenteListItem {
   id: string;
@@ -96,6 +153,28 @@ export interface AdminMedico {
   createdAt: string;
   updatedAt: string;
   equipes?: MedicoEquipeResumo[];
+}
+
+export interface AdminMedicoDocumentoPerfil {
+  id: string;
+  tipo: string;
+  nomeArquivo: string;
+  mimeType: string;
+  tamanhoBytes: number;
+  updatedAt: string;
+}
+
+export interface AdminMedicoDetalhe extends AdminMedico {
+  estadoCivil: string | null;
+  enderecoResidencial: string | null;
+  dadosBancarios: string | null;
+  chavePix: string | null;
+  statusCadastro: string;
+  termosCadastroAceitosEm: string | null;
+  termosCadastroVersao: string | null;
+  inviteAcceptedAt: string | null;
+  documentos: AdminMedicoDocumentoPerfil[];
+  subgrupos: { id: string; nome: string; ativo: boolean }[];
 }
 
 export interface ContratoAtivo {
@@ -499,6 +578,23 @@ export const adminService = {
     return response.data;
   },
 
+  getMedicoDetalhe: async (medicoId: string) => {
+    const response = await api.get<{ success: boolean; data: AdminMedicoDetalhe }>('/admin/medicos/' + medicoId);
+    return response.data;
+  },
+
+  openMedicoDocumentoPerfil: async (medicoId: string, documentoId: string) => {
+    const response = await api.get(`/admin/medicos/${medicoId}/documentos/${documentoId}/download`, {
+      responseType: 'blob',
+    });
+    const blob = new Blob([response.data], {
+      type: response.headers['content-type'] || 'application/octet-stream',
+    });
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank', 'noopener,noreferrer');
+    window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  },
+
   getMedicoOnvioPrep: async (medicoId: string) => {
     const response = await api.get<{ success: boolean; data: OnvioPrepResponse }>(
       `/admin/medicos/${medicoId}/onvio`
@@ -796,7 +892,7 @@ export const adminService = {
     success: boolean;
     data: {
       contratos: { id: string; nome: string }[];
-      subgrupos: { id: string; nome: string; ativo: boolean }[];
+      subgrupos: { id: string; nome: string; ativo: boolean; usaEscala?: boolean; usaPonto?: boolean }[];
       equipes: { id: string; nome: string; ativo: boolean; subgrupoId: string | null }[];
       contratoSubgrupos: { contratoAtivoId: string; subgrupoId: string }[];
     };
@@ -854,6 +950,17 @@ export const adminService = {
     dataFim?: string;
   }) => {
     const response = await api.get('/admin/registros-ponto', { params });
+    return response.data;
+  },
+
+  listPlantoesSomenteEscalaRelatorio: async (params?: {
+    contratoAtivoId?: string;
+    subgrupoId?: string;
+    equipeId?: string;
+    dataInicio?: string;
+    dataFim?: string;
+  }) => {
+    const response = await api.get('/admin/relatorio-plantoes-somente-escala', { params });
     return response.data;
   },
 
@@ -1125,6 +1232,48 @@ export const adminService = {
   retryAllGcoopSync: async () => {
     const response = await api.post<{ success: boolean; data: unknown; message?: string }>(
       '/admin/gcoop/sync-pendentes/retry-all'
+    );
+    return response.data;
+  },
+
+  listPerfisAcesso: async () => {
+    const response = await api.get<{ success: boolean; data: PerfilAcessoItem[] }>('/admin/perfis-acesso');
+    return response.data;
+  },
+
+  createPerfilAcesso: async (payload: CreatePerfilAcessoPayload) => {
+    const response = await api.post<{ success: boolean; data: PerfilAcessoItem }>(
+      '/admin/perfis-acesso',
+      payload
+    );
+    return response.data;
+  },
+
+  updatePerfilAcesso: async (id: string, payload: UpdatePerfilAcessoPayload) => {
+    const response = await api.put<{ success: boolean; data: PerfilAcessoItem }>(
+      `/admin/perfis-acesso/${id}`,
+      payload
+    );
+    return response.data;
+  },
+
+  listUsuariosStaff: async () => {
+    const response = await api.get<{ success: boolean; data: UsuarioStaffItem[] }>('/admin/usuarios-staff');
+    return response.data;
+  },
+
+  createUsuarioStaff: async (payload: CreateUsuarioStaffPayload) => {
+    const response = await api.post<{ success: boolean; data: UsuarioStaffItem }>(
+      '/admin/usuarios-staff',
+      payload
+    );
+    return response.data;
+  },
+
+  updateUsuarioStaff: async (id: string, payload: UpdateUsuarioStaffPayload) => {
+    const response = await api.put<{ success: boolean; data: UsuarioStaffItem }>(
+      `/admin/usuarios-staff/${id}`,
+      payload
     );
     return response.data;
   },
