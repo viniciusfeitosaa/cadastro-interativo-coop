@@ -49,6 +49,28 @@ export const ufOptions = [
   'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO',
 ].map((uf) => ({ value: uf, label: uf }))
 
+/** Órgãos aceitos pelo Gcoop (ListaOrgaoExpedidor) — evita texto livre que zera ID_OrgaoExpedidor. */
+export const orgaoExpedicaoRgOptions = [
+  { value: 'SSP', label: 'SSP — Secretaria de Segurança Pública' },
+  { value: 'SDS', label: 'SDS — Secretaria de Defesa Social' },
+  { value: 'IFP', label: 'IFP' },
+  { value: 'DIC', label: 'DIC' },
+  { value: 'CNT', label: 'CNT' },
+  { value: 'ITEP', label: 'ITEP' },
+  { value: 'IMLC', label: 'IMLC' },
+  { value: 'GEJUSP', label: 'GEJUSP' },
+  { value: 'CGPI/DIREX/DPF', label: 'CGPI/DIREX/DPF' },
+  { value: 'OAB', label: 'OAB' },
+  { value: 'CRM', label: 'CRM' },
+  { value: 'CREA', label: 'CREA' },
+  { value: 'SES', label: 'SES' },
+  { value: 'MAE', label: 'MAE' },
+  { value: 'MEX', label: 'MEX' },
+  { value: 'MMA', label: 'MMA' },
+  { value: 'POF', label: 'POF' },
+  { value: 'POM', label: 'POM' },
+]
+
 export const categoriaProfissionalOptions = [
   { value: 'enfermagem', label: 'Enfermagem' },
   { value: 'medicina', label: 'Medicina' },

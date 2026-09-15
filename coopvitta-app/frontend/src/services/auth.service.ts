@@ -109,6 +109,97 @@ export interface RegisterPayload {
 
 export type RegisterDocumentFiles = Partial<Record<DocumentoPerfilField, File>>;
 
+export type RegisterOptions = {
+  onProgress?: (percent: number) => void;
+};
+
+const REGISTER_TIMEOUT_MS = 180_000;
+const REGISTER_RETRY_DELAY_MS = 1_500;
+
+function buildRegisterFormData(payload: RegisterPayload, files: RegisterDocumentFiles): FormData {
+  const fd = new FormData();
+  const appendScalar = (key: string, val: string | undefined) => {
+    if (val !== undefined && val !== null) fd.append(key, String(val));
+  };
+  appendScalar('nomeCompleto', payload.nomeCompleto);
+  appendScalar('email', payload.email);
+  appendScalar('cpf', payload.cpf);
+  appendScalar('telefone', payload.telefone);
+  appendScalar('profissao', payload.profissao);
+  if (payload.password) appendScalar('password', payload.password);
+  if (payload.confirmPassword) appendScalar('confirmPassword', payload.confirmPassword);
+  if (payload.crm !== undefined && payload.crm !== null) {
+    fd.append('crm', String(payload.crm).trim());
+  }
+  if (payload.estadoCivil) appendScalar('estadoCivil', payload.estadoCivil);
+  if (payload.enderecoResidencial) appendScalar('enderecoResidencial', payload.enderecoResidencial);
+  if (payload.dadosBancarios) appendScalar('dadosBancarios', payload.dadosBancarios);
+  if (payload.chavePix) appendScalar('chavePix', payload.chavePix);
+  if (payload.dadosGcoop) fd.append('dadosGcoop', payload.dadosGcoop);
+  fd.append('aceitouTermos', payload.aceitouTermos ? 'true' : 'false');
+  (payload.especialidades || []).forEach((e) => fd.append('especialidades', e));
+  Object.entries(files).forEach(([k, file]) => {
+    if (file instanceof File) fd.append(k, file);
+  });
+  return fd;
+}
+
+function postRegisterFormData(
+  url: string,
+  fd: FormData,
+  onProgress?: (percent: number) => void
+): Promise<{ status: number; data: Record<string, unknown> }> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.timeout = REGISTER_TIMEOUT_MS;
+    xhr.responseType = 'text';
+
+    xhr.upload.onprogress = (ev) => {
+      if (!onProgress || !ev.lengthComputable || ev.total <= 0) return;
+      const pct = Math.min(99, Math.round((ev.loaded / ev.total) * 100));
+      onProgress(pct);
+    };
+
+    xhr.onload = () => {
+      onProgress?.(100);
+      let data: Record<string, unknown> = {};
+      try {
+        data = JSON.parse(xhr.responseText || '{}') as Record<string, unknown>;
+      } catch {
+        data = {};
+      }
+      resolve({ status: xhr.status, data });
+    };
+
+    xhr.onerror = () => {
+      reject(new TypeError('Failed to fetch'));
+    };
+
+    xhr.ontimeout = () => {
+      reject(
+        new Error(
+          'O envio demorou demais e foi cancelado. Verifique a conexão e tente novamente com anexos menores.'
+        )
+      );
+    };
+
+    xhr.onabort = () => {
+      reject(
+        new Error(
+          'O envio demorou demais e foi cancelado. Verifique a conexão e tente novamente com anexos menores.'
+        )
+      );
+    };
+
+    xhr.send(fd);
+  });
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((r) => window.setTimeout(r, ms));
+}
+
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<LoginResponse> => {
     const response = await api.post<LoginResponse>('/auth/login', credentials);
@@ -120,48 +211,57 @@ export const authService = {
     return response.data;
   },
 
-  register: async (payload: RegisterPayload, files?: RegisterDocumentFiles) => {
+  register: async (
+    payload: RegisterPayload,
+    files?: RegisterDocumentFiles,
+    options?: RegisterOptions
+  ) => {
     const hasFile = files && Object.values(files).some((f) => f instanceof File);
     if (!hasFile) {
       const response = await api.post('/auth/register', payload);
       return response.data;
     }
-    const fd = new FormData();
-    const appendScalar = (key: string, val: string | undefined) => {
-      if (val !== undefined && val !== null) fd.append(key, String(val));
-    };
-    appendScalar('nomeCompleto', payload.nomeCompleto);
-    appendScalar('email', payload.email);
-    appendScalar('cpf', payload.cpf);
-    appendScalar('telefone', payload.telefone);
-    appendScalar('profissao', payload.profissao);
-    if (payload.password) appendScalar('password', payload.password);
-    if (payload.confirmPassword) appendScalar('confirmPassword', payload.confirmPassword);
-    if (payload.crm !== undefined && payload.crm !== null) {
-      fd.append('crm', String(payload.crm).trim());
-    }
-    if (payload.estadoCivil) appendScalar('estadoCivil', payload.estadoCivil);
-    if (payload.enderecoResidencial) appendScalar('enderecoResidencial', payload.enderecoResidencial);
-    if (payload.dadosBancarios) appendScalar('dadosBancarios', payload.dadosBancarios);
-    if (payload.chavePix) appendScalar('chavePix', payload.chavePix);
-    if (payload.dadosGcoop) fd.append('dadosGcoop', payload.dadosGcoop);
-    fd.append('aceitouTermos', payload.aceitouTermos ? 'true' : 'false');
-    (payload.especialidades || []).forEach((e) => fd.append('especialidades', e));
-    Object.entries(files || {}).forEach(([k, file]) => {
-      if (file instanceof File) fd.append(k, file);
-    });
-    // Não usar axios aqui: o cliente global força JSON e o transformRequest pode estragar FormData.
-    // fetch deixa o browser definir multipart/form-data com boundary correto.
+
+    // XHR: progresso de upload + retry de rede (fetch não expõe upload.onprogress).
     const base = String(api.defaults.baseURL || '').replace(/\/$/, '');
     const url = `${base}/auth/register`;
-    const res = await fetch(url, { method: 'POST', body: fd });
-    const data = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-    if (!res.ok) {
-      const err = new Error('Request failed') as Error & { response?: { status: number; data: unknown } };
-      err.response = { status: res.status, data };
-      throw err;
+    const onProgress = options?.onProgress;
+
+    let lastErr: unknown;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        if (attempt > 0) {
+          onProgress?.(0);
+          await sleep(REGISTER_RETRY_DELAY_MS);
+        }
+        // FormData novo a cada tentativa (corpo já consumido após o 1º send).
+        const fd = buildRegisterFormData(payload, files || {});
+        const { status, data } = await postRegisterFormData(url, fd, onProgress);
+        if (status < 200 || status >= 300) {
+          const serverMsg =
+            (typeof data.error === 'string' && data.error) ||
+            (typeof data.message === 'string' && data.message) ||
+            'Request failed';
+          const err = new Error(serverMsg) as Error & {
+            response?: { status: number; data: unknown };
+          };
+          err.response = { status, data };
+          throw err;
+        }
+        return data;
+      } catch (err) {
+        lastErr = err;
+        const isTimeout =
+          err instanceof Error && err.message.includes('O envio demorou demais');
+        const isNetwork =
+          (err instanceof TypeError && /failed to fetch|network/i.test(err.message)) ||
+          (err instanceof Error && /network/i.test(err.message));
+        // Retry só em falha de rede; 4xx/5xx e timeout não repetem.
+        if (attempt === 0 && isNetwork && !isTimeout) continue;
+        throw err;
+      }
     }
-    return data;
+    throw lastErr;
   },
 
   getModulosAcesso: async (): Promise<{

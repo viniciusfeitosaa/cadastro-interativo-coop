@@ -78,7 +78,8 @@ export async function assertGcoopCpfDisponivel(cpf: string): Promise<void> {
   if (!isGcoopEnabled()) return;
 
   try {
-    const data = await fetchGcoopPreCadastro(cpf);
+    // Timeout curto no cadastro público: não pode segurar o upload até o limite do Gcoop (120s).
+    const data = await fetchGcoopPreCadastro(cpf, { timeoutMs: 15_000 });
     if (gcoopPreCadastroExists(data)) {
       throw { statusCode: 409, message: GCOOP_CPF_EXISTENTE_MSG };
     }
@@ -86,12 +87,11 @@ export async function assertGcoopCpfDisponivel(cpf: string): Promise<void> {
     if (err && typeof err === 'object' && 'statusCode' in err && !(err instanceof GcoopApiError)) {
       throw err;
     }
+    if (isGcoopCpfJaExistenteError(err)) {
+      throw { statusCode: 409, message: GCOOP_CPF_EXISTENTE_MSG };
+    }
     if (err instanceof GcoopApiError) {
       if (err.statusCode === 404) return;
-      // Já filiado / já cadastrado no Gcoop → bloquear novo pré-cadastro público.
-      if (isGcoopCpfJaExistenteError(err)) {
-        throw { statusCode: 409, message: GCOOP_CPF_EXISTENTE_MSG };
-      }
       console.warn('[gcoop] GetPreCadastro indisponível no cadastro público:', err.message);
       return;
     }

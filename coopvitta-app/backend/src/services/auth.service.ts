@@ -176,14 +176,17 @@ async function sendResetPasswordWhatsApp(toPhoneE164: string, resetLink: string)
     const baseUrl = (process.env.EVOLUTION_API_URL || '').replace(/\/$/, '');
     const instance = process.env.EVOLUTION_INSTANCE!;
     const apiKey = process.env.EVOLUTION_API_KEY!;
-    const res = await fetchWithTimeout(`${baseUrl}/message/sendText/${instance}`, {
+    const res = await fetchWithTimeout(
+      `${baseUrl}/message/sendText/${encodeURIComponent(instance)}`,
+      {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         apikey: apiKey,
       },
       body: JSON.stringify({ number, text: body }),
-    });
+    }
+    );
     if (!res.ok) {
       const errText = await res.text();
       throw new Error(`Evolution API ${res.status}: ${errText}`);
@@ -824,6 +827,15 @@ export const registerPublicMedicoService = async (
 
   const trimOpt = (v: string | undefined) => (v && String(v).trim()) || undefined;
   const dadosGcoopParsed = parseDadosGcoopJson(input.dadosGcoop);
+  if (dadosGcoopParsed) {
+    const rgDigits = String(dadosGcoopParsed.rg ?? '').replace(/\D/g, '');
+    if (rgDigits.length >= 11 && rgDigits === cpf) {
+      throw {
+        statusCode: 400,
+        message: 'Informe o número do RG. Não use o CPF neste campo.',
+      };
+    }
+  }
   const dadosGcoopJson = dadosGcoopParsed
     ? sanitizeDadosGcoopForStorage(dadosGcoopParsed)
     : null;

@@ -5,6 +5,7 @@ import { resolveStoredFileToAbsolute, fileExistsSafe } from '../../utils/upload-
 import {
   findGcoopCidadeId,
   findGcoopItemIdByLabel,
+  resolveGcoopOrgaoExpedidorId,
   findGcoopRacaCorFallbackId,
   findGcoopUfSigla,
   getGcoopCidadesCached,
@@ -103,12 +104,52 @@ export function mapTipoSanguineoId(wizardValue: string): number {
   return positive ? 7 : 8;
 }
 
-async function resolveCidadeId(ufSigla: string, nomeCidade: string): Promise<number | null> {
+async function resolveCidadeRef(
+  ufSigla: string,
+  nomeCidade: string,
+  opts?: { searchOtherUfs?: boolean }
+): Promise<{ id: number; uf: string } | null> {
   const dados = await getGcoopDadosIniciaisCached();
   const uf = findGcoopUfSigla(dados.ListaUF, ufSigla);
-  if (uf == null || !nomeCidade.trim()) return null;
-  const cidades = await getGcoopCidadesCached(uf);
-  return findGcoopCidadeId(cidades, nomeCidade);
+  const nome = nomeCidade.trim();
+  if (!nome) return null;
+
+  if (uf) {
+    const cidades = await getGcoopCidadesCached(uf);
+    const id = findGcoopCidadeId(cidades, nome);
+    if (id != null) return { id, uf };
+  }
+
+  if (!opts?.searchOtherUfs) return null;
+
+  const allUfs = (dados.ListaUF || [])
+    .map((item) => {
+      const idRaw = item.ID ?? item.Id ?? item.id;
+      if (idRaw == null) return '';
+      return String(idRaw).trim().toUpperCase().slice(0, 2);
+    })
+    .filter((s, i, arr) => s.length === 2 && s !== uf && arr.indexOf(s) === i);
+
+  // Em paralelo (listas ficam em cache) — só quando a UF informada não tem a cidade.
+  const results = await Promise.all(
+    allUfs.map(async (other) => {
+      const cidades = await getGcoopCidadesCached(other);
+      const id = findGcoopCidadeId(cidades, nome);
+      return id != null ? { id, uf: other } : null;
+    })
+  );
+  const hit = results.find(Boolean) ?? null;
+  if (hit) {
+    console.warn(
+      `[gcoop] cidade "${nome}" não encontrada em ${uf || ufSigla || '?'}; usando UF ${hit.uf}`
+    );
+  }
+  return hit;
+}
+
+async function resolveCidadeId(ufSigla: string, nomeCidade: string): Promise<number | null> {
+  const ref = await resolveCidadeRef(ufSigla, nomeCidade, { searchOtherUfs: false });
+  return ref?.id ?? null;
 }
 
 function buildFlatDocumentFields(documentos: MedicoDocumentoRef[]): GcoopDocumentoFlatFields {
@@ -185,10 +226,17 @@ export async function mapWizardToGcoopPreCadastro(
   const dados = await getGcoopDadosIniciaisCached();
 
   const ufEndereco = str(w.estado).toUpperCase().slice(0, 2) || 'CE';
-  const ufNaturalidade =
+  const ufNaturalidadeInformada =
     findGcoopUfSigla(dados.ListaUF, str(w.estadoNaturalidade)) ?? ufEndereco;
   const cidadeEnderecoId = await resolveCidadeId(ufEndereco, str(w.cidade));
-  const cidadeNaturalidadeId = await resolveCidadeId(ufNaturalidade, str(w.cidadeNaturalidade));
+  // Naturalidade: se a cidade não existir na UF digitada, procura em outras UFs e corrige a sigla.
+  const naturalidadeRef = await resolveCidadeRef(
+    ufNaturalidadeInformada,
+    str(w.cidadeNaturalidade),
+    { searchOtherUfs: true }
+  );
+  const cidadeNaturalidadeId = naturalidadeRef?.id ?? null;
+  const ufNaturalidade = naturalidadeRef?.uf ?? ufNaturalidadeInformada;
 
   const sexoLabel = wizardValueToLabel('sexo', w.sexo);
   const estadoCivilLabel = wizardValueToLabel('estadoCivil', w.estadoCivil);
@@ -210,7 +258,7 @@ export async function mapWizardToGcoopPreCadastro(
     findGcoopItemIdByLabel(listaNacionalidade, str(w.nacionalidade) || 'Brasileira') ??
     findGcoopItemIdByLabel(listaNacionalidade, 'Brasileira') ??
     105;
-  const idOrgao = findGcoopItemIdByLabel(dados.ListaOrgaoExpedidor, str(w.rgOrgaoExpedicao));
+  const idOrgao = resolveGcoopOrgaoExpedidorId(dados.ListaOrgaoExpedidor, str(w.rgOrgaoExpedicao));
   const idConselho = resolveConselhoId(conselhoLabel, input.medico.profissao, w, dados.ListaConselho);
   const especialidadeNome =
     str(w.especialidadeProfissional) || input.medico.especialidades[0] || '';

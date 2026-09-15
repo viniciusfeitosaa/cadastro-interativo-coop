@@ -126,8 +126,29 @@ export const acceptInviteController = async (req: Request, res: Response) => {
 };
 
 export const registerPublicController = async (req: Request, res: Response) => {
+  const files = (req.files as Record<string, Express.Multer.File[]> | undefined) || undefined;
+  const fileFields = Object.keys(files || {}).filter((k) => (files?.[k]?.length ?? 0) > 0);
+  const contentLength = req.headers['content-length'];
+  const contentType = req.headers['content-type'];
+  const ip =
+    (typeof req.headers['x-forwarded-for'] === 'string'
+      ? req.headers['x-forwarded-for'].split(',')[0]?.trim()
+      : undefined) ||
+    req.ip ||
+    req.socket?.remoteAddress ||
+    null;
+
+  console.info('[auth/register] inicio:', {
+    contentLength: contentLength ? Number(contentLength) || contentLength : null,
+    multipart: String(contentType || '').toLowerCase().includes('multipart/form-data'),
+    contentType: contentType || null,
+    ip,
+    fileFieldCount: fileFields.length,
+    fileFields,
+    bodyKeys: Object.keys(req.body || {}),
+  });
+
   try {
-    const files = (req.files as Record<string, Express.Multer.File[]> | undefined) || undefined;
     const result = await registerPublicMedicoService(req.body, files);
     return res.status(201).json({
       success: true,
@@ -140,6 +161,8 @@ export const registerPublicController = async (req: Request, res: Response) => {
       stack: error?.stack || null,
       bodyKeys: Object.keys(req.body || {}),
       fileFields: Object.keys((req.files as Record<string, unknown>) || {}),
+      ip,
+      contentLength: contentLength ? Number(contentLength) || contentLength : null,
     });
     return res.status(error.statusCode || 500).json({
       success: false,

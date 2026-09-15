@@ -1,11 +1,18 @@
 # Mapa de Bordo — COOPVITTA
 
-> Última atualização: 2026-08-12
+> Última atualização: 2026-09-15
 
 ## Histórico de evolução
 
 Itens concluídos (mais recentes no topo):
 
+- [x] **2026-09-15** — **Validado em produção (lote do dia)**: WhatsApp pausar/dica única; cadastro Failed to fetch (compressão+XHR+retry); Gcoop RG/órgão + naturalidade UF×cidade; syncs de exemplo reenviados com sucesso.
+- [x] **2026-09-15** — **Gcoop naturalidade**: select de cidade por UF (IBGE); mapper busca cidade em outras UFs se a informada estiver errada (ex. Nilópolis+CE → RJ).
+- [x] **2026-09-15** — **Gcoop RG/órgão**: select de órgão (lista Gcoop); bloqueio RG=CPF no wizard/API; mapper com aliases + fallback SSP — corrige “Orgão expedidor da RG não informada”.
+- [x] **2026-09-15** — **Cadastro Failed to fetch (mitigação)**: compressão silenciosa de imagens; XHR com barra de progresso + 1 retry de rede; log `[auth/register] inicio` (size/IP/files); deploy frontend+backend VPS.
+- [x] **2026-09-15** — **Bot WhatsApp pausar/dica**: `pausar`/`retomar` processados antes do anti-eco; webhook `SEND_MESSAGE`; dica “digite *menu*” **uma vez** na primeira pausa (não a cada msg do cliente); deploy backend VPS.
+- [x] **2026-09-10** — **Bot WhatsApp finalizado (Prod Lais)**: fluxo cooperado/cadastro/áreas; horário seg–sex 08–17; silêncio após encaminhamento; `pausar`/`retomar` com apagar mensagem; webhook só na Lais; verificado open + webhook + hits 200.
+- [x] **2026-09-08** — **Bot WhatsApp Prod Lais**: fluxo cooperado → áreas / cadastro (`/cadastro`); horário seg–sex 08–17 (Fortaleza); fora do expediente; webhook `MESSAGES_UPSERT` na instância `CoopVitta - Prod Lais`; `EVOLUTION_INSTANCE` atualizado.
 - [x] **2026-08-12** — **Onvio Fase 0 + scaffold**: docs OAuth/`ONVIO-INTEGRACAO.md`; módulo `services/onvio` + Prisma sync; modal Associados com Abrir Onvio + Copiar dados; sync API preparado (503 até OAuth/path Onvio).
 - [x] **2026-08-05** — **Importação em lote na Avaliação**: colar lista (Excel/TSV) → pré-visualização → `PENDENTE_ANALISE` via `POST /admin/cadastros-pendentes/import-lote` (UI em `/avaliacao`, sem documentos/e-mail).
 - [x] **2026-07-30** — **APH opcional** no wizard de pré-cadastro público (demais anexos continuam obrigatórios).
@@ -42,8 +49,8 @@ Esta seção lista o que está planejado ou pendente. À medida que os itens sã
 - [ ] 🟥 **Alta Prioridade**: Cadastros com anexos perdidos (antes do volume `coopvitta_uploads`, ~20/07) — reenviar documentos ou fluxo admin de reupload; sem binário o Gcoop/“Ver dados” ficam incompletos
 - [ ] 🟨 **Média Prioridade**: Onvio — enviar e-mail `docs/ONVIO-PEDIDO-CREDENCIAIS.md` a `api.dominio@tr.com`; com OAuth + path de partner-registration, preencher `ONVIO_*` e ativar sync API
 - [ ] 🟨 **Média Prioridade**: Onvio — se a integration key vazou, pedir rotação ao suporte e atualizar `ONVIO_INTEGRATION_KEY` só no `.env` VPS
-- [ ] 🟨 **Média Prioridade**: Bot WhatsApp (menu 1/2/3) — código em `whatsapp-menu.service.ts` desligado; reativar webhook Evolution + números `WHATSAPP_MENU_*` quando quiser atendimento
-- [ ] 🟨 **Média Prioridade**: Parear/validar WhatsApp Evolution em `https://wa.coopvitta.cloud/manager` e testar esqueci-senha por WhatsApp
+- [ ] 🟨 **Média Prioridade**: Bot WhatsApp — configurar `WHATSAPP_MENU_ADMIN/FINANCE/DUDAS_NUMBER` no `.env` da VPS para encaminhar opções à equipe
+- [ ] 🟨 **Média Prioridade**: Testar esqueci-senha por WhatsApp na instância Prod Lais
 - [ ] 🟨 **Média Prioridade**: Redirecionar `cadastro.coopvitta.cloud` → `app.coopvitta.cloud/cadastro`
 - [ ] 🟨 **Média Prioridade**: JWT em produção ainda `JWT_EXPIRES_IN=24h` no `.env` — validar refresh token no frontend antes de reduzir para 15m
 - [ ] 🟨 **Média Prioridade**: Ativar `FIELD_ENCRYPTION_KEY` no `.env` se campos sensíveis forem criptografados em repouso (CPF hoje em texto para índice único)

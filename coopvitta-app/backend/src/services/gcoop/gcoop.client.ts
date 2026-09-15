@@ -105,10 +105,14 @@ export async function fetchGcoopCidades(ufSigla: string): Promise<GcoopDomainIte
   return Array.isArray(data) ? data : [];
 }
 
-export async function fetchGcoopPreCadastro(cpf: string): Promise<unknown> {
+export async function fetchGcoopPreCadastro(
+  cpf: string,
+  opts?: { timeoutMs?: number }
+): Promise<unknown> {
   const digits = cpf.replace(/\D/g, '');
   return gcoopFetch<unknown>(
-    `/Api/ImportPreCadastro/PreCadastro/GetPreCadastro?_cpf=${encodeURIComponent(digits)}`
+    `/Api/ImportPreCadastro/PreCadastro/GetPreCadastro?_cpf=${encodeURIComponent(digits)}`,
+    opts?.timeoutMs != null ? { timeoutMs: opts.timeoutMs } : undefined
   );
 }
 

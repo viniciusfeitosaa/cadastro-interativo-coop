@@ -9,6 +9,7 @@ import {
   type FormData,
 } from '../../schemas/formSchema';
 import { submitCadastroRegister } from '../../utils/submitRegister';
+import { onlyDigits } from '../../utils/masks';
 import { GCOOP_AREA_COOPERADO_URL } from '../../../../constants/gcoopPortal';
 import { StepIndicator } from './StepIndicator';
 import { STEP_COMPONENTS } from './WizardSteps';
@@ -34,6 +35,10 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [submitProgress, setSubmitProgress] = useState<{
+    phase: 'preparing' | 'uploading';
+    percent?: number;
+  } | null>(null);
 
   const methods = useForm<FormData>({
     defaultValues: defaultFormValues,
@@ -60,12 +65,25 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
       return;
     }
 
+    // RG não pode ser o CPF (comum no wizard e rejeitado/inútil no Gcoop).
+    if (STEPS[currentStep]?.id === 'documentos') {
+      const cpfDigits = onlyDigits(String(values.cpf || ''));
+      const rgDigits = onlyDigits(String(values.rg || ''));
+      if (cpfDigits.length === 11 && rgDigits && rgDigits === cpfDigits) {
+        methods.setError('rg', {
+          message: 'Informe o número do RG. Não use o CPF neste campo.',
+        });
+        return;
+      }
+    }
+
     if (isLastStep) {
       setSubmitting(true);
       setSubmitError('');
+      setSubmitProgress({ phase: 'preparing' });
       try {
         const allValues = methods.getValues();
-        await submitCadastroRegister(allValues);
+        await submitCadastroRegister(allValues, (p) => setSubmitProgress(p));
         setSubmitted(true);
       } catch (err) {
         setSubmitError(
@@ -73,6 +91,7 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
         );
       } finally {
         setSubmitting(false);
+        setSubmitProgress(null);
       }
       return;
     }
@@ -152,6 +171,26 @@ export function FormWizard({ embedded = false }: FormWizardProps) {
 
           <footer className="wizard-footer">
             {submitError && <p className="submit-error">{submitError}</p>}
+            {submitting && submitProgress && (
+              <div className="submit-progress" aria-live="polite">
+                <p className="submit-progress-label">
+                  {submitProgress.phase === 'preparing'
+                    ? 'Preparando anexos…'
+                    : `Enviando… ${submitProgress.percent ?? 0}%`}
+                </p>
+                <div className="submit-progress-track">
+                  <div
+                    className="submit-progress-bar"
+                    style={{
+                      width:
+                        submitProgress.phase === 'preparing'
+                          ? '12%'
+                          : `${Math.max(4, submitProgress.percent ?? 0)}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
             <button
               type="button"
               className="btn btn-ghost"

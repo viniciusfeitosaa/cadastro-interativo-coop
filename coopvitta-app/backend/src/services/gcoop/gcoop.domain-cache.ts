@@ -42,11 +42,57 @@ export function findGcoopItemIdByLabel(list: GcoopDomainItem[] | undefined, sear
     const label = normalizeGcoopLabel(getGcoopItemLabel(item));
     if (!label) continue;
     const id = getGcoopItemId(item);
-    if (id == null) continue;
+    if (id == null || id === 0) continue;
     if (label === n) return id;
     if (!partial && (label.includes(n) || n.includes(label))) partial = id;
   }
   return partial;
+}
+
+/**
+ * Resolve órgão expedidor do RG para o ID Gcoop.
+ * Aceita aliases comuns (texto livre legado) e cai em SSP se não houver match.
+ */
+export function resolveGcoopOrgaoExpedidorId(
+  list: GcoopDomainItem[] | undefined,
+  search: string
+): number | null {
+  const raw = (search || '').trim();
+  if (!raw) {
+    return findGcoopItemIdByLabel(list, 'SSP');
+  }
+
+  const direct = findGcoopItemIdByLabel(list, raw);
+  if (direct != null) return direct;
+
+  const n = normalizeGcoopLabel(raw);
+  const aliases: Array<{ match: RegExp; label: string }> = [
+    { match: /\bssp\b|secretaria de seguranca/, label: 'SSP' },
+    { match: /\bsds\b|defesa social/, label: 'SDS' },
+    { match: /\bifp\b|cihpb|instituto de identificacao/, label: 'IFP' },
+    { match: /\bdetran\b|\bcnt\b/, label: 'CNT' },
+    { match: /\bdic\b/, label: 'DIC' },
+    { match: /\bitep\b/, label: 'ITEP' },
+    { match: /\bimlc\b/, label: 'IMLC' },
+    { match: /\boab\b/, label: 'OAB' },
+    { match: /\bcrm\b/, label: 'CRM' },
+    { match: /\bcrea\b/, label: 'CREA' },
+    { match: /\bpolicia civil\b|\bpc\b|\bdgpc\b/, label: 'SSP' },
+  ];
+
+  for (const a of aliases) {
+    if (a.match.test(n)) {
+      const id = findGcoopItemIdByLabel(list, a.label);
+      if (id != null) return id;
+    }
+  }
+
+  // Fallback seguro: maioria dos RGs brasileiros é SSP — evita sync travado por typo.
+  const ssp = findGcoopItemIdByLabel(list, 'SSP');
+  if (ssp != null) {
+    console.warn('[gcoop] órgão expedidor não mapeado, usando SSP:', raw);
+  }
+  return ssp;
 }
 
 export function findGcoopRacaCorFallbackId(list: GcoopDomainItem[] | undefined): number | null {

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import {
   bancosOptions,
@@ -5,6 +6,7 @@ import {
   conselhoClasseOptions,
   estadoCivilOptions,
   grauInstrucaoOptions,
+  orgaoExpedicaoRgOptions,
   regimeComunhaoOptions,
   sexoOptions,
   tipoSanguineoOptions,
@@ -39,6 +41,79 @@ function useMaskedField(name: keyof FormData, maskFn: (v: string) => string) {
       setValue(name, masked as FormData[typeof name], { shouldDirty: true })
     },
   }
+}
+
+/** Cidades da UF de naturalidade via IBGE — evita Nilópolis+CE e similares. */
+function NaturalidadeCidadeField() {
+  const { watch, setValue } = useFormContext<FormData>()
+  const uf = watch('estadoNaturalidade')
+  const [options, setOptions] = useState<{ value: string; label: string }[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const sigla = (uf || '').trim().toUpperCase().slice(0, 2)
+    setValue('cidadeNaturalidade', '', { shouldDirty: true })
+    if (!sigla) {
+      setOptions([])
+      return
+    }
+
+    let cancelled = false
+    setLoading(true)
+    fetch(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${encodeURIComponent(sigla)}/municipios?orderBy=nome`,
+    )
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((data: Array<{ nome?: string }>) => {
+        if (cancelled) return
+        const opts = (Array.isArray(data) ? data : [])
+          .map((c) => String(c?.nome || '').trim())
+          .filter(Boolean)
+          .map((nome) => ({ value: nome, label: nome }))
+        setOptions(opts)
+      })
+      .catch(() => {
+        if (!cancelled) setOptions([])
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [uf, setValue])
+
+  if (!uf) {
+    return (
+      <TextField
+        name="cidadeNaturalidade"
+        label="Cidade da naturalidade"
+        placeholder="Selecione primeiro o estado"
+        disabled
+      />
+    )
+  }
+
+  if (options.length > 0) {
+    return (
+      <SelectField
+        key={uf}
+        name="cidadeNaturalidade"
+        label="Cidade da naturalidade"
+        options={options}
+        placeholder={loading ? 'Carregando cidades…' : 'Selecione a cidade'}
+      />
+    )
+  }
+
+  return (
+    <TextField
+      name="cidadeNaturalidade"
+      label="Cidade da naturalidade"
+      placeholder={loading ? 'Carregando…' : 'Cidade de nascimento'}
+    />
+  )
 }
 
 export function StepIdentificacao() {
@@ -109,11 +184,7 @@ export function StepIdentificacao() {
         label="Estado da naturalidade"
         options={ufOptions}
       />
-      <TextField
-        name="cidadeNaturalidade"
-        label="Cidade da naturalidade"
-        placeholder="Cidade de nascimento"
-      />
+      <NaturalidadeCidadeField />
       <TextField name="nomePai" label="Nome do pai" placeholder="Nome completo" />
       <TextField name="nomeMae" label="Nome da mãe" placeholder="Nome completo" />
     </div>
@@ -123,16 +194,16 @@ export function StepIdentificacao() {
 export function StepDocumentos() {
   return (
     <div className="step-grid">
-      <TextField name="rg" label="RG do proponente" placeholder="Número do RG" />
+      <TextField name="rg" label="RG do proponente" placeholder="Número do RG (não use o CPF)" />
       <TextField
         name="rgDataExpedicao"
         label="Data de expedição do RG"
         type="date"
       />
-      <TextField
+      <SelectField
         name="rgOrgaoExpedicao"
         label="Órgão de expedição do RG"
-        placeholder="Ex.: SSP"
+        options={orgaoExpedicaoRgOptions}
       />
       <SelectField
         name="rgUfOrgao"

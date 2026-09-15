@@ -71,6 +71,10 @@ const envSchema = z.object({
   EVOLUTION_API_URL: z.string().url().optional(), // ex: https://sua-evolution.com ou http://localhost:8080
   EVOLUTION_API_KEY: z.string().optional(),
   EVOLUTION_INSTANCE: z.string().optional(),
+  /** Números da equipe para encaminhamento do menu WhatsApp (DDI+DDD, só dígitos ou formatado). */
+  WHATSAPP_MENU_ADMIN_NUMBER: z.string().optional(),
+  WHATSAPP_MENU_FINANCE_NUMBER: z.string().optional(),
+  WHATSAPP_MENU_DUDAS_NUMBER: z.string().optional(),
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   TWILIO_WHATSAPP_FROM: z.string().optional(),
