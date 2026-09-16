@@ -1,9 +1,26 @@
-import { GcoopSyncStatus, StatusCadastroMedico } from '@prisma/client';
+import fs from 'fs';
+import { DocumentoRevisaoStatus, GcoopSyncStatus, StatusCadastroMedico } from '@prisma/client';
 import { prisma } from '../config/database';
+import { DOCUMENTO_LABEL_BY_TIPO } from '../constants/documentos.const';
+import {
+  fileExistsSafe,
+  resolveStoredFileToAbsolute,
+  toStoredUploadPath,
+} from '../utils/upload-path.util';
 import { createAuditLog } from './auditoria.service';
 import { getMedicoDocumentoPerfilForDownload } from './medico.service';
 import { isGcoopEnabled } from './gcoop/gcoop.config';
 import { syncMedicoToGcoop } from './gcoop/gcoop.service';
+
+function unlinkStoredPathQuiet(caminhoStored: string | null | undefined) {
+  if (!caminhoStored?.trim()) return;
+  try {
+    const full = resolveStoredFileToAbsolute(caminhoStored.trim());
+    if (fileExistsSafe(full)) fs.unlinkSync(full);
+  } catch {
+    // caminho inválido ou fora de uploads — ignorar
+  }
+}
 
 export interface ListCadastrosPendentesFilters {
   nome?: string;
@@ -77,6 +94,9 @@ export async function getCadastroPendenteDetalheService(tenantId: string, medico
           nomeArquivo: true,
           mimeType: true,
           tamanhoBytes: true,
+          revisaoStatus: true,
+          revisaoMensagem: true,
+          revisaoEm: true,
           createdAt: true,
         },
         orderBy: { updatedAt: 'desc' },
@@ -220,4 +240,218 @@ export async function rejeitarCadastroPendenteService(tenantId: string, masterId
   });
 
   return { ok: true as const };
+}
+
+async function assertCadastroPendenteComDocumento(
+  tenantId: string,
+  medicoId: string,
+  documentoId: string
+) {
+  const m = await prisma.medico.findFirst({
+    where: { id: medicoId, tenantId, statusCadastro: StatusCadastroMedico.PENDENTE_ANALISE },
+    select: {
+      id: true,
+      nomeCompleto: true,
+      email: true,
+      documentos: {
+        where: { id: documentoId },
+        select: {
+          id: true,
+          tipo: true,
+          nomeArquivo: true,
+          caminhoArquivo: true,
+          mimeType: true,
+          revisaoStatus: true,
+        },
+      },
+    },
+  });
+  if (!m) {
+    throw { statusCode: 404, message: 'Cadastro pendente não encontrado ou já processado' };
+  }
+  const doc = m.documentos[0];
+  if (!doc) {
+    throw { statusCode: 404, message: 'Documento não encontrado neste cadastro' };
+  }
+  return { medico: m, doc };
+}
+
+export async function marcarDocumentoRevisaoOkService(
+  tenantId: string,
+  masterId: string,
+  medicoId: string,
+  documentoId: string
+) {
+  const { doc } = await assertCadastroPendenteComDocumento(tenantId, medicoId, documentoId);
+  const updated = await prisma.medicoDocumento.update({
+    where: { id: doc.id },
+    data: {
+      revisaoStatus: DocumentoRevisaoStatus.OK,
+      revisaoMensagem: null,
+      revisaoEm: new Date(),
+      revisaoPorId: masterId,
+    },
+    select: {
+      id: true,
+      tipo: true,
+      nomeArquivo: true,
+      mimeType: true,
+      tamanhoBytes: true,
+      revisaoStatus: true,
+      revisaoMensagem: true,
+      revisaoEm: true,
+      createdAt: true,
+    },
+  });
+  await createAuditLog({
+    acao: 'REVISAR_DOCUMENTO_CADASTRO_OK',
+    tenantId,
+    masterId,
+    medicoId,
+    detalhes: { documentoId: doc.id, tipo: doc.tipo },
+  });
+  return updated;
+}
+
+export async function solicitarDocumentoNovamenteService(
+  tenantId: string,
+  masterId: string,
+  medicoId: string,
+  documentoId: string,
+  mensagem: string
+) {
+  const msg = (mensagem || '').trim();
+  if (msg.length < 5) {
+    throw { statusCode: 400, message: 'Informe o motivo (mínimo 5 caracteres) para solicitar o reenvio' };
+  }
+  if (msg.length > 2000) {
+    throw { statusCode: 400, message: 'Mensagem demasiado longa (máx. 2000 caracteres)' };
+  }
+
+  const { medico, doc } = await assertCadastroPendenteComDocumento(tenantId, medicoId, documentoId);
+  const emailTo = (medico.email ?? '').trim().toLowerCase();
+  if (!emailTo) {
+    throw { statusCode: 400, message: 'Cadastro sem e-mail — não é possível solicitar o documento por e-mail' };
+  }
+
+  const tenant = await prisma.tenant.findUnique({
+    where: { id: tenantId },
+    select: { nome: true },
+  });
+  const nomeInstituicao = tenant?.nome?.trim() || null;
+  const documentoLabel = DOCUMENTO_LABEL_BY_TIPO[doc.tipo] || String(doc.tipo);
+
+  try {
+    const { enqueueEmailJob } = await import('../jobs/email-queue');
+    const queued = await enqueueEmailJob({
+      type: 'documento-reenvio-solicitado',
+      to: emailTo,
+      nomeCompleto: medico.nomeCompleto,
+      documentoLabel,
+      mensagem: msg,
+      nomeInstituicao,
+    });
+    if (!queued) {
+      const { enviarEmailDocumentoReenvioSolicitado } = await import('./cadastro-publico-email.service');
+      await enviarEmailDocumentoReenvioSolicitado({
+        to: emailTo,
+        nomeCompleto: medico.nomeCompleto,
+        documentoLabel,
+        mensagem: msg,
+        nomeInstituicao,
+      });
+    }
+  } catch (err) {
+    console.error('[cadastro-pendente] Falha ao enviar e-mail de reenvio de documento:', err);
+    throw {
+      statusCode: 502,
+      message: 'Não foi possível enviar o e-mail de solicitação. Tente novamente.',
+    };
+  }
+
+  const updated = await prisma.medicoDocumento.update({
+    where: { id: doc.id },
+    data: {
+      revisaoStatus: DocumentoRevisaoStatus.SOLICITADO_NOVAMENTE,
+      revisaoMensagem: msg,
+      revisaoEm: new Date(),
+      revisaoPorId: masterId,
+    },
+    select: {
+      id: true,
+      tipo: true,
+      nomeArquivo: true,
+      mimeType: true,
+      tamanhoBytes: true,
+      revisaoStatus: true,
+      revisaoMensagem: true,
+      revisaoEm: true,
+      createdAt: true,
+    },
+  });
+
+  await createAuditLog({
+    acao: 'SOLICITAR_DOCUMENTO_CADASTRO_NOVAMENTE',
+    tenantId,
+    masterId,
+    medicoId,
+    detalhes: { documentoId: doc.id, tipo: doc.tipo },
+  });
+
+  return updated;
+}
+
+export async function substituirDocumentoCadastroPendenteService(
+  tenantId: string,
+  masterId: string,
+  medicoId: string,
+  documentoId: string,
+  file: Express.Multer.File | undefined
+) {
+  if (!file) {
+    throw { statusCode: 400, message: 'Envie o ficheiro no campo "arquivo"' };
+  }
+
+  const { doc } = await assertCadastroPendenteComDocumento(tenantId, medicoId, documentoId);
+  const oldPath = doc.caminhoArquivo;
+  const storedPath = toStoredUploadPath(file.path);
+
+  const updated = await prisma.medicoDocumento.update({
+    where: { id: doc.id },
+    data: {
+      nomeArquivo: file.originalname || doc.nomeArquivo,
+      caminhoArquivo: storedPath,
+      mimeType: file.mimetype || 'application/octet-stream',
+      tamanhoBytes: file.size,
+      revisaoStatus: DocumentoRevisaoStatus.OK,
+      revisaoMensagem: null,
+      revisaoEm: new Date(),
+      revisaoPorId: masterId,
+    },
+    select: {
+      id: true,
+      tipo: true,
+      nomeArquivo: true,
+      mimeType: true,
+      tamanhoBytes: true,
+      revisaoStatus: true,
+      revisaoMensagem: true,
+      revisaoEm: true,
+      createdAt: true,
+    },
+  });
+
+  if (oldPath && oldPath !== storedPath) {
+    unlinkStoredPathQuiet(oldPath);
+  }
+
+  await createAuditLog({
+    acao: 'SUBSTITUIR_DOCUMENTO_CADASTRO_PENDENTE',
+    tenantId,
+    masterId,
+    medicoId,
+    detalhes: { documentoId: doc.id, tipo: doc.tipo, nomeArquivo: updated.nomeArquivo },
+  });
+
+  return updated;
 }

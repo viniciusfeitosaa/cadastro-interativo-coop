@@ -33,6 +33,13 @@ enum DocumentoPerfilTipo {
   TITULO_ESPECIALISTA
 }
 
+/// Revisão de anexo na fila de Avaliação (pré-cadastro).
+enum DocumentoRevisaoStatus {
+  PENDENTE
+  OK
+  SOLICITADO_NOVAMENTE
+}
+
 enum StatusCadastroMedico {
   PENDENTE_ANALISE
   ATIVO
@@ -274,6 +281,10 @@ model MedicoDocumento {
   caminhoArquivo String            @map("caminho_arquivo") @db.Text
   mimeType      String             @map("mime_type") @db.VarChar(120)
   tamanhoBytes  Int                @map("tamanho_bytes")
+  revisaoStatus DocumentoRevisaoStatus @default(PENDENTE) @map("revisao_status")
+  revisaoMensagem String?          @map("revisao_mensagem") @db.Text
+  revisaoEm     DateTime?          @map("revisao_em")
+  revisaoPorId  String?            @map("revisao_por_id") @db.VarChar(36)
   createdAt     DateTime           @default(now()) @map("created_at")
   updatedAt     DateTime           @updatedAt @map("updated_at")
 
@@ -285,6 +296,7 @@ model MedicoDocumento {
   @@index([tenantId])
   @@index([medicoId])
   @@index([tipo])
+  @@index([revisaoStatus])
 }
 
 model DocumentoEnviado {

@@ -26,13 +26,18 @@ O DocuSeal anexa ao PDF final um **Certificado de Auditoria** com:
 
 ### 2. Verificação de identidade por e-mail (2FA)
 
-Todas as submissões criadas pela plataforma AppVS usam:
+Submissões com **dois signatários**:
 
-```env
-DOCUSEAL_REQUIRE_EMAIL_2FA=true
-```
+| Parte | E-mail / 2FA | Assinatura |
+|-------|--------------|------------|
+| **Primeira Parte** (cooperado) | E-mail de convite + OTP (`DOCUSEAL_REQUIRE_EMAIL_2FA`) | Manual pelo link |
+| **Segunda Parte** (COOPVITTA) | **Sem** e-mail e **sem** 2FA | Automática via API (`completed: true`) |
 
-O signatário recebe um **código OTP por e-mail** antes de abrir o documento — reforço da associação unívoca (Lei 14.063/2020, art. 4º, II).
+E-mail técnico da Segunda Parte (identifica o signatário na API, não recebe convite): `DOCUSEAL_SECOND_SUBMITTER_EMAIL` → em produção `rtenfermagem@coopvitta.org`.  
+Nome exibido na assinatura (três linhas): `DOCUSEAL_SECOND_SUBMITTER_NAME` + `TITLE` + `CNPJ` →  
+Thiago Matos Albuquerque Fonseca / Diretor Presidente / CNPJ: 14.376.205/0001-80.
+
+Templates `singleSubmitter` (ex. Termo SAMU): só o cooperado assina.
 
 ### 3. E-mail transacional dedicado
 
@@ -53,7 +58,8 @@ Reply-To: `rtenfermagem@coopvitta.org`
 ### 5. Integração AppVS
 
 - API token em `DOCUSEAL_API_KEY` (rotacionar periodicamente)
-- Template **Termo de adesão** (id 2): cooperado + COOPVITTA (dois signatários)
+- Template **Termo de adesão** (id **6**, sem sufixo `-`): cooperado + COOPVITTA (dois signatários). Segunda Parte pré-preenche **Fortaleza / CE / DIA / MES / ANO** (timezone `America/Fortaleza`) e carimba assinatura automática.
+- Template antigo id 2 (`… COOPERADO -`) ficou de fora do fluxo.
 - Template **Termo de responsabilidade — viaturas/equipamentos SAMU** (id 4): **só o cooperado** preenche e assina (`singleSubmitter: true`)
 
 ## DNS obrigatório (anti-spoofing / entregabilidade)

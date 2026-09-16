@@ -5,6 +5,7 @@ import { authService } from '../services/auth.service';
 import {
   adminService,
   type CadastroPendenteDetalhe,
+  type CadastroPendenteDocumento,
   type CadastroPendenteListItem,
 } from '../services/admin.service';
 import {
@@ -13,20 +14,12 @@ import {
   type DocumentoPerfilField,
 } from '../constants/documentosPerfil';
 import ImportCadastroLoteModal from '../features/avaliacao/ImportCadastroLoteModal';
+import AvaliacaoDocumentoItem from '../features/avaliacao/AvaliacaoDocumentoItem';
 
 function labelDocumentoTipo(tipo: string): string {
   const entry = Object.entries(DOCUMENTO_TIPO_BY_FIELD).find(([, v]) => v === tipo);
   if (entry) return DOCUMENTO_LABEL_BY_FIELD[entry[0] as DocumentoPerfilField];
   return tipo;
-}
-
-function triggerBlobDownload(blob: Blob, nomeArquivo: string) {
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = nomeArquivo || 'documento';
-  a.click();
-  window.URL.revokeObjectURL(url);
 }
 
 const Avaliacao = () => {
@@ -207,13 +200,18 @@ const Avaliacao = () => {
 
   const actionPending = aprovarMutation.isPending || rejeitarMutation.isPending;
 
-  const downloadDoc = async (medicoId: string, docId: string, nomeArquivo: string) => {
-    try {
-      const blob = await adminService.downloadCadastroPendenteDocumento(medicoId, docId);
-      triggerBlobDownload(blob, nomeArquivo);
-    } catch {
-      setActionError('Falha ao baixar o documento.');
-    }
+  const patchDocumentoNoDetalhe = (updated: CadastroPendenteDocumento) => {
+    if (!selectedId) return;
+    queryClient.setQueryData(
+      ['admin', 'cadastro-pendente-detalhe', selectedId],
+      (prev: CadastroPendenteDetalhe | null | undefined) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          documentos: (prev.documentos || []).map((d) => (d.id === updated.id ? { ...d, ...updated } : d)),
+        };
+      }
+    );
   };
 
   if (modulosLoading) {
@@ -482,22 +480,18 @@ const Avaliacao = () => {
                 {!d.documentos?.length && <p className="text-sm text-coop-700 font-serif">Nenhum ficheiro anexado no cadastro.</p>}
                 <ul className="space-y-2">
                   {d.documentos?.map((doc) => (
-                    <li
+                    <AvaliacaoDocumentoItem
                       key={doc.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-coop-200/80 bg-coop-50/40 px-3 py-2"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-coop-900">{labelDocumentoTipo(doc.tipo)}</p>
-                        <p className="text-xs text-coop-700">{doc.nomeArquivo}</p>
-                      </div>
-                      <button
-                        type="button"
-                        className="text-sm font-semibold text-coop-700 hover:text-coop-900 underline"
-                        onClick={() => downloadDoc(d.id, doc.id, doc.nomeArquivo)}
-                      >
-                        Descarregar
-                      </button>
-                    </li>
+                      medicoId={d.id}
+                      label={labelDocumentoTipo(doc.tipo)}
+                      doc={doc}
+                      onUpdated={patchDocumentoNoDetalhe}
+                      onError={setActionError}
+                      onInfo={(msg) => {
+                        setActionError(null);
+                        setActionInfo(msg);
+                      }}
+                    />
                   ))}
                 </ul>
               </div>

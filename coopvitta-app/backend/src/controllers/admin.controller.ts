@@ -73,7 +73,10 @@ import {
   downloadCadastroPendenteDocumentoService,
   getCadastroPendenteDetalheService,
   listCadastrosPendentesService,
+  marcarDocumentoRevisaoOkService,
   rejeitarCadastroPendenteService,
+  solicitarDocumentoNovamenteService,
+  substituirDocumentoCadastroPendenteService,
 } from '../services/cadastro-pendente.service';
 import { importCadastrosPendentesLoteService } from '../services/cadastro-import-lote.service';
 import {
@@ -1624,6 +1627,73 @@ export const downloadCadastroPendenteDocumentoController = async (req: Request, 
     return res.status(error.statusCode || 500).json({
       success: false,
       error: error.message || 'Erro ao baixar documento',
+    });
+  }
+};
+
+export const marcarDocumentoCadastroPendenteOkController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { medicoId, documentoId } = req.params;
+    const data = await marcarDocumentoRevisaoOkService(
+      req.user.tenantId,
+      req.user.id,
+      medicoId,
+      documentoId
+    );
+    return res.status(200).json({ success: true, data, message: 'Documento confirmado' });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao confirmar documento',
+    });
+  }
+};
+
+export const solicitarDocumentoCadastroPendenteController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { medicoId, documentoId } = req.params;
+    const mensagem = typeof req.body?.mensagem === 'string' ? req.body.mensagem : '';
+    const data = await solicitarDocumentoNovamenteService(
+      req.user.tenantId,
+      req.user.id,
+      medicoId,
+      documentoId,
+      mensagem
+    );
+    return res.status(200).json({ success: true, data, message: 'Solicitação enviada por e-mail' });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao solicitar documento',
+    });
+  }
+};
+
+export const substituirDocumentoCadastroPendenteController = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ success: false, error: 'Não autenticado' });
+    }
+    const { medicoId, documentoId } = req.params;
+    const file = req.file as Express.Multer.File | undefined;
+    const data = await substituirDocumentoCadastroPendenteService(
+      req.user.tenantId,
+      req.user.id,
+      medicoId,
+      documentoId,
+      file
+    );
+    return res.status(200).json({ success: true, data, message: 'Documento substituído' });
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({
+      success: false,
+      error: error.message || 'Erro ao substituir documento',
     });
   }
 };

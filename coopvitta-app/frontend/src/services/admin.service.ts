@@ -75,6 +75,9 @@ export interface CadastroPendenteDocumento {
   nomeArquivo: string;
   mimeType: string;
   tamanhoBytes: number;
+  revisaoStatus?: 'PENDENTE' | 'OK' | 'SOLICITADO_NOVAMENTE';
+  revisaoMensagem?: string | null;
+  revisaoEm?: string | null;
   createdAt: string;
 }
 
@@ -1184,6 +1187,32 @@ export const adminService = {
     const response = await api.get<Blob>(
       `/admin/cadastros-pendentes/${medicoId}/documentos/${documentoId}/download`,
       { responseType: 'blob' }
+    );
+    return response.data;
+  },
+
+  marcarDocumentoCadastroPendenteOk: async (medicoId: string, documentoId: string) => {
+    const response = await api.patch<{ success: boolean; data: CadastroPendenteDocumento; message?: string }>(
+      `/admin/cadastros-pendentes/${medicoId}/documentos/${documentoId}/ok`
+    );
+    return response.data;
+  },
+
+  solicitarDocumentoCadastroPendente: async (medicoId: string, documentoId: string, mensagem: string) => {
+    const response = await api.post<{ success: boolean; data: CadastroPendenteDocumento; message?: string }>(
+      `/admin/cadastros-pendentes/${medicoId}/documentos/${documentoId}/solicitar`,
+      { mensagem }
+    );
+    return response.data;
+  },
+
+  substituirDocumentoCadastroPendente: async (medicoId: string, documentoId: string, arquivo: File) => {
+    const form = new FormData();
+    form.append('arquivo', arquivo);
+    const response = await api.post<{ success: boolean; data: CadastroPendenteDocumento; message?: string }>(
+      `/admin/cadastros-pendentes/${medicoId}/documentos/${documentoId}/substituir`,
+      form,
+      { headers: { 'Content-Type': 'multipart/form-data' } }
     );
     return response.data;
   },

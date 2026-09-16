@@ -11,6 +11,8 @@
  *
  * Convite (POST /admin/medicos/:id/invite): DOCUSEAL_REQUIRED_TEMPLATES + DOCUSEAL_SECOND_SUBMITTER_EMAIL, etc.
  */
+import fs from 'fs';
+import path from 'path';
 import { buildDocusealInviteEmailBody } from '../utils/email-branding.util';
 import { fetchWithTimeout } from '../utils/fetch-with-timeout';
 
@@ -600,6 +602,33 @@ type DocusealInviteCfg =
       replyTo: string | undefined;
     };
 
+function formatSecondSubmitterDisplayName(): string {
+  const name =
+    process.env.DOCUSEAL_SECOND_SUBMITTER_NAME?.trim() ||
+    process.env.ORG_DISPLAY_NAME?.trim() ||
+    'COOPVITTA';
+  const title = process.env.DOCUSEAL_SECOND_SUBMITTER_TITLE?.trim() || '';
+  const cnpjRaw = process.env.DOCUSEAL_SECOND_SUBMITTER_CNPJ?.trim() || '';
+  const cnpj = cnpjRaw
+    ? cnpjRaw.match(/^cnpj\b/i)
+      ? cnpjRaw
+      : `CNPJ: ${cnpjRaw}`
+    : '';
+
+  // Preferir linhas separadas (nome / cargo / CNPJ) quando title/cnpj estiverem no env.
+  if (title || cnpj) {
+    return [name, title, cnpj].filter(Boolean).join('\n');
+  }
+
+  // Fallback: `\n` literais ou " — " no valor único de NAME.
+  return name
+    .replace(/\\n/g, '\n')
+    .split(/\n|—/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
 function docusealInviteConfig(): DocusealInviteCfg {
   const c = credenciaisDocuseal();
   if (!c.ok) return { ok: false };
@@ -608,10 +637,7 @@ function docusealInviteConfig(): DocusealInviteCfg {
 
   const firstRole = process.env.DOCUSEAL_FIRST_SUBMITTER_ROLE?.trim() || 'Primeira Parte';
   const secondRole = process.env.DOCUSEAL_SECOND_SUBMITTER_ROLE?.trim() || 'Segunda Parte';
-  const secondName =
-    process.env.DOCUSEAL_SECOND_SUBMITTER_NAME?.trim() ||
-    process.env.ORG_DISPLAY_NAME?.trim() ||
-    'COOPVITTA';
+  const secondName = formatSecondSubmitterDisplayName();
   const secondEmail = normalizarEmailDocuseal(process.env.DOCUSEAL_SECOND_SUBMITTER_EMAIL);
   if (!secondEmail) return { ok: false };
 
@@ -644,31 +670,212 @@ export type DocusealCriarSubmissoesOpcoes = {
   onlyTemplateIds?: number[];
 };
 
+function loadCoopSignatureDataUrl(): string | null {
+  const envPath = process.env.DOCUSEAL_SECOND_SUBMITTER_SIGNATURE_PATH?.trim();
+  const candidates = [
+    envPath,
+    path.join(process.cwd(), 'assets', 'docuseal-assinatura-presidente.png'),
+    path.join(__dirname, '..', '..', 'assets', 'docuseal-assinatura-presidente.png'),
+  ].filter((p): p is string => Boolean(p));
+
+  for (const p of candidates) {
+    try {
+      if (!fs.existsSync(p)) continue;
+      const b64 = fs.readFileSync(p).toString('base64');
+      if (!b64) continue;
+      return `data:image/png;base64,${b64}`;
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+/** Campo de assinatura da Segunda Parte no template (uuid). Cache por template_id. */
+const secondPartyTemplateFieldsCache = new Map<
+  number,
+  { signatureUuid: string | null; textFields: Array<{ name: string; uuid: string }> }
+>();
+
+const MESES_PT = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+] as const;
+
+/** Data/local da assinatura da CoopVitta (America/Fortaleza). */
+function buildCoopSigningPlaceDateValues(): Record<string, string> {
+  const tz = 'America/Fortaleza';
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: tz,
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+  }).formatToParts(new Date());
+
+  const day = parts.find((p) => p.type === 'day')?.value || '';
+  const monthNum = parseInt(parts.find((p) => p.type === 'month')?.value || '1', 10);
+  const yearFull = parts.find((p) => p.type === 'year')?.value || '';
+  const mes = MESES_PT[Math.max(0, Math.min(11, monthNum - 1))] || '';
+  const ano = yearFull.length >= 2 ? yearFull.slice(-2) : yearFull;
+
+  const cityRaw = (process.env.DOCUSEAL_SIGNING_CITY || 'Fortaleza').trim() || 'Fortaleza';
+  const ufRaw = (process.env.DOCUSEAL_SIGNING_UF || 'CE').trim().toUpperCase().slice(0, 2) || 'CE';
+
+  return {
+    Fortaleza: cityRaw.toUpperCase(),
+    fortaleza: cityRaw.toUpperCase(),
+    CE: ufRaw,
+    ce: ufRaw,
+    DIA: day,
+    Dia: day,
+    dia: day,
+    MES: mes,
+    Mes: mes,
+    mes: mes,
+    ANO: ano,
+    Ano: ano,
+    ano: ano,
+  };
+}
+
+function resolvePrefillValueForFieldName(
+  fieldName: string,
+  values: Record<string, string>
+): string | null {
+  const raw = (fieldName || '').trim();
+  if (!raw) return null;
+  if (values[raw] != null) return values[raw];
+  const lower = raw.toLowerCase();
+  for (const [k, v] of Object.entries(values)) {
+    if (k.toLowerCase() === lower) return v;
+  }
+  return null;
+}
+
+async function resolveSecondPartyTemplateFields(
+  apiBase: string,
+  token: string,
+  templateId: number,
+  secondRoleName: string,
+  signal?: AbortSignal
+): Promise<{ signatureUuid: string | null; textFields: Array<{ name: string; uuid: string }> }> {
+  const cached = secondPartyTemplateFieldsCache.get(templateId);
+  if (cached) return cached;
+
+  const empty = { signatureUuid: null as string | null, textFields: [] as Array<{ name: string; uuid: string }> };
+  try {
+    const resp = await fetchWithTimeout(`${apiBase}/templates/${templateId}`, {
+      method: 'GET',
+      headers: { 'X-Auth-Token': token },
+      signal,
+    });
+    if (!resp.ok) {
+      secondPartyTemplateFieldsCache.set(templateId, empty);
+      return empty;
+    }
+    const tpl = (await resp.json()) as Record<string, unknown>;
+    const submitters = Array.isArray(tpl.submitters) ? (tpl.submitters as Record<string, unknown>[]) : [];
+    const second = submitters.find((s) => {
+      const n = typeof s.name === 'string' ? s.name : '';
+      return n.trim().toLowerCase() === secondRoleName.trim().toLowerCase() || /segunda/i.test(n);
+    });
+    const secondUuid = typeof second?.uuid === 'string' ? second.uuid : null;
+    const fields = Array.isArray(tpl.fields) ? (tpl.fields as Record<string, unknown>[]) : [];
+
+    let signatureUuid: string | null = null;
+    const textFields: Array<{ name: string; uuid: string }> = [];
+    for (const f of fields) {
+      if (secondUuid && f.submitter_uuid !== secondUuid) continue;
+      const uuid = typeof f.uuid === 'string' ? f.uuid : null;
+      if (!uuid) continue;
+      if (f.type === 'signature') {
+        if (!signatureUuid) signatureUuid = uuid;
+        continue;
+      }
+      if (f.type === 'text' && typeof f.name === 'string' && f.name.trim()) {
+        textFields.push({ name: f.name.trim(), uuid });
+      }
+    }
+    const resolved = { signatureUuid, textFields };
+    secondPartyTemplateFieldsCache.set(templateId, resolved);
+    return resolved;
+  } catch {
+    secondPartyTemplateFieldsCache.set(templateId, empty);
+    return empty;
+  }
+}
+
 function buildSubmittersForTemplate(
   tpl: DocusealRequiredTemplate,
   cfg: Extract<DocusealInviteCfg, { ok: true }>,
   medico: { nomeCompleto: string; email: string },
-  emailMed: string
+  emailMed: string,
+  opts?: {
+    signatureFieldUuid?: string | null;
+    signatureDataUrl?: string | null;
+    secondPartyTextFields?: Array<{ name: string; uuid: string }>;
+  }
 ): Array<Record<string, unknown>> {
   const twoFa = docuseal2faFlags();
-  const first = {
+  // Cooperado: recebe e-mail + 2FA (assinatura avançada).
+  const first: Record<string, unknown> = {
     role: tpl.role || cfg.firstRole,
     name: medico.nomeCompleto.trim(),
     email: emailMed,
+    send_email: true,
     ...twoFa,
   };
 
   if (tpl.singleSubmitter) return [first];
 
-  return [
-    first,
-    {
-      role: tpl.secondRole || cfg.secondRole,
-      name: cfg.secondName,
-      email: cfg.secondEmail,
-      ...twoFa,
-    },
-  ];
+  // CoopVitta (Segunda Parte): assinatura automática via API — sem e-mail e sem 2FA.
+  // DocuSeal exige imagem (url/base64) no campo signature; texto tipográfico sozinho não carimba o PDF.
+  const second: Record<string, unknown> = {
+    role: tpl.secondRole || cfg.secondRole,
+    name: cfg.secondName,
+    email: cfg.secondEmail,
+    send_email: false,
+    require_email_2fa: false,
+    completed: true,
+  };
+
+  const fields: Array<Record<string, unknown>> = [];
+  const placeDate = buildCoopSigningPlaceDateValues();
+  for (const tf of opts?.secondPartyTextFields || []) {
+    const value = resolvePrefillValueForFieldName(tf.name, placeDate);
+    if (value == null) continue;
+    fields.push({
+      uuid: tf.uuid,
+      default_value: value,
+      readonly: true,
+    });
+  }
+
+  if (opts?.signatureFieldUuid && opts?.signatureDataUrl) {
+    fields.push({
+      uuid: opts.signatureFieldUuid,
+      default_value: opts.signatureDataUrl,
+      readonly: true,
+    });
+  } else {
+    console.warn(
+      '[docuseal] Segunda Parte sem imagem de assinatura — o PDF pode ficar sem carimbo da cooperativa'
+    );
+  }
+
+  if (fields.length > 0) second.fields = fields;
+
+  return [first, second];
 }
 
 function findMedicoSubmitterRecord(row: Record<string, unknown>, emailNorm: string): Record<string, unknown> | null {
@@ -948,11 +1155,28 @@ export async function createDocusealSubmissionsForMedicoInvite(
 
   const only = opts?.onlyTemplateIds?.filter((id) => Number.isFinite(id) && id > 0) ?? null;
 
+  const signatureDataUrl = loadCoopSignatureDataUrl();
+
   try {
     for (const tpl of cfg.templates) {
       if (only != null && only.length > 0 && !only.includes(tpl.id)) continue;
 
-      const submitters = buildSubmittersForTemplate(tpl, cfg, medico, emailMed);
+      const secondRole = tpl.secondRole || cfg.secondRole;
+      const secondFields = tpl.singleSubmitter
+        ? { signatureUuid: null as string | null, textFields: [] as Array<{ name: string; uuid: string }> }
+        : await resolveSecondPartyTemplateFields(
+            cfg.apiBase,
+            cfg.token,
+            tpl.id,
+            secondRole,
+            ctrl.signal
+          );
+
+      const submitters = buildSubmittersForTemplate(tpl, cfg, medico, emailMed, {
+        signatureFieldUuid: secondFields.signatureUuid,
+        signatureDataUrl,
+        secondPartyTextFields: secondFields.textFields,
+      });
 
       const payload: Record<string, unknown> = {
         template_id: tpl.id,

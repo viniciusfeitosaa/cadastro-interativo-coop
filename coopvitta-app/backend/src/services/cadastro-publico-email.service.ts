@@ -289,3 +289,73 @@ export async function enviarEmailCadastroAprovado(params: {
     buildCadastroAprovadoText(primeiro, nomeInstituicao)
   );
 }
+
+function subjectDocumentoReenvio(): string {
+  return `${org()} — documento do pré-cadastro precisa ser reenviado`;
+}
+
+function buildDocumentoReenvioHtml(
+  primeiro: string,
+  documentoLabel: string,
+  mensagem: string,
+  nomeInstituicao?: string
+): string {
+  const orgName = nomeInstituicao?.trim() || org();
+  const msgEscaped = escapeHtmlText(mensagem).replace(/\n/g, '<br>');
+  return buildEmailShell({
+    preheader: `Precisamos que você reenvie: ${documentoLabel}`,
+    headline: 'Documento para reenvio',
+    bodyParagraphsHtml: [
+      `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#334155;">Olá, <strong>${escapeHtmlText(primeiro)}</strong>.</p>`,
+      `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#334155;">Durante a análise do seu pré-cadastro na <strong>${escapeHtmlText(orgName)}</strong>, o documento abaixo precisa ser enviado novamente:</p>`,
+      `<p style="margin:0 0 14px;padding:12px 14px;background:#f8fafc;border-radius:10px;border:1px solid #e2e8f0;font-size:15px;line-height:1.55;color:#0f172a;"><strong>${escapeHtmlText(documentoLabel)}</strong></p>`,
+      `<p style="margin:0 0 8px;font-size:14px;line-height:1.55;color:#64748b;">Motivo / orientação da equipe:</p>`,
+      `<p style="margin:0 0 14px;padding:12px 14px;background:#fff7ed;border-radius:10px;border:1px solid #fed7aa;font-size:15px;line-height:1.55;color:#9a3412;">${msgEscaped}</p>`,
+      `<p style="margin:0;font-size:15px;line-height:1.6;color:#334155;">Responda a este e-mail anexando o documento atualizado (PDF ou imagem legível).</p>`,
+    ],
+  });
+}
+
+function buildDocumentoReenvioText(
+  primeiro: string,
+  documentoLabel: string,
+  mensagem: string,
+  nomeInstituicao?: string
+): string {
+  const orgName = nomeInstituicao?.trim() || org();
+  return [
+    `Olá, ${primeiro}.`,
+    '',
+    `Durante a análise do seu pré-cadastro na ${orgName}, o documento abaixo precisa ser enviado novamente:`,
+    '',
+    documentoLabel,
+    '',
+    'Motivo / orientação da equipe:',
+    mensagem,
+    '',
+    'Responda a este e-mail anexando o documento atualizado (PDF ou imagem legível).',
+    '',
+    `Equipe ${orgName}`,
+  ].join('\n');
+}
+
+export async function enviarEmailDocumentoReenvioSolicitado(params: {
+  to: string | null | undefined;
+  nomeCompleto: string;
+  documentoLabel: string;
+  mensagem: string;
+  nomeInstituicao?: string | null;
+}): Promise<void> {
+  const to = (params.to ?? '').trim().toLowerCase();
+  if (!to) return;
+  const primeiro = params.nomeCompleto.trim().split(/\s+/)[0] || 'Profissional';
+  const nomeInstituicao = params.nomeInstituicao?.trim() || undefined;
+  const documentoLabel = params.documentoLabel.trim() || 'Documento do pré-cadastro';
+  const mensagem = params.mensagem.trim() || 'Por favor, reenvie o documento em melhor qualidade.';
+  await sendEmailHtml(
+    to,
+    subjectDocumentoReenvio(),
+    buildDocumentoReenvioHtml(primeiro, documentoLabel, mensagem, nomeInstituicao),
+    buildDocumentoReenvioText(primeiro, documentoLabel, mensagem, nomeInstituicao)
+  );
+}

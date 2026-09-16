@@ -1,11 +1,14 @@
 # Mapa de Bordo — COOPVITTA
 
-> Última atualização: 2026-09-15
+> Última atualização: 2026-09-16
 
 ## Histórico de evolução
 
 Itens concluídos (mais recentes no topo):
 
+- [x] **2026-09-16** — **Avaliação — revisão de anexos**: pré-visualizar PDF/imagem; confirmar OK; solicitar reenvio por e-mail com mensagem; admin pode substituir o ficheiro (`MedicoDocumento.revisaoStatus` + rotas `/documentos/:id/ok|solicitar|substituir`); deploy frontend+backend VPS.
+- [x] **2026-09-15** — **DocuSeal termo id 6**: substitui template antigo (com `-`); pré-preenche Segunda Parte Fortaleza/CE/DIA/MES/ANO (America/Fortaleza) + assinatura PNG automática.
+- [x] **2026-09-15** — **DocuSeal Segunda Parte automática**: carimbo real via PNG (`assets/docuseal-assinatura-presidente.png`) + `completed`; cooperado mantém convite+OTP; signatário Thiago Matos Albuquerque Fonseca / Diretor Presidente / CNPJ; e-mail técnico `rtenfermagem@coopvitta.org`.
 - [x] **2026-09-15** — **Validado em produção (lote do dia)**: WhatsApp pausar/dica única; cadastro Failed to fetch (compressão+XHR+retry); Gcoop RG/órgão + naturalidade UF×cidade; syncs de exemplo reenviados com sucesso.
 - [x] **2026-09-15** — **Gcoop naturalidade**: select de cidade por UF (IBGE); mapper busca cidade em outras UFs se a informada estiver errada (ex. Nilópolis+CE → RJ).
 - [x] **2026-09-15** — **Gcoop RG/órgão**: select de órgão (lista Gcoop); bloqueio RG=CPF no wizard/API; mapper com aliases + fallback SSP — corrige “Orgão expedidor da RG não informada”.
@@ -46,7 +49,8 @@ Itens concluídos (mais recentes no topo):
 
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
-- [ ] 🟥 **Alta Prioridade**: Cadastros com anexos perdidos (antes do volume `coopvitta_uploads`, ~20/07) — reenviar documentos ou fluxo admin de reupload; sem binário o Gcoop/“Ver dados” ficam incompletos
+- [ ] 🟥 **Alta Prioridade**: Cadastros com anexos perdidos (antes do volume `coopvitta_uploads`, ~20/07) — na Avaliação já dá para substituir ficheiro se a equipa tiver o doc; falta recuperar/reenviar os casos históricos sem binário no disco (Gcoop/“Ver dados” incompletos)
+- [ ] 🟨 **Média Prioridade**: Modal “Dados do cadastro” (Associados) — listar/descarregar PDFs já assinados no DocuSeal (além dos anexos do pré-cadastro)
 - [ ] 🟨 **Média Prioridade**: Onvio — enviar e-mail `docs/ONVIO-PEDIDO-CREDENCIAIS.md` a `api.dominio@tr.com`; com OAuth + path de partner-registration, preencher `ONVIO_*` e ativar sync API
 - [ ] 🟨 **Média Prioridade**: Onvio — se a integration key vazou, pedir rotação ao suporte e atualizar `ONVIO_INTEGRATION_KEY` só no `.env` VPS
 - [ ] 🟨 **Média Prioridade**: Bot WhatsApp — configurar `WHATSAPP_MENU_ADMIN/FINANCE/DUDAS_NUMBER` no `.env` da VPS para encaminhar opções à equipe

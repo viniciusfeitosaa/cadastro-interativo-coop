@@ -51,6 +51,9 @@ import {
   listCadastrosPendentesController,
   getCadastroPendenteDetalheController,
   downloadCadastroPendenteDocumentoController,
+  marcarDocumentoCadastroPendenteOkController,
+  solicitarDocumentoCadastroPendenteController,
+  substituirDocumentoCadastroPendenteController,
   aprovarCadastroPendenteController,
   importCadastrosPendentesLoteController,
   rejeitarCadastroPendenteController,
@@ -115,7 +118,7 @@ import {
   requireModuleWrite,
   requireRole,
 } from '../middleware/auth.middleware';
-import { uploadDocumentoEnviado } from '../middleware/upload.middleware';
+import { uploadDocumentoEnviado, uploadPerfilDocumentos } from '../middleware/upload.middleware';
 import { ModuloSistema, UserRole } from '@prisma/client';
 import {
   validateUUIDParam,
@@ -321,6 +324,28 @@ router.get(
   validateUUIDParam('medicoId'),
   validateUUIDParam('documentoId'),
   downloadCadastroPendenteDocumentoController
+);
+router.patch(
+  '/cadastros-pendentes/:medicoId/documentos/:documentoId/ok',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  validateUUIDParam('medicoId'),
+  validateUUIDParam('documentoId'),
+  marcarDocumentoCadastroPendenteOkController
+);
+router.post(
+  '/cadastros-pendentes/:medicoId/documentos/:documentoId/solicitar',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  validateUUIDParam('medicoId'),
+  validateUUIDParam('documentoId'),
+  solicitarDocumentoCadastroPendenteController
+);
+router.post(
+  '/cadastros-pendentes/:medicoId/documentos/:documentoId/substituir',
+  requireModuleAccess(ModuloSistema.AVALIACAO),
+  validateUUIDParam('medicoId'),
+  validateUUIDParam('documentoId'),
+  uploadPerfilDocumentos.single('arquivo'),
+  substituirDocumentoCadastroPendenteController
 );
 router.post(
   '/cadastros-pendentes/:medicoId/aprovar',
