@@ -6,6 +6,7 @@
 
 Itens concluídos (mais recentes no topo):
 
+- [x] **2026-09-21** — **Formulários públicos (Fase 1 SAMU)**: motor genérico + link `/f/samu-prova` (nome, telefone, Técnico/Condutor, currículo PDF); módulo `FORMULARIOS`; admin de respostas/status.
 - [x] **2026-09-21** — **Gcoop ID_Categoria (Serviço social)**: lookup case-insensitive + aliases → ASSISTENTE SOCIAL; sync Iolanda `SINCRONIZADO`.
 - [x] **2026-09-16** — **Avaliação — revisão de anexos**: pré-visualizar PDF/imagem; confirmar OK; solicitar reenvio por e-mail com mensagem; admin pode substituir o ficheiro (`MedicoDocumento.revisaoStatus` + rotas `/documentos/:id/ok|solicitar|substituir`); deploy frontend+backend VPS.
 - [x] **2026-09-15** — **DocuSeal termo id 6**: substitui template antigo (com `-`); pré-preenche Segunda Parte Fortaleza/CE/DIA/MES/ANO (America/Fortaleza) + assinatura PNG automática.
@@ -51,7 +52,7 @@ Itens concluídos (mais recentes no topo):
 Esta seção lista o que está planejado ou pendente. À medida que os itens são concluídos, eles são movidos pelo agente para o histórico de evolução acima.
 
 - [ ] 🟥 **Alta Prioridade**: Cadastros com anexos perdidos (antes do volume `coopvitta_uploads`, ~20/07) — na Avaliação já dá para substituir ficheiro se a equipa tiver o doc; falta recuperar/reenviar os casos históricos sem binário no disco (Gcoop/“Ver dados” incompletos)
-- [ ] 🟨 **Média Prioridade**: **Formulários públicos (Fase 1 SAMU)** — motor genérico + link `/f/samu-prova` (nome, telefone, Técnico/Condutor, currículo PDF); módulo `FORMULARIOS` para MASTER/staff — spec `docs/superpowers/specs/2026-09-21-formularios-publicos-samu-design.md`
+- [ ] 🟨 **Média Prioridade**: Formulários Fase 2 — builder de campos no admin; identificação CPF; e-mail à equipa ao receber resposta; export CSV
 - [ ] 🟨 **Média Prioridade**: Modal “Dados do cadastro” (Associados) — listar/descarregar PDFs já assinados no DocuSeal (além dos anexos do pré-cadastro)
 - [ ] 🟨 **Média Prioridade**: Onvio — enviar e-mail `docs/ONVIO-PEDIDO-CREDENCIAIS.md` a `api.dominio@tr.com`; com OAuth + path de partner-registration, preencher `ONVIO_*` e ativar sync API
 - [ ] 🟨 **Média Prioridade**: Onvio — se a integration key vazou, pedir rotação ao suporte e atualizar `ONVIO_INTEGRATION_KEY` só no `.env` VPS

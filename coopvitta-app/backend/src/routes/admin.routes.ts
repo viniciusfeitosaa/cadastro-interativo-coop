@@ -121,6 +121,15 @@ import {
 import { uploadDocumentoEnviado, uploadPerfilDocumentos } from '../middleware/upload.middleware';
 import { ModuloSistema, UserRole } from '@prisma/client';
 import {
+  downloadFormularioRespostaFicheiroController,
+  getFormularioAdminController,
+  getFormularioRespostaController,
+  listFormularioRespostasController,
+  listFormulariosController,
+  patchFormularioController,
+  patchFormularioRespostaController,
+} from '../controllers/formulario.controller';
+import {
   validateUUIDParam,
   validateCreateEscala,
   validateUpdateEscala,
@@ -446,6 +455,50 @@ router.delete('/escalas/:id/subgrupos/:subgrupoId', requireModuleAccess(ModuloSi
 router.get('/escalas/:id/equipes', requireModuleAccess(ModuloSistema.ESCALAS), listEscalaEquipesController);
 router.post('/escalas/:id/equipes', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), addEquipeToEscalaController);
 router.delete('/escalas/:id/equipes/:equipeId', requireModuleAccess(ModuloSistema.ESCALAS), requireModuleWrite(ModuloSistema.ESCALAS), removeEquipeFromEscalaController);
+
+router.get('/formularios', requireModuleAccess(ModuloSistema.FORMULARIOS), listFormulariosController);
+router.get(
+  '/formularios/:id',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  getFormularioAdminController
+);
+router.patch(
+  '/formularios/:id',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  requireModuleWrite(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  patchFormularioController
+);
+router.get(
+  '/formularios/:id/respostas',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  listFormularioRespostasController
+);
+router.get(
+  '/formularios/:id/respostas/:respostaId',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  validateUUIDParam('respostaId'),
+  getFormularioRespostaController
+);
+router.patch(
+  '/formularios/:id/respostas/:respostaId',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  requireModuleWrite(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  validateUUIDParam('respostaId'),
+  patchFormularioRespostaController
+);
+router.get(
+  '/formularios/:id/respostas/:respostaId/ficheiros/:campoId/download',
+  requireModuleAccess(ModuloSistema.FORMULARIOS),
+  validateUUIDParam('id'),
+  validateUUIDParam('respostaId'),
+  validateUUIDParam('campoId'),
+  downloadFormularioRespostaFicheiroController
+);
 
 router.use('/blog', blogAdminRoutes);
 

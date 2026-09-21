@@ -73,6 +73,7 @@ enum ModuloSistema {
   CONFIGURACOES
   ENVIO_DOCUMENTOS
   AVALIACAO
+  FORMULARIOS
   PERFIL
 }
 
@@ -127,6 +128,8 @@ model Tenant {
   blogCategories          BlogCategory[]
   blogPosts               BlogPost[]
   blogComments            BlogComment[]
+  formularios             Formulario[]
+  formularioRespostas     FormularioResposta[]
 
   @@map("tenants")
   @@index([slug])
@@ -990,4 +993,110 @@ model BlogComment {
   @@index([tenantId, status, createdAt])
   @@index([postId, status])
   @@map("blog_comments")
+}
+
+enum FormularioCampoTipo {
+  TEXTO
+  TELEFONE
+  ESCOLHA_UNICA
+  FICHEIRO
+}
+
+enum FormularioIdentificacaoModo {
+  ANONIMO
+  LEVE
+  FORTE
+}
+
+enum FormularioRespostaStatus {
+  NOVA
+  EM_ANALISE
+  PRE_SELECIONADA
+  REJEITADA
+  ARQUIVADA
+}
+
+model Formulario {
+  id                String                      @id @default(uuid())
+  tenantId          String                      @map("tenant_id")
+  titulo            String                      @db.VarChar(255)
+  descricao         String?                     @db.Text
+  slug              String                      @db.VarChar(80)
+  publico           Boolean                     @default(true)
+  ativo             Boolean                     @default(true)
+  identificacaoModo FormularioIdentificacaoModo @default(LEVE) @map("identificacao_modo")
+  criadoPorId       String?                     @map("criado_por_id") @db.VarChar(36)
+  createdAt         DateTime                    @default(now()) @map("created_at")
+  updatedAt         DateTime                    @updatedAt @map("updated_at")
+
+  tenant    Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  campos    FormularioCampo[]
+  respostas FormularioResposta[]
+
+  @@map("formularios")
+  @@unique([tenantId, slug])
+  @@index([tenantId])
+  @@index([slug])
+}
+
+model FormularioCampo {
+  id            String              @id @default(uuid())
+  formularioId  String              @map("formulario_id")
+  chave         String              @db.VarChar(80)
+  label         String              @db.VarChar(255)
+  tipo          FormularioCampoTipo
+  obrigatorio   Boolean             @default(true)
+  ordem         Int                 @default(0)
+  opcoesJson    Json?               @map("opcoes_json")
+  validacaoJson Json?               @map("validacao_json")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  formulario Formulario                @relation(fields: [formularioId], references: [id], onDelete: Cascade)
+  valores    FormularioRespostaValor[]
+
+  @@map("formulario_campos")
+  @@unique([formularioId, chave])
+  @@index([formularioId])
+}
+
+model FormularioResposta {
+  id                String                   @id @default(uuid())
+  tenantId          String                   @map("tenant_id")
+  formularioId      String                   @map("formulario_id")
+  status            FormularioRespostaStatus @default(NOVA)
+  remetenteNome     String                   @map("remetente_nome") @db.VarChar(255)
+  remetenteTelefone String                   @map("remetente_telefone") @db.VarChar(40)
+  ipHash            String?                  @map("ip_hash") @db.VarChar(64)
+  userAgent         String?                  @map("user_agent") @db.VarChar(500)
+  createdAt         DateTime                 @default(now()) @map("created_at")
+  updatedAt         DateTime                 @updatedAt @map("updated_at")
+
+  tenant     Tenant                    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  formulario Formulario                @relation(fields: [formularioId], references: [id], onDelete: Cascade)
+  valores    FormularioRespostaValor[]
+
+  @@map("formulario_respostas")
+  @@index([tenantId])
+  @@index([formularioId, createdAt])
+  @@index([status])
+}
+
+model FormularioRespostaValor {
+  id             String  @id @default(uuid())
+  respostaId     String  @map("resposta_id")
+  campoId        String  @map("campo_id")
+  valorTexto     String? @map("valor_texto") @db.Text
+  valorJson      Json?   @map("valor_json")
+  nomeArquivo    String? @map("nome_arquivo") @db.VarChar(255)
+  caminhoArquivo String? @map("caminho_arquivo") @db.Text
+  mimeType       String? @map("mime_type") @db.VarChar(120)
+  tamanhoBytes   Int?    @map("tamanho_bytes")
+
+  resposta FormularioResposta @relation(fields: [respostaId], references: [id], onDelete: Cascade)
+  campo    FormularioCampo    @relation(fields: [campoId], references: [id], onDelete: Cascade)
+
+  @@map("formulario_resposta_valores")
+  @@unique([respostaId, campoId])
+  @@index([respostaId])
 }

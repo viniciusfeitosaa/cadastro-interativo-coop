@@ -17,6 +17,7 @@ import pontoRoutes from './routes/ponto.routes';
 import leadsRoutes from './routes/leads.routes';
 import blogRoutes from './routes/blog.routes';
 import whatsappRoutes from './routes/whatsapp.routes';
+import formularioPublicRoutes from './routes/formulario-public.routes';
 
 // Criar aplicação Express
 const app: Express = express();
@@ -120,6 +121,7 @@ app.use('/api/ponto', pontoRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/whatsapp', whatsappRoutes);
+app.use('/api/public/formularios', formularioPublicRoutes);
 
 // Rota raiz
 app.get('/', (_req: Request, res: Response) => {

@@ -11,6 +11,7 @@ export type ModuloSistema =
   | 'CONFIGURACOES'
   | 'ENVIO_DOCUMENTOS'
   | 'AVALIACAO'
+  | 'FORMULARIOS'
   | 'PERFIL';
 
 /** Nível de acesso por módulo (perfis staff / admin pleno). */
@@ -29,5 +30,6 @@ export const MODULO_LABEL: Record<ModuloSistema, string> = {
   CONFIGURACOES: 'Configurações',
   ENVIO_DOCUMENTOS: 'Envio de Documentos',
   AVALIACAO: 'Avaliação',
+  FORMULARIOS: 'Formulários',
   PERFIL: 'Minha Conta',
 };

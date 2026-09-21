@@ -178,6 +178,7 @@ const AppShell = () => {
           items: [
             { to: '/medicos', label: LABEL_ASSOCIADOS },
             { to: '/avaliacao', label: 'Avaliação' },
+            { to: '/formularios', label: 'Formulários' },
           ],
         },
         {
@@ -240,6 +241,7 @@ const AppShell = () => {
     '/atendimentos': 'ATENDIMENTOS',
     '/vagas': 'VAGAS',
     '/avaliacao': 'AVALIACAO',
+    '/formularios': 'FORMULARIOS',
     '/modulo-escala-master': 'CONFIGURACOES',
     '/perfis-equipe': 'CONFIGURACOES',
   };

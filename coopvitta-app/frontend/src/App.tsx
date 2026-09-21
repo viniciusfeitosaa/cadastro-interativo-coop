@@ -36,6 +36,9 @@ import RedefinirSenha from './pages/RedefinirSenha';
 import AcessoNegado from './pages/AcessoNegado';
 import Vagas from './pages/Vagas';
 import Avaliacao from './pages/Avaliacao';
+import Formularios from './pages/Formularios';
+import FormularioRespostas from './pages/FormularioRespostas';
+import FormularioPublico from './pages/FormularioPublico';
 import ModuloEscalaMaster from './pages/ModuloEscalaMaster';
 import PerfisEquipe from './pages/PerfisEquipe';
 
@@ -89,6 +92,7 @@ function AppRoutes() {
       <Route path="/ativar-conta/:token" element={<AcceptInvite />} />
       <Route path="/esqueci-senha" element={<LoginGuard><EsqueciSenha /></LoginGuard>} />
       <Route path="/redefinir-senha" element={<AuthOnlyRedirect><RedefinirSenha /></AuthOnlyRedirect>} />
+      <Route path="/f/:slug" element={<FormularioPublico />} />
       <Route
         element={
           <ProtectedRoute>
@@ -132,6 +136,8 @@ function AppRoutes() {
             </MasterOnly>
           }
         />
+        <Route path="/formularios" element={<Formularios />} />
+        <Route path="/formularios/:id" element={<FormularioRespostas />} />
         <Route
           path="/modulo-escala-master"
           element={

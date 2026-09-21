@@ -191,3 +191,35 @@ export const uploadConteudoCapa = multer({
   },
 });
 
+const uploadFormularioDir = path.resolve(process.cwd(), 'uploads', 'formularios');
+if (!fs.existsSync(uploadFormularioDir)) {
+  fs.mkdirSync(uploadFormularioDir, { recursive: true });
+}
+
+const storageFormulario = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, uploadFormularioDir),
+  filename: (_req, file, cb) => {
+    const ext = path.extname(file.originalname || '').toLowerCase() || '.pdf';
+    const sanitizedBase = path
+      .basename(file.originalname || 'curriculo', ext)
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .slice(0, 80);
+    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `${sanitizedBase || 'curriculo'}-${unique}${ext}`);
+  },
+});
+
+export const uploadFormularioResposta = multer({
+  storage: storageFormulario,
+  limits: { fileSize: 15 * 1024 * 1024, files: 1 },
+  fileFilter: (_req, file, cb) => {
+    const mime = (file.mimetype || '').toLowerCase();
+    const name = (file.originalname || '').toLowerCase();
+    if (mime === 'application/pdf' || name.endsWith('.pdf')) {
+      cb(null, true);
+      return;
+    }
+    cb(new Error('Envie o currículo em PDF (máx. 15 MB).'));
+  },
+});
+
