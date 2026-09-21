@@ -10,6 +10,7 @@ import {
   findGcoopUfSigla,
   getGcoopCidadesCached,
   getGcoopDadosIniciaisCached,
+  normalizeGcoopLabel,
   wizardValueToLabel,
 } from './gcoop.domain-cache';
 
@@ -61,6 +62,22 @@ const PROFISSAO_CONSELHO_GCOOP: Record<string, string> = {
   'Assistente Social': 'CRESS',
   Biomédico: 'CRBM',
 };
+
+/** Lookup case-insensitive / sem acento nas tabelas de profissão → Gcoop. */
+function lookupProfissaoMap(map: Record<string, string>, raw: string): string | undefined {
+  const key = str(raw);
+  if (!key) return undefined;
+  if (map[key]) return map[key];
+  const n = normalizeGcoopLabel(key);
+  for (const [k, v] of Object.entries(map)) {
+    if (normalizeGcoopLabel(k) === n) return v;
+  }
+  // Aliases extras (texto livre do wizard / import lote).
+  if (n.includes('servico social') || n.includes('assistente social')) {
+    return map['Assistente Social'] || map['Serviço Social'];
+  }
+  return undefined;
+}
 
 function str(value: unknown): string {
   if (value == null) return '';
@@ -172,10 +189,13 @@ function resolveCategoriaId(
   lista: Parameters<typeof findGcoopItemIdByLabel>[0]
 ): number | null {
   const detalhe = str(wizard.categoriaProfissionalDetalhe);
+  const especialidade = str(wizard.especialidadeProfissional);
   const candidates = [
-    PROFISSAO_CATEGORIA_GCOOP[profissao],
-    PROFISSAO_CATEGORIA_GCOOP[detalhe],
+    lookupProfissaoMap(PROFISSAO_CATEGORIA_GCOOP, profissao),
+    lookupProfissaoMap(PROFISSAO_CATEGORIA_GCOOP, detalhe),
+    lookupProfissaoMap(PROFISSAO_CATEGORIA_GCOOP, especialidade),
     detalhe,
+    especialidade,
     profissao,
   ].filter(Boolean) as string[];
 
@@ -193,10 +213,12 @@ function resolveConselhoId(
   lista: Parameters<typeof findGcoopItemIdByLabel>[0]
 ): number | null {
   const detalhe = str(wizard.categoriaProfissionalDetalhe);
+  const especialidade = str(wizard.especialidadeProfissional);
   const candidates = [
     conselhoLabel && !/^outro$/i.test(conselhoLabel) ? conselhoLabel : '',
-    PROFISSAO_CONSELHO_GCOOP[profissao],
-    PROFISSAO_CONSELHO_GCOOP[detalhe],
+    lookupProfissaoMap(PROFISSAO_CONSELHO_GCOOP, profissao),
+    lookupProfissaoMap(PROFISSAO_CONSELHO_GCOOP, detalhe),
+    lookupProfissaoMap(PROFISSAO_CONSELHO_GCOOP, especialidade),
   ].filter(Boolean) as string[];
 
   for (const label of candidates) {
