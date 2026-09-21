@@ -33,8 +33,8 @@ export const formularioPublicService = {
   submit: async (slug: string, formData: FormData) => {
     const r = await axios.post<{ success: boolean; message?: string }>(
       `${API_URL}/public/formularios/${encodeURIComponent(slug)}/respostas`,
-      formData,
-      { headers: { 'Content-Type': 'multipart/form-data' } }
+      formData
+      // Não definir Content-Type manualmente — o browser/axios inclui o boundary do multipart.
     );
     return r.data;
   },

@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { BrandLogo } from '../components/brand/BrandLogo';
 import {
   formularioPublicService,
   type FormularioCampoPublico,
@@ -45,12 +46,21 @@ export default function FormularioPublico() {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!form) return;
+    const ficheiroObrigatorio = form.campos.some((c) => c.tipo === 'FICHEIRO' && c.obrigatorio);
+    if (ficheiroObrigatorio && !file) {
+      setError('Anexe o currículo em PDF antes de enviar.');
+      return;
+    }
+    if (file && !file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+      setError('O currículo deve ser um ficheiro PDF.');
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
       const fd = new FormData();
       for (const [k, v] of Object.entries(values)) fd.append(k, v);
-      if (file) fd.append('curriculo', file);
+      if (file) fd.append('curriculo', file, file.name);
       await formularioPublicService.submit(slug, fd);
       setSuccess(true);
     } catch (err: unknown) {
@@ -69,15 +79,27 @@ export default function FormularioPublico() {
             {c.label}
             {c.obrigatorio ? ' *' : ''}
           </label>
-          <input
-            id={c.chave}
-            type="file"
-            accept="application/pdf,.pdf"
-            required={c.obrigatorio}
-            disabled={submitting}
-            onChange={(ev) => setFile(ev.target.files?.[0] || null)}
-            className="block w-full text-sm text-coop-800 file:mr-3 file:rounded-md file:border-0 file:bg-coop-700 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white"
-          />
+          <div className="rounded-lg border border-dashed border-coop-300 bg-coop-50/50 px-3 py-3">
+            <input
+              id={c.chave}
+              type="file"
+              accept="application/pdf,.pdf"
+              required={c.obrigatorio && !file}
+              disabled={submitting}
+              onChange={(ev) => {
+                const chosen = ev.target.files?.[0] || null;
+                setFile(chosen);
+                setError(null);
+              }}
+              className="block w-full text-sm text-coop-800 file:mr-3 file:rounded-md file:border-0 file:bg-coop-700 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-white hover:file:bg-coop-800"
+            />
+            <p className="mt-2 text-xs text-coop-600">PDF, máximo 15 MB.</p>
+            {file ? (
+              <p className="mt-1 text-xs font-medium text-coop-800 truncate">
+                Selecionado: {file.name} ({Math.max(1, Math.round(file.size / 1024))} KB)
+              </p>
+            ) : null}
+          </div>
         </div>
       );
     }
@@ -131,9 +153,9 @@ export default function FormularioPublico() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-coop-50 to-white px-4 py-10">
       <div className="mx-auto max-w-lg">
-        <p className="text-center text-xs font-semibold tracking-wide text-coop-600 uppercase mb-2">
-          COOPVITTA
-        </p>
+        <div className="flex justify-center mb-6">
+          <BrandLogo className="h-16 w-auto sm:h-20" linkToSite />
+        </div>
         {loading && <p className="text-center text-sm text-coop-700">Carregando formulário…</p>}
         {!loading && error && !form && (
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</div>
