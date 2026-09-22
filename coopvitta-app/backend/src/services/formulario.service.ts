@@ -25,7 +25,7 @@ const SAMU_CAMPOS: Array<{
     label: 'Profissão',
     tipo: FormularioCampoTipo.ESCOLHA_UNICA,
     ordem: 3,
-    opcoesJson: ['Técnico', 'Condutor'],
+    opcoesJson: ['Técnico', 'Técnico de enfermagem', 'Condutor'],
   },
   {
     chave: 'curriculo',
@@ -40,17 +40,42 @@ const SAMU_TITULO = 'Inscrição / pré-seleção — SAMU Fortaleza (cadastro r
 const SAMU_DESCRICAO =
   'Preencha os dados abaixo para inscrição na pré-seleção da prova do SAMU Fortaleza. Anexe o currículo em PDF.';
 
+const SAMU_PROFISSAO_OPCOES = ['Técnico', 'Técnico de enfermagem', 'Condutor'];
+
 export async function ensureSamuFormulario(tenantId: string) {
   const existing = await prisma.formulario.findUnique({
     where: { tenantId_slug: { tenantId, slug: SAMU_SLUG } },
     include: { campos: { orderBy: { ordem: 'asc' } } },
   });
   if (existing) {
-    if (existing.descricao !== SAMU_DESCRICAO || existing.titulo !== SAMU_TITULO) {
-      return prisma.formulario.update({
-        where: { id: existing.id },
-        data: { titulo: SAMU_TITULO, descricao: SAMU_DESCRICAO },
-        include: { campos: { orderBy: { ordem: 'asc' } } },
+    const profissaoCampo = existing.campos.find((c) => c.chave === 'profissao');
+    const opcoesAtuais = Array.isArray(profissaoCampo?.opcoesJson)
+      ? (profissaoCampo!.opcoesJson as unknown[]).map(String)
+      : [];
+    const opcoesDesatualizadas =
+      opcoesAtuais.length !== SAMU_PROFISSAO_OPCOES.length ||
+      SAMU_PROFISSAO_OPCOES.some((o, i) => opcoesAtuais[i] !== o);
+    const metaDesatualizada =
+      existing.descricao !== SAMU_DESCRICAO || existing.titulo !== SAMU_TITULO;
+
+    if (metaDesatualizada || opcoesDesatualizadas) {
+      return prisma.$transaction(async (tx) => {
+        if (metaDesatualizada) {
+          await tx.formulario.update({
+            where: { id: existing.id },
+            data: { titulo: SAMU_TITULO, descricao: SAMU_DESCRICAO },
+          });
+        }
+        if (opcoesDesatualizadas && profissaoCampo) {
+          await tx.formularioCampo.update({
+            where: { id: profissaoCampo.id },
+            data: { opcoesJson: SAMU_PROFISSAO_OPCOES },
+          });
+        }
+        return tx.formulario.findUniqueOrThrow({
+          where: { id: existing.id },
+          include: { campos: { orderBy: { ordem: 'asc' } } },
+        });
       });
     }
     return existing;
