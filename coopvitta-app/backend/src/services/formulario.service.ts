@@ -36,9 +36,9 @@ const SAMU_CAMPOS: Array<{
   },
 ];
 
-const SAMU_TITULO = 'Inscrição / pré-seleção — prova do SAMU';
+const SAMU_TITULO = 'Inscrição / pré-seleção — SAMU Fortaleza (cadastro reserva)';
 const SAMU_DESCRICAO =
-  'Cadastro reserva para o SAMU Fortaleza. Preencha os dados abaixo para inscrição na pré-seleção da prova. Anexe o currículo em PDF.';
+  'Preencha os dados abaixo para inscrição na pré-seleção da prova do SAMU Fortaleza. Anexe o currículo em PDF.';
 
 export async function ensureSamuFormulario(tenantId: string) {
   const existing = await prisma.formulario.findUnique({
