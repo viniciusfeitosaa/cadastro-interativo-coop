@@ -1,6 +1,19 @@
 import rateLimit, { type Options, type RateLimitRequestHandler } from 'express-rate-limit';
+import type { Request } from 'express';
 import { RedisStore, type RedisReply } from 'rate-limit-redis';
 import { getRedisClient } from '../config/redis';
+
+/** IP real atrás de NPM + nginx frontend (não o IP do container). */
+export function clientIpKey(req: Request): string {
+  const xf = req.headers['x-forwarded-for'];
+  if (typeof xf === 'string' && xf.trim()) {
+    const first = xf.split(',')[0]?.trim();
+    if (first) return first;
+  }
+  const real = req.headers['x-real-ip'];
+  if (typeof real === 'string' && real.trim()) return real.trim();
+  return req.ip || req.socket.remoteAddress || 'unknown';
+}
 
 function buildStore(prefix: string) {
   const redis = getRedisClient();
@@ -20,6 +33,7 @@ function createLimiter(prefix: string, overrides: Partial<Options>): RateLimitRe
     max,
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: clientIpKey,
     message: {
       success: false,
       error: 'Muitas requisições. Aguarde um momento e tente novamente.',

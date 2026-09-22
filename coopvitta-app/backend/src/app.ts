@@ -23,7 +23,7 @@ import formularioPublicRoutes from './routes/formulario-public.routes';
 const app: Express = express();
 
 // Necessário atrás do proxy do Render (evita erro do express-rate-limit com X-Forwarded-For)
-app.set('trust proxy', 1);
+app.set('trust proxy', 2); // NPM + nginx frontend → backend
 
 // Middleware de segurança
 app.use(buildHelmetMiddleware());

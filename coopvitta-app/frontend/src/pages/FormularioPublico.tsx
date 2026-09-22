@@ -64,8 +64,24 @@ export default function FormularioPublico() {
       await formularioPublicService.submit(slug, fd);
       setSuccess(true);
     } catch (err: unknown) {
-      const e2 = err as { response?: { data?: { error?: string } } };
-      setError(e2.response?.data?.error || 'Não foi possível enviar. Tente novamente.');
+      const e2 = err as {
+        response?: { status?: number; data?: { error?: string; message?: string } | string };
+        message?: string;
+      };
+      const data = e2.response?.data;
+      let msg =
+        typeof data === 'string'
+          ? data
+          : data?.error || data?.message || e2.message || 'Não foi possível enviar. Tente novamente.';
+      if (e2.response?.status === 429) {
+        msg =
+          (typeof data === 'object' && data?.error) ||
+          'Muitos envios nesta rede agora. Aguarde 1–2 minutos e tente de novo (ou use dados móveis).';
+      }
+      if (e2.response?.status === 413) {
+        msg = 'O ficheiro é demasiado grande. Envie um PDF até 15 MB.';
+      }
+      setError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -178,7 +194,14 @@ export default function FormularioPublico() {
               {form.descricao ? <p className="mt-2 text-sm text-coop-700">{form.descricao}</p> : null}
             </div>
             {form.campos.map(renderCampo)}
-            {error ? <p className="text-sm text-red-700">{error}</p> : null}
+            {error ? (
+              <div
+                role="alert"
+                className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
+              >
+                {error}
+              </div>
+            ) : null}
             <button
               type="submit"
               disabled={submitting}
