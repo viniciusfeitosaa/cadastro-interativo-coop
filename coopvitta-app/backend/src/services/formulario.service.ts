@@ -25,7 +25,7 @@ const SAMU_CAMPOS: Array<{
     label: 'Profissão',
     tipo: FormularioCampoTipo.ESCOLHA_UNICA,
     ordem: 3,
-    opcoesJson: ['Técnico', 'Técnico de enfermagem', 'Condutor'],
+    opcoesJson: ['Técnico de enfermagem', 'Condutor'],
   },
   {
     chave: 'curriculo',
@@ -40,7 +40,7 @@ const SAMU_TITULO = 'Inscrição / pré-seleção — SAMU Fortaleza (cadastro r
 const SAMU_DESCRICAO =
   'Preencha os dados abaixo para inscrição na pré-seleção da prova do SAMU Fortaleza. Anexe o currículo em PDF.';
 
-const SAMU_PROFISSAO_OPCOES = ['Técnico', 'Técnico de enfermagem', 'Condutor'];
+const SAMU_PROFISSAO_OPCOES = ['Técnico de enfermagem', 'Condutor'];
 
 export async function ensureSamuFormulario(tenantId: string) {
   const existing = await prisma.formulario.findUnique({
