@@ -36,19 +36,31 @@ const SAMU_CAMPOS: Array<{
   },
 ];
 
+const SAMU_TITULO = 'Inscrição / pré-seleção — prova do SAMU';
+const SAMU_DESCRICAO =
+  'Cadastro reserva para o SAMU Fortaleza. Preencha os dados abaixo para inscrição na pré-seleção da prova. Anexe o currículo em PDF.';
+
 export async function ensureSamuFormulario(tenantId: string) {
   const existing = await prisma.formulario.findUnique({
     where: { tenantId_slug: { tenantId, slug: SAMU_SLUG } },
     include: { campos: { orderBy: { ordem: 'asc' } } },
   });
-  if (existing) return existing;
+  if (existing) {
+    if (existing.descricao !== SAMU_DESCRICAO || existing.titulo !== SAMU_TITULO) {
+      return prisma.formulario.update({
+        where: { id: existing.id },
+        data: { titulo: SAMU_TITULO, descricao: SAMU_DESCRICAO },
+        include: { campos: { orderBy: { ordem: 'asc' } } },
+      });
+    }
+    return existing;
+  }
 
   return prisma.formulario.create({
     data: {
       tenantId,
-      titulo: 'Inscrição / pré-seleção — prova do SAMU',
-      descricao:
-        'Preencha os dados abaixo para inscrição na pré-seleção da prova do SAMU. Anexe o currículo em PDF.',
+      titulo: SAMU_TITULO,
+      descricao: SAMU_DESCRICAO,
       slug: SAMU_SLUG,
       publico: true,
       ativo: true,
